@@ -47,6 +47,7 @@ import { MasterTraderPanel } from "@/components/copy-trading/master-trader-panel
 import { PreviewPanel } from "@/components/preview/preview-panel";
 import { NotificationsPanel } from "@/components/notifications/notifications-panel";
 import { ConnectedAccounts } from "@/components/exchanges/connected-accounts";
+import { ExchangeIntegrationPanel } from "@/components/exchanges/exchange-integration-panel";
 import { TradingForm } from "@/components/trading/trading-form";
 import { MultiChartPanel } from "@/components/chart/multi-chart-panel";
 import { MiniChart } from "@/components/chart/mini-chart";
@@ -360,6 +361,8 @@ function DashboardContent() {
         return <ChatBot />;
       case "exchanges":
         return <ConnectedAccounts />;
+      case "exchange-integration":
+        return <ExchangeIntegrationPanel />;
       // Bottom Menu Items
       case "preview":
         return <PreviewPanel />;

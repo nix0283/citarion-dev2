@@ -185,6 +185,7 @@ const otherMenuItems: MenuItem[] = [
   { id: "risk-management", label: "Риск-менеджмент", icon: Shield },
   { id: "chat", label: "Оракул", icon: MessageSquare },
   { id: "exchanges", label: "Биржи", icon: Building2 },
+  { id: "exchange-integration", label: "Интеграция бирж", icon: Globe, isNew: true },
 ]
 
 const bottomMenuItems: MenuItem[] = [

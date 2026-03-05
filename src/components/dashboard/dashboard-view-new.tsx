@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   TrendingUp,
   TrendingDown,
@@ -24,10 +25,12 @@ import {
   Clock,
   AlertTriangle,
   CheckCircle2,
+  PieChart,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Sparkline, PnLSparkline } from "@/components/ui/sparkline";
 import { EquityCurve } from "@/components/charts/equity-curve";
+import { CornixMetricsPanel } from "@/components/monitoring/cornix-metrics-panel";
 import {
   DEMO_PORTFOLIO,
   DEMO_POSITIONS,
@@ -304,170 +307,193 @@ export function DashboardViewNew() {
   const activeSignalsCount = DEMO_SIGNALS.length;
   const activePositionsCount = DEMO_POSITIONS.length;
   const activeBotsCount = Object.values(DEMO_BOT_STATS).filter(b => b.status === "running").length;
+  const [activeTab, setActiveTab] = useState<string>("overview");
 
   return (
     <div className="flex flex-col h-full gap-4 overflow-auto">
-      {/* Top Stats Row */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <StatCard
-          title="Total Balance"
-          value={formatCurrency(DEMO_PORTFOLIO.totalBalance)}
-          change={DEMO_PORTFOLIO.weekPnlPercent}
-          changeLabel="this week"
-          icon={<Wallet className="h-4 w-4" />}
-          sparkline={DEMO_SPARKLINES.balance}
-          trend="up"
-        />
-        <StatCard
-          title="Today's P&L"
-          value={formatCurrency(Math.abs(DEMO_PORTFOLIO.todayPnl))}
-          change={DEMO_PORTFOLIO.todayPnlPercent}
-          icon={<DollarSign className="h-4 w-4" />}
-          sparkline={DEMO_SPARKLINES.pnl}
-          trend={DEMO_PORTFOLIO.todayPnl >= 0 ? "up" : "down"}
-        />
-        <StatCard
-          title="Win Rate"
-          value={`${DEMO_PORTFOLIO.winRate}%`}
-          icon={<Target className="h-4 w-4" />}
-          trend="up"
-        />
-        <StatCard
-          title="Sharpe Ratio"
-          value={DEMO_PORTFOLIO.sharpeRatio.toFixed(2)}
-          icon={<BarChart3 className="h-4 w-4" />}
-          trend="up"
-        />
-      </div>
+      {/* Tab Navigation */}
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+        <TabsList className="grid w-full grid-cols-2 h-10">
+          <TabsTrigger value="overview" className="text-xs">
+            <Activity className="h-3.5 w-3.5 mr-1.5" />
+            Overview
+          </TabsTrigger>
+          <TabsTrigger value="metrics" className="text-xs">
+            <PieChart className="h-3.5 w-3.5 mr-1.5" />
+            Cornix Metrics
+          </TabsTrigger>
+        </TabsList>
 
-      {/* Main Content Grid */}
-      <div className="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-4 min-h-0">
-        {/* Left Column - Charts */}
-        <div className="lg:col-span-2 flex flex-col gap-4 min-h-0">
-          {/* Equity Curve */}
-          <EquityCurve height={280} />
+        {/* Overview Tab */}
+        <TabsContent value="overview" className="mt-4 space-y-4">
+          {/* Top Stats Row */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <StatCard
+              title="Total Balance"
+              value={formatCurrency(DEMO_PORTFOLIO.totalBalance)}
+              change={DEMO_PORTFOLIO.weekPnlPercent}
+              changeLabel="this week"
+              icon={<Wallet className="h-4 w-4" />}
+              sparkline={DEMO_SPARKLINES.balance}
+              trend="up"
+            />
+            <StatCard
+              title="Today's P&L"
+              value={formatCurrency(Math.abs(DEMO_PORTFOLIO.todayPnl))}
+              change={DEMO_PORTFOLIO.todayPnlPercent}
+              icon={<DollarSign className="h-4 w-4" />}
+              sparkline={DEMO_SPARKLINES.pnl}
+              trend={DEMO_PORTFOLIO.todayPnl >= 0 ? "up" : "down"}
+            />
+            <StatCard
+              title="Win Rate"
+              value={`${DEMO_PORTFOLIO.winRate}%`}
+              icon={<Target className="h-4 w-4" />}
+              trend="up"
+            />
+            <StatCard
+              title="Sharpe Ratio"
+              value={DEMO_PORTFOLIO.sharpeRatio.toFixed(2)}
+              icon={<BarChart3 className="h-4 w-4" />}
+              trend="up"
+            />
+          </div>
 
-          {/* Active Positions */}
-          <Card>
-            <CardHeader className="pb-2">
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-base flex items-center gap-2">
-                  <Activity className="h-4 w-4 text-[#0ECB81]" />
-                  Active Positions
-                  <Badge variant="outline" className="text-xs">
-                    {activePositionsCount}
-                  </Badge>
-                </CardTitle>
-                <Button variant="ghost" size="sm" className="text-xs">
-                  View All <ChevronRight className="h-3 w-3 ml-1" />
-                </Button>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                {DEMO_POSITIONS.slice(0, 4).map((position) => (
-                  <PositionRow key={position.id} position={position} />
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+          {/* Main Content Grid */}
+          <div className="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-4 min-h-0">
+            {/* Left Column - Charts */}
+            <div className="lg:col-span-2 flex flex-col gap-4 min-h-0">
+              {/* Equity Curve */}
+              <EquityCurve height={280} />
 
-        {/* Right Column */}
-        <div className="flex flex-col gap-4 min-h-0">
-          {/* Active Signals */}
-          <Card className="flex-1 min-h-0 flex flex-col">
-            <CardHeader className="pb-2">
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-base flex items-center gap-2">
-                  <Signal className="h-4 w-4 text-blue-500" />
-                  Active Signals
-                  <Badge variant="outline" className="text-xs">
-                    {activeSignalsCount}
-                  </Badge>
-                </CardTitle>
-              </div>
-            </CardHeader>
-            <CardContent className="flex-1 overflow-auto">
-              <ScrollArea className="h-full">
-                <div className="space-y-2 pr-2">
-                  {DEMO_SIGNALS.map((signal) => (
-                    <SignalCard key={signal.id} signal={signal} />
-                  ))}
-                </div>
-              </ScrollArea>
-            </CardContent>
-          </Card>
-
-          {/* Bot Performance */}
-          <Card>
-            <CardHeader className="pb-2">
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-base flex items-center gap-2">
-                  <Bot className="h-4 w-4 text-amber-500" />
-                  Active Bots
-                </CardTitle>
-                <Badge variant="outline" className="text-xs text-[#0ECB81] border-[#0ECB81]/30">
-                  {activeBotsCount} running
-                </Badge>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                {Object.entries(DEMO_BOT_STATS).slice(0, 3).map(([key, bot]) => (
-                  <div
-                    key={key}
-                    className="flex items-center justify-between p-2 rounded-lg bg-muted/30"
-                  >
-                    <div className="flex items-center gap-2">
-                      <div
-                        className={cn(
-                          "w-2 h-2 rounded-full",
-                          bot.status === "running" ? "bg-[#0ECB81]" : "bg-muted-foreground"
-                        )}
-                      />
-                      <span className="text-sm font-medium truncate max-w-[140px]">
-                        {bot.name.split(" (")[0]}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs text-muted-foreground">{bot.totalTrades}t</span>
-                      <span
-                        className={cn(
-                          "text-sm font-mono font-medium",
-                          bot.totalProfit >= 0 ? "text-[#0ECB81]" : "text-[#F6465D]"
-                        )}
-                      >
-                        {bot.totalProfit >= 0 ? "+" : ""}${formatNumber(bot.totalProfit, 0)}
-                      </span>
-                    </div>
+              {/* Active Positions */}
+              <Card>
+                <CardHeader className="pb-2">
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="text-base flex items-center gap-2">
+                      <Activity className="h-4 w-4 text-[#0ECB81]" />
+                      Active Positions
+                      <Badge variant="outline" className="text-xs">
+                        {activePositionsCount}
+                      </Badge>
+                    </CardTitle>
+                    <Button variant="ghost" size="sm" className="text-xs">
+                      View All <ChevronRight className="h-3 w-3 ml-1" />
+                    </Button>
                   </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-2">
+                    {DEMO_POSITIONS.slice(0, 4).map((position) => (
+                      <PositionRow key={position.id} position={position} />
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
 
-          {/* Quick Actions */}
-          <Card>
-            <CardContent className="p-3">
-              <div className="grid grid-cols-3 gap-2">
-                <Button variant="outline" className="h-auto py-3 flex-col gap-1">
-                  <Shield className="h-5 w-5 text-[#0ECB81]" />
-                  <span className="text-[10px]">Risk</span>
-                </Button>
-                <Button variant="outline" className="h-auto py-3 flex-col gap-1">
-                  <Zap className="h-5 w-5 text-amber-500" />
-                  <span className="text-[10px]">Quick Trade</span>
-                </Button>
-                <Button variant="outline" className="h-auto py-3 flex-col gap-1">
-                  <BarChart3 className="h-5 w-5 text-purple-500" />
-                  <span className="text-[10px]">Analytics</span>
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
+            {/* Right Column */}
+            <div className="flex flex-col gap-4 min-h-0">
+              {/* Active Signals */}
+              <Card className="flex-1 min-h-0 flex flex-col">
+                <CardHeader className="pb-2">
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="text-base flex items-center gap-2">
+                      <Signal className="h-4 w-4 text-blue-500" />
+                      Active Signals
+                      <Badge variant="outline" className="text-xs">
+                        {activeSignalsCount}
+                      </Badge>
+                    </CardTitle>
+                  </div>
+                </CardHeader>
+                <CardContent className="flex-1 overflow-auto">
+                  <ScrollArea className="h-full">
+                    <div className="space-y-2 pr-2">
+                      {DEMO_SIGNALS.map((signal) => (
+                        <SignalCard key={signal.id} signal={signal} />
+                      ))}
+                    </div>
+                  </ScrollArea>
+                </CardContent>
+              </Card>
+
+              {/* Bot Performance */}
+              <Card>
+                <CardHeader className="pb-2">
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="text-base flex items-center gap-2">
+                      <Bot className="h-4 w-4 text-amber-500" />
+                      Active Bots
+                    </CardTitle>
+                    <Badge variant="outline" className="text-xs text-[#0ECB81] border-[#0ECB81]/30">
+                      {activeBotsCount} running
+                    </Badge>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-2">
+                    {Object.entries(DEMO_BOT_STATS).slice(0, 3).map(([key, bot]) => (
+                      <div
+                        key={key}
+                        className="flex items-center justify-between p-2 rounded-lg bg-muted/30"
+                      >
+                        <div className="flex items-center gap-2">
+                          <div
+                            className={cn(
+                              "w-2 h-2 rounded-full",
+                              bot.status === "running" ? "bg-[#0ECB81]" : "bg-muted-foreground"
+                            )}
+                          />
+                          <span className="text-sm font-medium truncate max-w-[140px]">
+                            {bot.name.split(" (")[0]}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs text-muted-foreground">{bot.totalTrades}t</span>
+                          <span
+                            className={cn(
+                              "text-sm font-mono font-medium",
+                              bot.totalProfit >= 0 ? "text-[#0ECB81]" : "text-[#F6465D]"
+                            )}
+                          >
+                            {bot.totalProfit >= 0 ? "+" : ""}${formatNumber(bot.totalProfit, 0)}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Quick Actions */}
+              <Card>
+                <CardContent className="p-3">
+                  <div className="grid grid-cols-3 gap-2">
+                    <Button variant="outline" className="h-auto py-3 flex-col gap-1">
+                      <Shield className="h-5 w-5 text-[#0ECB81]" />
+                      <span className="text-[10px]">Risk</span>
+                    </Button>
+                    <Button variant="outline" className="h-auto py-3 flex-col gap-1">
+                      <Zap className="h-5 w-5 text-amber-500" />
+                      <span className="text-[10px]">Quick Trade</span>
+                    </Button>
+                    <Button variant="outline" className="h-auto py-3 flex-col gap-1" onClick={() => setActiveTab("metrics")}>
+                      <PieChart className="h-5 w-5 text-purple-500" />
+                      <span className="text-[10px]">Metrics</span>
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </TabsContent>
+
+        {/* Metrics Tab */}
+        <TabsContent value="metrics" className="mt-4">
+          <CornixMetricsPanel />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }
