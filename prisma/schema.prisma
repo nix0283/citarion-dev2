@@ -28,10 +28,10 @@ model User {
   telegramLinkExpiry DateTime? // Expiry time for link code
 
   // Two-Factor Authentication (2FA)
-  twoFactorEnabled    Boolean   @default(false) // Whether 2FA is enabled
-  twoFactorSecret     String?   // Encrypted TOTP secret
-  twoFactorBackupCodes String?   // JSON array of hashed backup codes
-  twoFactorEnabledAt  DateTime? // When 2FA was enabled
+  twoFactorEnabled     Boolean   @default(false) // Whether 2FA is enabled
+  twoFactorSecret      String? // Encrypted TOTP secret
+  twoFactorBackupCodes String? // JSON array of hashed backup codes
+  twoFactorEnabledAt   DateTime? // When 2FA was enabled
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -56,25 +56,25 @@ model Session {
 
 // API Keys for bot/service authentication
 model ApiKey {
-  id          String   @id @default(cuid())
-  userId      String
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   // Key identification
-  name        String   // Friendly name for the key
-  keyHash     String   @unique // SHA-256 hash of the key
-  keyPrefix   String   // First 10 chars for identification (ck_xxxxxxxx)
+  name      String // Friendly name for the key
+  keyHash   String @unique // SHA-256 hash of the key
+  keyPrefix String // First 10 chars for identification (ck_xxxxxxxx)
 
   // Permissions (JSON array)
-  permissions String   @default("[\"trade:read\", \"trade:write\"]")
+  permissions String @default("[\"trade:read\", \"trade:write\"]")
 
   // Status
-  isActive    Boolean  @default(true)
-  lastUsedAt  DateTime?
-  expiresAt   DateTime?
+  isActive   Boolean   @default(true)
+  lastUsedAt DateTime?
+  expiresAt  DateTime?
 
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([userId, isActive])
 }
@@ -239,6 +239,12 @@ model Position {
   Signal          Signal? // Back-reference to the signal that created this position
   escortRequest   EscortRequest?
 
+  // New relations for TP Grace, Trailing, First Entry Iteration, and Order Execution
+  tpGraceState    TPGraceState?
+  trailingState   TrailingState?
+  firstEntryIter  FirstEntryIteration?
+  orderExecutions OrderExecution[]
+
   @@index([source, escortStatus])
   @@index([accountId, status])
 }
@@ -345,6 +351,9 @@ model Signal {
   positionId String?   @unique
   position   Position? @relation(fields: [positionId], references: [id])
 
+  // First Entry Iteration relation
+  firstEntryIterations FirstEntryIteration[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -359,7 +368,7 @@ model ProcessedSignalRecord {
   id String @id @default(cuid())
 
   // Signal fingerprint for deduplication
-  signalHash   String @unique // SHA-256 hash of canonical signal
+  signalHash   String  @unique // SHA-256 hash of canonical signal
   symbol       String
   direction    String // LONG or SHORT
   entryPrices  String // JSON array: [50000, 49500]
@@ -372,7 +381,7 @@ model ProcessedSignalRecord {
   signalId   Int? // Reference to Signal.signalId
 
   // Timing
-  processedAt DateTime  @default(now())
+  processedAt DateTime @default(now())
   expiresAt   DateTime // TTL expiry time
 
   // Additional context
@@ -410,59 +419,98 @@ model BotConfig {
   amountType     String  @default("FIXED") // FIXED or PERCENTAGE
   amountOverride Boolean @default(false) // Use personal setting over signal
 
-  // Close Trade on TP/SL before Entry
-  closeOnTPSLBeforeEntry Boolean @default(true)
+  // Close Trade on TP/SL before Entry (Cornix)
+  closeOnTPSLBeforeEntry                        Boolean @default(true)
+  closeOnTPSLBeforeEntryOnlyIfNotDefinedByGroup Boolean @default(false)
 
   // First Entry Grace Percentage
   firstEntryGracePercent Float @default(0) // 0 = disabled, 0.01-5% = enabled
 
   // ==================== FIRST ENTRY AS MARKET ====================
   // First Entry Mode: IMMEDIATE = fill immediately, WAIT_ENTRY = wait for entry price
-  firstEntryMode       String  @default("WAIT_ENTRY") // IMMEDIATE or WAIT_ENTRY
-  firstEntryMaxPriceCap Float  @default(0.5) // Maximum % above entry price (0.01-5%)
-  firstEntryAsMarket   Boolean @default(false) // Enable First Entry as Market feature
+  // Cornix: max price cap 0.05%-20%, iteratively increases price by small intervals
+  firstEntryMode                    String  @default("WAIT_ENTRY") // IMMEDIATE or WAIT_ENTRY
+  firstEntryMaxPriceCap             Float   @default(1.0) // Maximum % above entry price (0.05-20%)
+  firstEntryAsMarket                Boolean @default(false) // Enable First Entry as Market feature
+  firstEntryOnlyIfNotDefinedByGroup Boolean @default(false) // Use as fallback only
 
   // ==================== TAKE-PROFIT GRACE ====================
   // Retry partially/unfilled TP orders at adjusted prices
-  tpGraceEnabled   Boolean @default(false) // Enable TP Grace retries
-  tpGraceCapPercent Float  @default(0.5) // Max % price adjustment per retry (0.01-2%)
-  tpGraceMaxRetries Int    @default(3) // Maximum retry attempts per TP target
+  // Cornix: progressively lowers (LONG) or raises (SHORT) TP price in small increments
+  tpGraceEnabled                 Boolean @default(false) // Enable TP Grace retries
+  tpGraceCapPercent              Float   @default(0.5) // Max % price adjustment total (0.01-2%)
+  tpGraceMaxRetries              Int     @default(3) // Maximum retry attempts per TP target
+  tpGraceRetryInterval           Int     @default(5) // Seconds between retry attempts
+  tpGraceOnlyIfNotDefinedByGroup Boolean @default(false) // Use as fallback only
 
-  // ==================== TRAILING SETTINGS ====================
-  trailingEnabled      Boolean @default(false)
-  trailingType         String? @default("BREAKEVEN") // BREAKEVEN, MOVING_TARGET, PERCENT_BELOW_HIGHEST, MOVING_2_TARGET
-  trailingValue        Float? // Percentage value for trigger
-  trailingTriggerType  String? // TARGET_REACHED, PERCENT_ABOVE_ENTRY, PERCENT_BELOW_HIGHEST
-  trailingTriggerValue Float? // Which target # or percentage
-  trailingStopPercent  Float? // Stop distance for Moving Target
+  // ==================== TRAILING STOP-LOSS SETTINGS ====================
+  // Cornix: 5 types - Breakeven, Moving Target, Moving 2-Target, Percent Below Triggers, Percent Below Highest
+  trailingEnabled                 Boolean @default(false)
+  trailingType                    String? @default("BREAKEVEN") // BREAKEVEN, MOVING_TARGET, MOVING_2_TARGET, PERCENT_BELOW_TRIGGERS, PERCENT_BELOW_HIGHEST
+  trailingValue                   Float? // Percentage value for trigger
+  trailingTriggerType             String? // TARGET_REACHED, PERCENT_ABOVE_ENTRY
+  trailingTriggerValue            Float? // Which target # or percentage
+  trailingStopPercent             Float? // Stop distance for Moving Target
+  trailingOnlyIfNotDefinedByGroup Boolean @default(false) // Use as fallback only
+
+  // ==================== TRAILING ENTRY ====================
+  // Cornix: Creates trailing order that trails above minimum price reached
+  trailingEntryEnabled                 Boolean @default(false)
+  trailingEntryPercent                 Float?  @default(1.0) // Percentage to trail above min price
+  trailingEntryOnlyIfNotDefinedByGroup Boolean @default(false) // Use as fallback only
+
+  // ==================== TRAILING TAKE-PROFIT ====================
+  // Cornix: Trails behind maximum price reached by specified percentage
+  tpTrailingEnabled                 Boolean @default(false)
+  tpTrailingPercent                 Float?  @default(1.0) // Percentage to trail behind max price
+  tpTrailingOnlyIfNotDefinedByGroup Boolean @default(false) // Use as fallback only
 
   // ==================== ENTRY STRATEGY ====================
-  entryStrategy    String  @default("EVENLY_DIVIDED") // EVENLY_DIVIDED, CUSTOM_RATIOS, DECREASING_EXP, INCREASING_EXP
-  entryWeights     String? // JSON: [50, 30, 20] for custom ratios
-  entryZoneTargets Int     @default(1) // Number of targets in entry zone (1-10)
+  // Cornix: Evenly Divided, One Target, Two Targets, Three Targets, Fifty On First Target,
+  //         Decreasing Exponential, Increasing Exponential, Skip First
+  entryStrategy                String  @default("EVENLY_DIVIDED") // EVENLY_DIVIDED, ONE_TARGET, TWO_TARGETS, THREE_TARGETS, FIFTY_ON_FIRST, DECREASING_EXP, INCREASING_EXP, SKIP_FIRST, CUSTOM_RATIOS
+  entryWeights                 String? // JSON: [50, 30, 20] for custom ratios
+  entryZoneTargets             Int     @default(4) // Number of targets in entry zone (1-10), Cornix default 4
+  entryOnlyIfNotDefinedByGroup Boolean @default(false) // Use as fallback only
 
   // ==================== TAKE-PROFIT STRATEGY ====================
-  tpStrategy     String  @default("ONE_TARGET") // ONE_TARGET, MULTIPLE_TARGETS, ALL_TARGETS
-  tpTargetCount  Int     @default(1) // Number of TP targets (1-10)
-  tpCustomRatios String? // JSON: [30, 40, 30] custom percentages
+  // Cornix: Evenly Divided, One Target, Two Targets, Three Targets, Fifty On First Target,
+  //         Decreasing Exponential, Increasing Exponential, Skip First, Custom
+  tpStrategy                String  @default("EVENLY_DIVIDED") // EVENLY_DIVIDED, ONE_TARGET, TWO_TARGETS, THREE_TARGETS, FIFTY_ON_FIRST, DECREASING_EXP, INCREASING_EXP, SKIP_FIRST, CUSTOM_RATIOS
+  tpTargetCount             Int     @default(1) // Number of TP targets (1-10)
+  tpCustomRatios            String? // JSON: [30, 40, 30] custom percentages
+  tpOnlyIfNotDefinedByGroup Boolean @default(false) // Use as fallback only
+
+  // ==================== MOVING TAKE-PROFITS ====================
+  // Cornix: Moves TP targets based on price action
+  movingTPEnabled Boolean @default(false)
 
   // ==================== STOP-LOSS SETTINGS ====================
-  defaultStopLoss Float? // Percentage (e.g., 15 = 15%), null = disabled
-  slTimeout       Int    @default(0) // Seconds before SL triggers (0 = immediate)
-  slTimeoutUnit   String @default("SECONDS") // SECONDS, MINUTES, HOURS
-  slOrderType     String @default("MARKET") // MARKET or LIMIT
+  defaultStopLoss           Float? // Percentage (e.g., 15 = 15%), null = disabled
+  slBaseline                String  @default("AVERAGE_ENTRIES") // AVERAGE_ENTRIES or FIRST_ENTRY
+  slTimeout                 Int     @default(0) // Seconds before SL triggers (0 = immediate)
+  slTimeoutUnit             String  @default("SECONDS") // SECONDS, MINUTES, HOURS
+  slOrderType               String  @default("MARKET") // MARKET or LIMIT
+  slLimitPriceReduction     Float   @default(2.0) // % reduction between stop and limit price (Cornix default 2%)
+  slOnlyIfNotDefinedByGroup Boolean @default(false) // Use as fallback only
 
   // ==================== MARGIN SETTINGS ====================
-  leverage         Int     @default(1)
-  leverageOverride Boolean @default(false) // Use personal leverage over signal
-  hedgeMode        Boolean @default(false) // false = One-Way, true = Hedge Mode
-  marginMode       String  @default("ISOLATED") // ISOLATED or CROSSED
+  leverage                        Int     @default(1)
+  leverageOverride                Boolean @default(false) // Use personal leverage over signal
+  leverageMode                    String  @default("EXACTLY") // EXACTLY or UP_TO (Cornix: Up To uses channel leverage up to limit)
+  hedgeMode                       Boolean @default(false) // false = One-Way, true = Hedge Mode
+  marginMode                      String  @default("ISOLATED") // ISOLATED or CROSSED
+  leverageOnlyIfNotDefinedByGroup Boolean @default(false) // Use as fallback only
 
   // ==================== AUTO-TRADING FILTERS ====================
-  maxOpenTrades      Int     @default(5)
-  minTradeInterval   Int     @default(5) // Minutes between trades on same pair
-  allowedSymbols     String? // JSON array: ["BTCUSDT", "ETHUSDT"]
-  blacklistedSymbols String? // JSON array of blocked pairs
+  directionFilter     String  @default("BOTH") // LONG, SHORT, BOTH - Cornix direction filter
+  maxOpenTrades       Int     @default(5)
+  minTradeInterval    Int     @default(5) // Minutes between trades on same pair
+  allowedSymbols      String? // JSON array: ["BTCUSDT", "ETHUSDT"]
+  blacklistedSymbols  String? // JSON array of blocked pairs
+  maxConcurrentAmount Float? // Maximum concurrent position amount (USDT)
+  minSymbolPrice      Float? // Minimum symbol price filter
+  minSymbol24hVolume  Float? // Minimum 24h volume filter
 
   // ==================== SIGNAL SETTINGS ====================
   signalSources          String? // JSON array: ["TELEGRAM", "DISCORD", "TRADINGVIEW"]
@@ -2058,9 +2106,9 @@ model MLTrainingSample {
   features String // JSON: { "n_rsi": 0.6, "n_trend": 0.8, ... }
 
   // Outcome tracking
-  pnlPercent  Float   @default(0)
-  holdingTime Int     @default(0) // seconds
-  outcome     String  @default("PENDING") // WIN, LOSS, BREAKEVEN, PENDING
+  pnlPercent  Float  @default(0)
+  holdingTime Int    @default(0) // seconds
+  outcome     String @default("PENDING") // WIN, LOSS, BREAKEVEN, PENDING
 
   // Quality metrics
   confidence   Float @default(0.5) // Original confidence
@@ -2076,9 +2124,9 @@ model MLTrainingSample {
   botCode  String // HFT, MFT, LFT, etc.
 
   // Timestamps
-  signalTime  DateTime
-  resolvedAt  DateTime?
-  createdAt   DateTime @default(now())
+  signalTime DateTime
+  resolvedAt DateTime?
+  createdAt  DateTime  @default(now())
 
   @@index([sourceType, outcome])
   @@index([botCode, outcome])
@@ -2094,9 +2142,9 @@ model MLEvaluationMetrics {
   periodEnd   DateTime
 
   // Sample counts
-  totalSamples  Int @default(0)
-  winSamples    Int @default(0)
-  lossSamples   Int @default(0)
+  totalSamples   Int @default(0)
+  winSamples     Int @default(0)
+  lossSamples    Int @default(0)
   pendingSamples Int @default(0)
 
   // Accuracy metrics
@@ -2109,17 +2157,17 @@ model MLEvaluationMetrics {
   precision Float @default(0)
   recall    Float @default(0)
   f1Score   Float @default(0)
-  
+
   // Financial metrics
   avgPnlPercent  Float @default(0)
   avgWinPercent  Float @default(0)
   avgLossPercent Float @default(0)
   profitFactor   Float @default(0)
   sharpeRatio    Float @default(0)
-  
+
   // By bot breakdown
   byBotMetrics String // JSON: { "HFT": { "accuracy": 0.65, ... }, ... }
-  
+
   // By symbol breakdown
   bySymbolMetrics String // JSON: { "BTCUSDT": { "accuracy": 0.7, ... }, ... }
 
@@ -2138,13 +2186,13 @@ model LearningTrade {
   id String @id
 
   // Source of trade
-  source     String  // 'manual', 'signal', 'bot'
-  botCode    String? // For signal/bot trades
+  source  String // 'manual', 'signal', 'bot'
+  botCode String? // For signal/bot trades
 
   // Trade details
   symbol     String
   exchange   String
-  direction  String  // 'LONG', 'SHORT'
+  direction  String // 'LONG', 'SHORT'
   entryPrice Float
   exitPrice  Float
   size       Float
@@ -2152,14 +2200,14 @@ model LearningTrade {
   // Results
   pnl        Float
   pnlPercent Float
-  duration   Int     // milliseconds
+  duration   Int // milliseconds
   timestamp  DateTime
   success    Boolean
 
   // Context
-  marketConditions  String?  // JSON
-  signalConfidence  Float?
-  signalReason      String?
+  marketConditions String? // JSON
+  signalConfidence Float?
+  signalReason     String?
 
   createdAt DateTime @default(now())
 
@@ -2177,13 +2225,13 @@ model BotPerformance {
   botCode String @unique
 
   // Signal counts
-  totalSignals     Int @default(0)
-  successfulSignals Int @default(0)
-  failedSignals    Int @default(0)
-  accuracy         Float @default(0)
+  totalSignals      Int   @default(0)
+  successfulSignals Int   @default(0)
+  failedSignals     Int   @default(0)
+  accuracy          Float @default(0)
 
   // PnL metrics
-  avgPnl       Float @default(0)
+  avgPnl        Float @default(0)
   avgPnlPercent Float @default(0)
 
   // Condition analysis
@@ -2204,12 +2252,12 @@ model LearningModel {
   id String @id @default(cuid())
 
   // Weights and preferences
-  botWeights         String // JSON: { "HFT": 0.7, "MFT": 0.5, ... }
-  symbolPreferences  String // JSON: { "BTCUSDT": ["HFT", "MFT"], ... }
+  botWeights           String // JSON: { "HFT": 0.7, "MFT": 0.5, ... }
+  symbolPreferences    String // JSON: { "BTCUSDT": ["HFT", "MFT"], ... }
   conditionMultipliers String // JSON: { "high_volatility": 0.8, ... }
-  timePreferences    String // JSON: { "0": 0.5, "1": 0.6, ... }
+  timePreferences      String // JSON: { "0": 0.5, "1": 0.6, ... }
 
-  totalSamples Int @default(0)
+  totalSamples Int      @default(0)
   lastUpdated  DateTime @updatedAt
 }
 
@@ -2220,25 +2268,25 @@ model OrderFillTracking {
   id String @id @default(cuid())
 
   // Order identification
-  orderId         String   @unique // Internal order ID
-  exchangeOrderId String?  // Exchange-assigned order ID
-  clientOrderId   String?  // Client-provided order ID
+  orderId         String  @unique // Internal order ID
+  exchangeOrderId String? // Exchange-assigned order ID
+  clientOrderId   String? // Client-provided order ID
 
   // Symbol and exchange
   symbol   String
   exchange String // binance, bybit, okx, bitget, bingx
 
   // Order details
-  side              String  // BUY, SELL
-  orderType         String  // MARKET, LIMIT, STOP_MARKET, STOP_LIMIT, TRAILING_STOP
+  side              String // BUY, SELL
+  orderType         String // MARKET, LIMIT, STOP_MARKET, STOP_LIMIT, TRAILING_STOP
   requestedQuantity Float
-  filledQuantity    Float   @default(0)
-  remainingQuantity Float   @default(0)
+  filledQuantity    Float  @default(0)
+  remainingQuantity Float  @default(0)
   limitPrice        Float?
 
   // Fill information
-  avgFillPrice Float @default(0)
-  totalFees    Float @default(0)
+  avgFillPrice Float  @default(0)
+  totalFees    Float  @default(0)
   feeCurrency  String @default("USDT")
 
   // Status
@@ -2257,8 +2305,8 @@ model OrderFillTracking {
   isDemo Boolean @default(false)
 
   // Timestamps
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
   filledAt  DateTime? // When order was fully filled
 
   @@index([exchangeOrderId])
@@ -2291,12 +2339,158 @@ model SignalEntryTracking {
   orderIds String @default("[]")
 
   // Timestamps
-  firstFillAt  DateTime?
-  completedAt  DateTime?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  firstFillAt DateTime?
+  completedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 
   @@unique([signalId, entryIndex])
   @@index([signalId])
   @@index([isFilled])
+}
+
+// ==================== TP GRACE STATE ====================
+// Tracks Take-Profit Grace retry state for positions
+
+model TPGraceState {
+  id         String @id @default(cuid())
+  positionId String @unique
+  symbol     String
+  direction  String // LONG, SHORT
+  status     String @default("ACTIVE") // ACTIVE, COMPLETED, CANCELLED
+
+  // TP Targets as JSON array
+  targets String // JSON: [{index, price, percentage, filled, retries, originalPrice, status}]
+
+  // Tracking
+  lastRetryAt DateTime?
+  retryCount  Int       @default(0)
+  totalFilled Float     @default(0)
+
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  position Position @relation(fields: [positionId], references: [id], onDelete: Cascade)
+}
+
+// ==================== TRAILING STATE ====================
+// Tracks trailing stop state for positions
+
+model TrailingState {
+  id         String @id @default(cuid())
+  positionId String @unique
+  symbol     String
+  direction  String // LONG, SHORT
+
+  // Trailing Type
+  trailingType String // BREAKEVEN, MOVING_TARGET, MOVING_2_TARGET, PERCENT_BELOW_TRIGGERS, PERCENT_BELOW_HIGHEST
+  status       String @default("INACTIVE") // INACTIVE, TRIGGERED, ACTIVE, COMPLETED, CANCELLED
+
+  // Prices
+  entryPrice       Float
+  highestPrice     Float?
+  lowestPrice      Float?
+  currentStopLoss  Float
+  originalStopLoss Float
+
+  // Trigger
+  triggerType      String? // TARGET_REACHED, PERCENT_ABOVE_ENTRY
+  triggerValue     Float?
+  triggerTargetHit Int? // Which TP target was hit
+  triggeredAt      DateTime?
+
+  // Trailing parameters
+  trailingPercent  Float?
+  trailingDistance Float?
+
+  // Stats
+  updateCount  Int       @default(0)
+  lastUpdateAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  position Position @relation(fields: [positionId], references: [id], onDelete: Cascade)
+}
+
+// ==================== FIRST ENTRY ITERATION ====================
+// Tracks iterative entry attempts for First Entry as Market feature
+
+model FirstEntryIteration {
+  id         String  @id @default(cuid())
+  signalId   Int
+  positionId String? @unique
+
+  // Iteration tracking
+  iteration      Int   @default(0)
+  maxIterations  Int
+  iterationPrice Float // Current iteration price
+  originalPrice  Float // Original entry price
+  cappedPrice    Float // Maximum allowed price
+
+  // Status
+  status String @default("PENDING") // PENDING, FILLED, EXHAUSTED, CANCELLED
+
+  // Execution
+  executedPrice Float?
+  executedAt    DateTime?
+
+  // Direction
+  direction String // LONG, SHORT
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  signal   Signal    @relation(fields: [signalId], references: [signalId], onDelete: Cascade)
+  position Position? @relation(fields: [positionId], references: [id], onDelete: SetNull)
+}
+
+// ==================== ORDER EXECUTION ====================
+// Tracks order execution details and status from exchanges
+
+model OrderExecution {
+  id         String  @id @default(cuid())
+  positionId String?
+  signalId   Int?
+
+  // Order details
+  exchange        String // binance, bybit, okx
+  exchangeOrderId String? @unique
+  clientOrderId   String?
+  symbol          String
+  side            String // BUY, SELL
+  type            String // MARKET, LIMIT, STOP_MARKET, etc.
+
+  // Amounts
+  requestedAmount Float
+  filledAmount    Float  @default(0)
+  remainingAmount Float  @default(0)
+  price           Float?
+  avgFillPrice    Float?
+
+  // Status
+  status String @default("PENDING") // PENDING, PARTIALLY_FILLED, FILLED, CANCELLED, REJECTED, EXPIRED
+
+  // Timestamps
+  createdAt   DateTime  @default(now())
+  submittedAt DateTime?
+  filledAt    DateTime?
+  cancelledAt DateTime?
+
+  // Error tracking
+  errorCode    String?
+  errorMessage String?
+
+  // Metadata
+  metadata String? // JSON for additional info
+
+  position Position? @relation(fields: [positionId], references: [id], onDelete: SetNull)
+
+  @@index([exchangeOrderId])
+  @@index([symbol, exchange])
+  @@index([positionId])
+  @@index([signalId])
+  @@index([status])
+  @@index([createdAt])
 }

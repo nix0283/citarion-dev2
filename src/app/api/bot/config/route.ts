@@ -7,46 +7,86 @@ const DEFAULT_BOT_CONFIG = {
   name: "Default Bot",
   description: "Default trading bot configuration",
   isActive: false,
-  
+
   // Exchange settings
   exchangeId: "binance",
   exchangeType: "futures",
-  
+
   // Trade amount
   tradeAmount: 100,
   amountType: "FIXED",
   amountOverride: false,
-  
-  // Leverage
+
+  // Leverage (Cornix: Exactly or Up To)
   leverage: 10,
   leverageOverride: false,
-  
-  // Entry strategy
+  leverageMode: "EXACTLY", // EXACTLY or UP_TO
+
+  // Close Trade on TP/SL before Entry
+  closeOnTPSLBeforeEntry: true,
+  closeOnTPSLBeforeEntryOnlyIfNotDefinedByGroup: false,
+
+  // Entry strategy (Cornix: 7 strategies)
   entryStrategy: "EVENLY_DIVIDED",
-  entryZoneTargets: 1,
-  
-  // Take-profit
-  tpStrategy: "ONE_TARGET",
+  entryZoneTargets: 4, // Cornix default
+  entryOnlyIfNotDefinedByGroup: false,
+
+  // ==================== FIRST ENTRY AS MARKET (Cornix) ====================
+  firstEntryAsMarket: false,
+  firstEntryMode: "ENTRY_PRICE_REACHED", // IMMEDIATE or ENTRY_PRICE_REACHED
+  firstEntryMaxPriceCap: 1.0, // 0.05%-20% (Cornix spec)
+  firstEntryOnlyIfNotDefinedByGroup: false,
+
+  // ==================== TAKE-PROFIT GRACE (Cornix) ====================
+  tpGraceEnabled: false,
+  tpGraceCapPercent: 0.5, // Max 0.5% total adjustment
+  tpGraceMaxRetries: 3,
+  tpGraceRetryInterval: 5, // 5 seconds between retries
+  tpGraceOnlyIfNotDefinedByGroup: false,
+
+  // Take-profit strategy (Cornix: 7 strategies)
+  tpStrategy: "EVENLY_DIVIDED",
   tpTargetCount: 1,
-  
+  tpOnlyIfNotDefinedByGroup: false,
+  movingTPEnabled: false,
+
+  // Trailing Take-Profit
+  tpTrailingEnabled: false,
+  tpTrailingPercent: 1.0,
+  tpTrailingOnlyIfNotDefinedByGroup: false,
+
   // Stop-loss
   defaultStopLoss: 5,
+  slBaseline: "AVERAGE_ENTRIES", // AVERAGE_ENTRIES or FIRST_ENTRY
   slTimeout: 0,
   slTimeoutUnit: "SECONDS",
   slOrderType: "MARKET",
-  
-  // Trailing
+  slLimitPriceReduction: 2.0, // Cornix default 2%
+  slOnlyIfNotDefinedByGroup: false,
+
+  // Trailing Stop (Cornix: 5 types)
   trailingEnabled: false,
-  trailingType: "BREAKEVEN",
-  
+  trailingType: "BREAKEVEN", // BREAKEVEN, MOVING_TARGET, MOVING_2_TARGET, PERCENT_BELOW_TRIGGERS, PERCENT_BELOW_HIGHEST
+  trailingOnlyIfNotDefinedByGroup: false,
+
+  // Trailing Entry
+  trailingEntryEnabled: false,
+  trailingEntryPercent: 1.0,
+  trailingEntryOnlyIfNotDefinedByGroup: false,
+
   // Margin
   hedgeMode: false,
   marginMode: "ISOLATED",
-  
+  leverageOnlyIfNotDefinedByGroup: false,
+
   // Filters
+  directionFilter: "BOTH", // LONG, SHORT, BOTH
   maxOpenTrades: 5,
   minTradeInterval: 5,
-  
+  maxConcurrentAmount: null,
+  minSymbolPrice: null,
+  minSymbol24hVolume: null,
+
   // Notifications
   notifyOnEntry: true,
   notifyOnExit: true,
@@ -132,7 +172,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { 
+    const {
       id,
       name = "Trading Bot",
       description,
@@ -144,26 +184,68 @@ export async function POST(request: NextRequest) {
       amountOverride = false,
       leverage = 10,
       leverageOverride = false,
+      leverageMode = "EXACTLY",
+      leverageOnlyIfNotDefinedByGroup = false,
+      // Close on TP/SL before entry
+      closeOnTPSLBeforeEntry = true,
+      closeOnTPSLBeforeEntryOnlyIfNotDefinedByGroup = false,
+      // Entry strategy
       entryStrategy = "EVENLY_DIVIDED",
-      entryZoneTargets = 1,
-      tpStrategy = "ONE_TARGET",
+      entryZoneTargets = 4,
+      entryOnlyIfNotDefinedByGroup = false,
+      // First Entry as Market
+      firstEntryAsMarket = false,
+      firstEntryMode = "ENTRY_PRICE_REACHED",
+      firstEntryMaxPriceCap = 1.0,
+      firstEntryOnlyIfNotDefinedByGroup = false,
+      // TP Grace
+      tpGraceEnabled = false,
+      tpGraceCapPercent = 0.5,
+      tpGraceMaxRetries = 3,
+      tpGraceRetryInterval = 5,
+      tpGraceOnlyIfNotDefinedByGroup = false,
+      // TP strategy
+      tpStrategy = "EVENLY_DIVIDED",
       tpTargetCount = 1,
+      tpOnlyIfNotDefinedByGroup = false,
+      movingTPEnabled = false,
+      // Trailing TP
+      tpTrailingEnabled = false,
+      tpTrailingPercent = 1.0,
+      tpTrailingOnlyIfNotDefinedByGroup = false,
+      // Stop-loss
       defaultStopLoss,
+      slBaseline = "AVERAGE_ENTRIES",
       slTimeout = 0,
       slTimeoutUnit = "SECONDS",
       slOrderType = "MARKET",
+      slLimitPriceReduction = 2.0,
+      slOnlyIfNotDefinedByGroup = false,
+      // Trailing Stop
       trailingEnabled = false,
       trailingType = "BREAKEVEN",
       trailingValue,
       trailingTriggerType,
       trailingTriggerValue,
       trailingStopPercent,
+      trailingOnlyIfNotDefinedByGroup = false,
+      // Trailing Entry
+      trailingEntryEnabled = false,
+      trailingEntryPercent = 1.0,
+      trailingEntryOnlyIfNotDefinedByGroup = false,
+      // Margin
       hedgeMode = false,
       marginMode = "ISOLATED",
+      // Filters
+      directionFilter = "BOTH",
       maxOpenTrades = 5,
       minTradeInterval = 5,
+      maxConcurrentAmount,
+      minSymbolPrice,
+      minSymbol24hVolume,
       allowedSymbols,
       blacklistedSymbols,
+      // Notifications
       notifyOnEntry = true,
       notifyOnExit = true,
       notifyOnSL = true,
@@ -175,48 +257,80 @@ export async function POST(request: NextRequest) {
 
     let config;
 
+    const configData = {
+      name,
+      description,
+      isActive,
+      exchangeId,
+      exchangeType,
+      tradeAmount,
+      amountType,
+      amountOverride,
+      leverage,
+      leverageOverride,
+      leverageMode,
+      leverageOnlyIfNotDefinedByGroup,
+      closeOnTPSLBeforeEntry,
+      closeOnTPSLBeforeEntryOnlyIfNotDefinedByGroup,
+      entryStrategy,
+      entryZoneTargets,
+      entryOnlyIfNotDefinedByGroup,
+      firstEntryAsMarket,
+      firstEntryMode,
+      firstEntryMaxPriceCap,
+      firstEntryOnlyIfNotDefinedByGroup,
+      tpGraceEnabled,
+      tpGraceCapPercent,
+      tpGraceMaxRetries,
+      tpGraceRetryInterval,
+      tpGraceOnlyIfNotDefinedByGroup,
+      tpStrategy,
+      tpTargetCount,
+      tpOnlyIfNotDefinedByGroup,
+      movingTPEnabled,
+      tpTrailingEnabled,
+      tpTrailingPercent,
+      tpTrailingOnlyIfNotDefinedByGroup,
+      defaultStopLoss,
+      slBaseline,
+      slTimeout,
+      slTimeoutUnit,
+      slOrderType,
+      slLimitPriceReduction,
+      slOnlyIfNotDefinedByGroup,
+      trailingEnabled,
+      trailingType,
+      trailingValue,
+      trailingTriggerType,
+      trailingTriggerValue,
+      trailingStopPercent,
+      trailingOnlyIfNotDefinedByGroup,
+      trailingEntryEnabled,
+      trailingEntryPercent,
+      trailingEntryOnlyIfNotDefinedByGroup,
+      hedgeMode,
+      marginMode,
+      directionFilter,
+      maxOpenTrades,
+      minTradeInterval,
+      maxConcurrentAmount,
+      minSymbolPrice,
+      minSymbol24hVolume,
+      allowedSymbols: allowedSymbols ? JSON.stringify(allowedSymbols) : null,
+      blacklistedSymbols: blacklistedSymbols ? JSON.stringify(blacklistedSymbols) : null,
+      notifyOnEntry,
+      notifyOnExit,
+      notifyOnSL,
+      notifyOnTP,
+      notifyOnError,
+      notifyOnNewSignal,
+    };
+
     if (id) {
       // Update existing config
       config = await db.botConfig.update({
         where: { id },
-        data: {
-          name,
-          description,
-          isActive,
-          exchangeId,
-          exchangeType,
-          tradeAmount,
-          amountType,
-          amountOverride,
-          leverage,
-          leverageOverride,
-          entryStrategy,
-          entryZoneTargets,
-          tpStrategy,
-          tpTargetCount,
-          defaultStopLoss,
-          slTimeout,
-          slTimeoutUnit,
-          slOrderType,
-          trailingEnabled,
-          trailingType,
-          trailingValue,
-          trailingTriggerType,
-          trailingTriggerValue,
-          trailingStopPercent,
-          hedgeMode,
-          marginMode,
-          maxOpenTrades,
-          minTradeInterval,
-          allowedSymbols: allowedSymbols ? JSON.stringify(allowedSymbols) : null,
-          blacklistedSymbols: blacklistedSymbols ? JSON.stringify(blacklistedSymbols) : null,
-          notifyOnEntry,
-          notifyOnExit,
-          notifyOnSL,
-          notifyOnTP,
-          notifyOnError,
-          notifyOnNewSignal,
-        }
+        data: configData,
       });
     } else {
       // Create new config
@@ -224,44 +338,9 @@ export async function POST(request: NextRequest) {
       config = await db.botConfig.create({
         data: {
           userId,
-          name,
-          description,
-          isActive,
-          exchangeId,
-          exchangeType,
-          tradeAmount,
-          amountType,
-          amountOverride,
-          leverage,
-          leverageOverride,
-          entryStrategy,
-          entryZoneTargets,
-          tpStrategy,
-          tpTargetCount,
-          defaultStopLoss,
-          slTimeout,
-          slTimeoutUnit,
-          slOrderType,
-          trailingEnabled,
-          trailingType,
-          trailingValue,
-          trailingTriggerType,
-          trailingTriggerValue,
-          trailingStopPercent,
-          hedgeMode,
-          marginMode,
-          maxOpenTrades,
-          minTradeInterval,
-          allowedSymbols: allowedSymbols ? JSON.stringify(allowedSymbols) : null,
-          blacklistedSymbols: blacklistedSymbols ? JSON.stringify(blacklistedSymbols) : null,
-          notifyOnEntry,
-          notifyOnExit,
-          notifyOnSL,
-          notifyOnTP,
-          notifyOnError,
-          notifyOnNewSignal,
+          ...configData,
           accountId,
-        }
+        },
       });
     }
 
@@ -278,7 +357,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       success: true,
       config,
-      message: id 
+      message: id
         ? `Конфигурация "${name}" обновлена`
         : `Конфигурация "${name}" создана`,
     });

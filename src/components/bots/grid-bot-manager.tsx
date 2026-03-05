@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
 import { Slider } from "@/components/ui/slider";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import {
   Select,
   SelectContent,
@@ -38,9 +39,13 @@ import {
   BarChart3,
   Activity,
   ArrowRight,
+  Sparkles,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import { CornixFeaturesPanel, CornixFeaturesConfig } from "@/components/bot/cornix-features-panel";
 
 interface GridBot {
   id: string;
@@ -97,6 +102,10 @@ export function GridBotManager() {
   // Paper trading state
   const [isPaperTrading, setIsPaperTrading] = useState(false);
   
+  // Cornix Features state
+  const [showCornixFeatures, setShowCornixFeatures] = useState(false);
+  const [cornixConfig, setCornixConfig] = useState<Partial<CornixFeaturesConfig>>({});
+  
   // Form state
   const [name, setName] = useState("");
   const [symbol, setSymbol] = useState("BTCUSDT");
@@ -147,6 +156,7 @@ export function GridBotManager() {
           lowerPrice: parseFloat(lowerPrice),
           totalInvestment: parseFloat(totalInvestment),
           leverage,
+          cornixFeatures: cornixConfig,
         }),
       });
 
@@ -161,6 +171,7 @@ export function GridBotManager() {
         setUpperPrice("75000");
         setLowerPrice("65000");
         setTotalInvestment("1000");
+        setCornixConfig({});
       } else {
         toast.error(data.error || "Ошибка при создании бота");
       }
@@ -585,6 +596,59 @@ export function GridBotManager() {
           ))}
         </div>
       )}
+
+      {/* Cornix Features Section */}
+      <Collapsible open={showCornixFeatures} onOpenChange={setShowCornixFeatures}>
+        <Card className="border-primary/20">
+          <CollapsibleTrigger asChild>
+            <CardHeader className="cursor-pointer hover:bg-muted/50 transition-colors">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-lg bg-gradient-to-br from-violet-500/20 to-fuchsia-500/20">
+                    <Sparkles className="h-5 w-5 text-violet-500" />
+                  </div>
+                  <div>
+                    <CardTitle className="text-base flex items-center gap-2">
+                      Cornix Features
+                      <Badge variant="outline" className="text-xs">
+                        15 Auto-Trading Features
+                      </Badge>
+                    </CardTitle>
+                    <CardDescription>
+                      Advanced trading automation from Cornix specification
+                    </CardDescription>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  {Object.values(cornixConfig).filter(v => 
+                    typeof v === 'boolean' && v === true || 
+                    typeof v === 'number' && v > 0 ||
+                    v !== null && v !== undefined && typeof v !== 'boolean' && typeof v !== 'number'
+                  ).length > 0 && (
+                    <Badge variant="outline" className="text-[#0ECB81] border-[#0ECB81]/30">
+                      Active
+                    </Badge>
+                  )}
+                  {showCornixFeatures ? (
+                    <ChevronUp className="h-5 w-5 text-muted-foreground" />
+                  ) : (
+                    <ChevronDown className="h-5 w-5 text-muted-foreground" />
+                  )}
+                </div>
+              </div>
+            </CardHeader>
+          </CollapsibleTrigger>
+          <CollapsibleContent>
+            <CardContent className="pt-0">
+              <CornixFeaturesPanel
+                config={cornixConfig}
+                onChange={(config) => setCornixConfig(config)}
+                direction="LONG"
+              />
+            </CardContent>
+          </CollapsibleContent>
+        </Card>
+      </Collapsible>
 
       {/* Backtest & Paper Trading Section */}
       <Card>

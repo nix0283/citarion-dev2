@@ -21,6 +21,7 @@ import {
   type SignalManagementCommand 
 } from "@/lib/signal-parser";
 import { getDefaultUserId } from "@/lib/default-user";
+import { configCommands } from "@/lib/telegram/config-commands";
 
 // ==================== TYPES ====================
 
@@ -372,6 +373,199 @@ sl 65000
         console.error("[TelegramBot] Balance error:", error);
         await ctx.reply("❌ Ошибка получения баланса");
       }
+    });
+
+    // ==================== CORNIX AUTO-TRADING COMMANDS ====================
+
+    // /firstentry command
+    this.bot.command("firstentry", async (ctx) => {
+      if (!ctx.session.userId) {
+        await ctx.reply("⚠️ Authorization required. Use /start");
+        return;
+      }
+      const args = ctx.message.text.split(" ").slice(1);
+      const result = await configCommands.firstentry(ctx.session.userId, args);
+      await ctx.reply(result.message, { parse_mode: "Markdown" });
+    });
+
+    // /tpgrace command
+    this.bot.command("tpgrace", async (ctx) => {
+      if (!ctx.session.userId) {
+        await ctx.reply("⚠️ Authorization required. Use /start");
+        return;
+      }
+      const args = ctx.message.text.split(" ").slice(1);
+      const result = await configCommands.tpgrace(ctx.session.userId, args);
+      await ctx.reply(result.message, { parse_mode: "Markdown" });
+    });
+
+    // /trailing command
+    this.bot.command("trailing", async (ctx) => {
+      if (!ctx.session.userId) {
+        await ctx.reply("⚠️ Authorization required. Use /start");
+        return;
+      }
+      const args = ctx.message.text.split(" ").slice(1);
+      const result = await configCommands.trailing(ctx.session.userId, args);
+      await ctx.reply(result.message, { parse_mode: "Markdown" });
+    });
+
+    // /trailingentry command
+    this.bot.command("trailingentry", async (ctx) => {
+      if (!ctx.session.userId) {
+        await ctx.reply("⚠️ Authorization required. Use /start");
+        return;
+      }
+      const args = ctx.message.text.split(" ").slice(1);
+      const result = await configCommands.trailingentry(ctx.session.userId, args);
+      await ctx.reply(result.message, { parse_mode: "Markdown" });
+    });
+
+    // /trailingtp command
+    this.bot.command("trailingtp", async (ctx) => {
+      if (!ctx.session.userId) {
+        await ctx.reply("⚠️ Authorization required. Use /start");
+        return;
+      }
+      const args = ctx.message.text.split(" ").slice(1);
+      const result = await configCommands.trailingtp(ctx.session.userId, args);
+      await ctx.reply(result.message, { parse_mode: "Markdown" });
+    });
+
+    // /entrystrategy command
+    this.bot.command("entrystrategy", async (ctx) => {
+      if (!ctx.session.userId) {
+        await ctx.reply("⚠️ Authorization required. Use /start");
+        return;
+      }
+      const args = ctx.message.text.split(" ").slice(1);
+      const result = await configCommands.entrystrategy(ctx.session.userId, args);
+      await ctx.reply(result.message, { parse_mode: "Markdown" });
+    });
+
+    // /tpstrategy command
+    this.bot.command("tpstrategy", async (ctx) => {
+      if (!ctx.session.userId) {
+        await ctx.reply("⚠️ Authorization required. Use /start");
+        return;
+      }
+      const args = ctx.message.text.split(" ").slice(1);
+      const result = await configCommands.tpstrategy(ctx.session.userId, args);
+      await ctx.reply(result.message, { parse_mode: "Markdown" });
+    });
+
+    // /movingtp command
+    this.bot.command("movingtp", async (ctx) => {
+      if (!ctx.session.userId) {
+        await ctx.reply("⚠️ Authorization required. Use /start");
+        return;
+      }
+      const args = ctx.message.text.split(" ").slice(1);
+      const result = await configCommands.movingtp(ctx.session.userId, args);
+      await ctx.reply(result.message, { parse_mode: "Markdown" });
+    });
+
+    // /sl command
+    this.bot.command("sl", async (ctx) => {
+      if (!ctx.session.userId) {
+        await ctx.reply("⚠️ Authorization required. Use /start");
+        return;
+      }
+      const args = ctx.message.text.split(" ").slice(1);
+      const result = await configCommands.sl(ctx.session.userId, args);
+      await ctx.reply(result.message, { parse_mode: "Markdown" });
+    });
+
+    // /leverage command
+    this.bot.command("leverage", async (ctx) => {
+      if (!ctx.session.userId) {
+        await ctx.reply("⚠️ Authorization required. Use /start");
+        return;
+      }
+      const args = ctx.message.text.split(" ").slice(1);
+      const result = await configCommands.leverage(ctx.session.userId, args);
+      await ctx.reply(result.message, { parse_mode: "Markdown" });
+    });
+
+    // /direction command
+    this.bot.command("direction", async (ctx) => {
+      if (!ctx.session.userId) {
+        await ctx.reply("⚠️ Authorization required. Use /start");
+        return;
+      }
+      const args = ctx.message.text.split(" ").slice(1);
+      const result = await configCommands.direction(ctx.session.userId, args);
+      await ctx.reply(result.message, { parse_mode: "Markdown" });
+    });
+
+    // /autoclose command
+    this.bot.command("autoclose", async (ctx) => {
+      if (!ctx.session.userId) {
+        await ctx.reply("⚠️ Authorization required. Use /start");
+        return;
+      }
+      const args = ctx.message.text.split(" ").slice(1);
+      const result = await configCommands.autoclose(ctx.session.userId, args);
+      await ctx.reply(result.message, { parse_mode: "Markdown" });
+    });
+
+    // /grace command
+    this.bot.command("grace", async (ctx) => {
+      if (!ctx.session.userId) {
+        await ctx.reply("⚠️ Authorization required. Use /start");
+        return;
+      }
+      const args = ctx.message.text.split(" ").slice(1);
+      const result = await configCommands.grace(ctx.session.userId, args);
+      await ctx.reply(result.message, { parse_mode: "Markdown" });
+    });
+
+    // /autoexec command
+    this.bot.command("autoexec", async (ctx) => {
+      if (!ctx.session.userId) {
+        await ctx.reply("⚠️ Authorization required. Use /start");
+        return;
+      }
+      const args = ctx.message.text.split(" ").slice(1);
+      const result = await configCommands.autoexec(ctx.session.userId, args);
+      await ctx.reply(result.message, { parse_mode: "Markdown" });
+    });
+
+    // /filters command
+    this.bot.command("filters", async (ctx) => {
+      if (!ctx.session.userId) {
+        await ctx.reply("⚠️ Authorization required. Use /start");
+        return;
+      }
+      const args = ctx.message.text.split(" ").slice(1);
+      const result = await configCommands.filters(ctx.session.userId, args);
+      await ctx.reply(result.message, { parse_mode: "Markdown" });
+    });
+
+    // /config command (show full config status)
+    this.bot.command("config", async (ctx) => {
+      if (!ctx.session.userId) {
+        await ctx.reply("⚠️ Authorization required. Use /start");
+        return;
+      }
+      const result = await configCommands.status(ctx.session.userId);
+      await ctx.reply(result.message, { parse_mode: "Markdown" });
+    });
+
+    // /reset command
+    this.bot.command("reset", async (ctx) => {
+      if (!ctx.session.userId) {
+        await ctx.reply("⚠️ Authorization required. Use /start");
+        return;
+      }
+      const result = await configCommands.reset(ctx.session.userId);
+      await ctx.reply(result.message, { parse_mode: "Markdown" });
+    });
+
+    // /cornix command (show help for Cornix commands)
+    this.bot.command("cornix", async (ctx) => {
+      const message = configCommands.help();
+      await ctx.reply(message, { parse_mode: "Markdown" });
     });
 
     // /settings command

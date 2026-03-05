@@ -10,6 +10,7 @@ import { Switch } from "@/components/ui/switch";
 import { Slider } from "@/components/ui/slider";
 import { Progress } from "@/components/ui/progress";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import {
   Select,
   SelectContent,
@@ -46,6 +47,10 @@ import {
   Gauge,
   TrendingFlat,
   Shield,
+  Settings2,
+  ChevronDown,
+  ChevronUp,
+  Sparkles,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
@@ -58,6 +63,7 @@ import {
 } from "@/lib/bot-filters/dca-entry-filter";
 import { useBotFilter } from "@/hooks/use-bot-filter";
 import { FilterStatus, SignalIndicator, FilterToggle } from "./shared/filter-status";
+import { CornixFeaturesPanel, CornixFeaturesConfig } from "@/components/bot/cornix-features-panel";
 
 interface DcaBot {
   id: string;
@@ -128,6 +134,10 @@ export function DcaBotManager() {
   
   // Paper trading state
   const [isPaperTrading, setIsPaperTrading] = useState(false);
+  
+  // Cornix Features state
+  const [showCornixFeatures, setShowCornixFeatures] = useState(false);
+  const [cornixConfig, setCornixConfig] = useState<Partial<CornixFeaturesConfig>>({});
   
   // Form state
   const [name, setName] = useState("");
@@ -254,6 +264,7 @@ export function DcaBotManager() {
             rsiSeverelyOversold: filterConfig.rsiSeverelyOversold,
             minConfidence: filterConfig.minConfidence,
           },
+          cornixFeatures: cornixConfig,
         }),
       });
 
@@ -266,6 +277,7 @@ export function DcaBotManager() {
         setName("");
         setSymbol("BTCUSDT");
         setBaseAmount("100");
+        setCornixConfig({});
       } else {
         toast.error(data.error || "Ошибка при создании бота");
       }
@@ -863,6 +875,59 @@ export function DcaBotManager() {
           </CardContent>
         )}
       </Card>
+
+      {/* Cornix Features Section */}
+      <Collapsible open={showCornixFeatures} onOpenChange={setShowCornixFeatures}>
+        <Card className="border-primary/20">
+          <CollapsibleTrigger asChild>
+            <CardHeader className="cursor-pointer hover:bg-muted/50 transition-colors">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-lg bg-gradient-to-br from-violet-500/20 to-fuchsia-500/20">
+                    <Sparkles className="h-5 w-5 text-violet-500" />
+                  </div>
+                  <div>
+                    <CardTitle className="text-base flex items-center gap-2">
+                      Cornix Features
+                      <Badge variant="outline" className="text-xs">
+                        15 Auto-Trading Features
+                      </Badge>
+                    </CardTitle>
+                    <CardDescription>
+                      Advanced trading automation from Cornix specification
+                    </CardDescription>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  {Object.values(cornixConfig).filter(v => 
+                    typeof v === 'boolean' && v === true || 
+                    typeof v === 'number' && v > 0 ||
+                    v !== null && v !== undefined && typeof v !== 'boolean' && typeof v !== 'number'
+                  ).length > 0 && (
+                    <Badge variant="outline" className="text-[#0ECB81] border-[#0ECB81]/30">
+                      Active
+                    </Badge>
+                  )}
+                  {showCornixFeatures ? (
+                    <ChevronUp className="h-5 w-5 text-muted-foreground" />
+                  ) : (
+                    <ChevronDown className="h-5 w-5 text-muted-foreground" />
+                  )}
+                </div>
+              </div>
+            </CardHeader>
+          </CollapsibleTrigger>
+          <CollapsibleContent>
+            <CardContent className="pt-0">
+              <CornixFeaturesPanel
+                config={cornixConfig}
+                onChange={(config) => setCornixConfig(config)}
+                direction={direction}
+              />
+            </CardContent>
+          </CollapsibleContent>
+        </Card>
+      </Collapsible>
 
       {/* Bot List */}
       {isLoading ? (
