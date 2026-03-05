@@ -265,7 +265,76 @@ Features:
 | 1.2.0 | 2025-01 | "Only If Not Defined By Group" flags |
 | 2.0.0 | 2025-01 | Full backend implementation - 10 services, 4 DB models, 18 Telegram commands |
 | 2.1.0 | 2025-01-06 | Complete audit and verification |
+| 2.2.0 | 2025-01-07 | Oracle Chatbot integration with Cornix commands |
 
 ---
 
-*Last updated: 2025-01-06*
+Task ID: ORACLE-CORNIX-INTEGRATION
+Agent: Senior Developer (20 years experience)
+Task: Integrate Cornix Telegram functions into Oracle Chatbot
+
+Work Log:
+- Analyzed existing Oracle chatbot (`/src/components/chat/chat-bot.tsx`)
+- Analyzed existing Telegram bot (`/src/lib/telegram-bot-v2.ts`)
+- Analyzed existing Cornix command handlers (`/src/lib/telegram/config-commands.ts`)
+- Created new unified API endpoint `/api/cornix/command` for both Telegram and Oracle
+- Added Cornix command parsing to `/api/chat/parse-signal/route.ts`
+- Updated Oracle chatbot UI with Cornix quick command buttons
+- Updated welcome message to mention Cornix commands
+- Updated documentation in `/docs/AUTO_TRADING_FEATURES.md`
+
+Stage Summary:
+## Cornix Commands Integration
+
+### Files Created:
+- `/src/app/api/cornix/command/route.ts` - Unified Cornix command API
+
+### Files Modified:
+- `/src/app/api/chat/parse-signal/route.ts` - Added Cornix command handling
+- `/src/components/chat/chat-bot.tsx` - Added Cornix quick command buttons
+- `/docs/AUTO_TRADING_FEATURES.md` - Added Oracle integration docs
+
+### Features Implemented:
+
+1. **Unified Cornix Command API** (`/api/cornix/command`)
+   - POST: Execute Cornix commands
+   - GET: Get command help and reference
+   - Supports 11 core commands
+
+2. **Oracle Chatbot Integration**
+   - All Cornix commands now work in platform chat
+   - Quick command buttons for fast access
+   - Same functionality as Telegram bot
+
+3. **Command List (11 commands)**
+   - `/firstentry` - First Entry as Market
+   - `/tpgrace` - TP Grace
+   - `/trailing` - Trailing Stop (5 types)
+   - `/leverage` - Leverage settings
+   - `/direction` - Direction filter
+   - `/entrystrategy` - Entry strategy (9 types)
+   - `/tpstrategy` - TP strategy (9 types)
+   - `/sl` - Stop Loss
+   - `/filters` - Signal filters
+   - `/config` - Show configuration
+   - `/reset` - Reset to defaults
+
+4. **Trailing Stop Types (5)**
+   - `breakeven` - Move SL to break-even
+   - `moving` - Trail after 1st target
+   - `moving2` - Trail after 2nd target
+   - `percent` - % below highest price
+   - `triggers` - % after triggers
+
+5. **Strategy Types (9 each for Entry & TP)**
+   - EVENLY_DIVIDED, ONE_TARGET, TWO_TARGETS, THREE_TARGETS
+   - FIFTY_ON_FIRST, DECREASING_EXP, INCREASING_EXP
+   - SKIP_FIRST, CUSTOM_RATIOS
+
+---
+
+## Lint Status: ✅ 0 errors, 29 warnings (pre-existing)
+
+---
+
+*Last updated: 2025-01-07*

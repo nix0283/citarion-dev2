@@ -528,6 +528,118 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    // ==================== CORNIX AUTO-TRADING COMMANDS ====================
+    
+    // Check for Cornix commands (format: /command or /command args)
+    const cornixCommandMatch = message.match(/^\/([a-zA-Z_]+)(?:\s+(.*))?$/);
+    if (cornixCommandMatch) {
+      const command = cornixCommandMatch[1].toLowerCase();
+      const argsStr = cornixCommandMatch[2] || '';
+      const args = argsStr.split(/\s+/).filter(Boolean);
+
+      try {
+        const cornixResponse = await fetch(new URL("/api/cornix/command", request.url), {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ command, args }),
+        });
+
+        const cornixResult = await cornixResponse.json();
+
+        return NextResponse.json({
+          success: cornixResult.success,
+          type: "cornix-command",
+          message: cornixResult.message,
+          command: command,
+          config: cornixResult.config,
+        });
+      } catch (error) {
+        console.error("Cornix command error:", error);
+        return NextResponse.json({
+          success: false,
+          type: "error",
+          message: `❌ Ошибка выполнения Cornix команды: /${command}`,
+        });
+      }
+    }
+
+    // Check for "cornix" help command
+    if (lowerMessage === "cornix" || lowerMessage === "cornix help" || lowerMessage === "cornix справка") {
+      const cornixHelp = `🌽 **CORNIX AUTO-TRADING COMMANDS**
+
+Полная интеграция с платформой Cornix!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📍 **FIRST ENTRY AS MARKET**
+\`/firstentry\` - Показать настройки
+\`/firstentry on [IMMEDIATE|WAIT_ENTRY] [cap%]\`
+\`/firstentry off\`
+
+🎯 **TP GRACE**
+\`/tpgrace\` - Показать настройки
+\`/tpgrace on [cap%] [retries]\`
+\`/tpgrace off\`
+
+📈 **TRAILING STOP (5 типов)**
+\`/trailing\` - Показать настройки
+\`/trailing breakeven\` - SL на безубыток
+\`/trailing moving [value]\` - За ценой
+\`/trailing moving2 [value]\` - После 2-го TP
+\`/trailing percent [value]\` - % от макс
+\`/trailing triggers [value]\` - % после триггеров
+\`/trailing off\`
+
+⚡ **LEVERAGE**
+\`/leverage\` - Показать плечо
+\`/leverage [1-125] [EXACTLY|UP_TO]\`
+
+📍 **DIRECTION FILTER**
+\`/direction\` - Показать фильтр
+\`/direction [long|short|both]\`
+
+📍 **ENTRY STRATEGY (9 стратегий)**
+\`/entrystrategy\` - Показать стратегию
+\`/entrystrategy [evenly|one|two|three|fifty|decreasing|increasing|skip|custom]\`
+
+🎯 **TP STRATEGY (9 стратегий)**
+\`/tpstrategy\` - Показать стратегию
+\`/tpstrategy [evenly|one|two|three|fifty|decreasing|increasing|skip|custom]\`
+
+🛑 **STOP LOSS**
+\`/sl\` - Показать SL
+\`/sl [percent] [AVERAGE_ENTRIES|FIRST_ENTRY]\`
+\`/sl off\`
+
+🔍 **SIGNAL FILTERS**
+\`/filters\` - Показать фильтры
+\`/filters nosl on|off\` - Игнорировать без SL
+\`/filters notp on|off\` - Игнорировать без TP
+\`/filters minrr [value]\` - Мин R:R
+\`/filters allow BTC,ETH\` - Разрешённые
+\`/filters block DOGE,SHIB\` - Запрещённые
+
+⚙️ **CONFIGURATION**
+\`/config\` - Показать всю конфигурацию
+\`/reset\` - Сбросить настройки
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+💡 **Примеры:**
+\`/firstentry on WAIT_ENTRY 2\`
+\`/trailing percent 3\`
+\`/leverage 20 EXACTLY\`
+\`/direction long\`
+\`/entrystrategy fifty\`
+\`/filters nosl on\``;
+
+      return NextResponse.json({
+        success: true,
+        type: "cornix-help",
+        message: cornixHelp,
+      });
+    }
+
     // Check for help command
     if (lowerMessage === "help" || lowerMessage === "помощь" || lowerMessage === "справка" || lowerMessage === "команды" || lowerMessage === "commands") {
       const helpMessage = `📖 **СПРАВОЧНИК КОМАНД ЧАТ-БОТА**

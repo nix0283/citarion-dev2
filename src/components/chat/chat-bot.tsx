@@ -126,7 +126,9 @@ export function ChatBot() {
         "• Введите сигнал для парсинга\n" +
         "• Введите **\"шаблон\"** для списка шаблонов\n" +
         "• Команды: **long**, **short**, **позиции**, **close all**\n" +
+        "• **cornix** - Cornix auto-trading команды\n" +
         "• **справка** - полная справка\n\n" +
+        "🌽 **Cornix команды:** `/firstentry`, `/tpgrace`, `/trailing`, `/leverage`, `/config`\n\n" +
         "🔮 *Вижу сигналы там, где другие видят хаос.*\n\n" +
         "Пример: `BTCUSDT LONG Entry: 97000 TP: 100000 SL: 94000`",
       timestamp: new Date(),
@@ -841,6 +843,9 @@ export function ChatBot() {
             <Button variant="ghost" size="sm" className="h-6 text-xs px-2 text-primary" onClick={() => setInput("справка")}>
               📖 справка
             </Button>
+            <Button variant="ghost" size="sm" className="h-6 text-xs px-2 text-[#0ECB81]" onClick={() => setInput("cornix")}>
+              🌽 cornix
+            </Button>
             <Button variant="ghost" size="sm" className="h-6 text-xs px-2" onClick={() => setInput("шаблон")}>
               📋 шаблон
             </Button>
@@ -894,6 +899,43 @@ export function ChatBot() {
               onClick={() => setInput("очистить базу")}
             >
               🧹 сброс
+            </Button>
+          </div>
+          {/* Cornix Quick Commands */}
+          <div className="flex flex-wrap gap-1 mt-2 pt-2 border-t border-border">
+            <span className="text-[10px] text-muted-foreground w-full mb-1">🌽 Cornix команды:</span>
+            <Button variant="ghost" size="sm" className="h-5 text-[10px] px-1.5 text-[#0ECB81]" onClick={() => setInput("/config")}>
+              ⚙️ config
+            </Button>
+            <Button variant="ghost" size="sm" className="h-5 text-[10px] px-1.5" onClick={() => setInput("/firstentry")}>
+              📍 firstentry
+            </Button>
+            <Button variant="ghost" size="sm" className="h-5 text-[10px] px-1.5" onClick={() => setInput("/tpgrace")}>
+              🎯 tpgrace
+            </Button>
+            <Button variant="ghost" size="sm" className="h-5 text-[10px] px-1.5" onClick={() => setInput("/trailing")}>
+              📈 trailing
+            </Button>
+            <Button variant="ghost" size="sm" className="h-5 text-[10px] px-1.5" onClick={() => setInput("/leverage")}>
+              ⚡ leverage
+            </Button>
+            <Button variant="ghost" size="sm" className="h-5 text-[10px] px-1.5" onClick={() => setInput("/direction")}>
+              📍 direction
+            </Button>
+            <Button variant="ghost" size="sm" className="h-5 text-[10px] px-1.5" onClick={() => setInput("/entrystrategy")}>
+              📍 entrystrategy
+            </Button>
+            <Button variant="ghost" size="sm" className="h-5 text-[10px] px-1.5" onClick={() => setInput("/tpstrategy")}>
+              🎯 tpstrategy
+            </Button>
+            <Button variant="ghost" size="sm" className="h-5 text-[10px] px-1.5" onClick={() => setInput("/sl")}>
+              🛑 sl
+            </Button>
+            <Button variant="ghost" size="sm" className="h-5 text-[10px] px-1.5" onClick={() => setInput("/filters")}>
+              🔍 filters
+            </Button>
+            <Button variant="ghost" size="sm" className="h-5 text-[10px] px-1.5 text-[#F6465D]" onClick={() => setInput("/reset")}>
+              🔄 reset
             </Button>
           </div>
         </div>

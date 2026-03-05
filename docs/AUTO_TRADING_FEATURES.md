@@ -449,6 +449,63 @@ curl -X POST /api/auto-trading/tp-grace \
 
 ---
 
+## Oracle Chatbot Integration
+
+All Cornix Telegram commands are now integrated into the **Oracle Chatbot** in the CITARION platform!
+
+### Access Methods
+
+1. **Platform Chat (Oracle):** 
+   - Open the Oracle chatbot in the platform
+   - Type `/cornix` for command reference
+   - All commands work with `/` prefix
+
+2. **Telegram Bot:**
+   - Commands work the same way in Telegram
+   - Full parity with platform chat
+
+### Quick Commands in Oracle
+
+The Oracle chatbot has a dedicated **Cornix Quick Commands** panel with buttons for:
+- `/config` - Show full configuration
+- `/firstentry` - First Entry as Market
+- `/tpgrace` - TP Grace
+- `/trailing` - Trailing Stop
+- `/leverage` - Leverage settings
+- `/direction` - Direction filter
+- `/entrystrategy` - Entry strategy
+- `/tpstrategy` - TP strategy
+- `/sl` - Stop Loss
+- `/filters` - Signal filters
+- `/reset` - Reset to defaults
+
+### API Endpoint
+
+**`POST /api/cornix/command`**
+
+Request:
+```json
+{
+  "command": "firstentry",
+  "args": ["on", "WAIT_ENTRY", "2"]
+}
+```
+
+Response:
+```json
+{
+  "success": true,
+  "message": "📍 *First Entry as Market*\n\n✅ Включено\nРежим: `WAIT_ENTRY`\nCap: `2%`",
+  "config": {
+    "firstEntryAsMarket": true,
+    "firstEntryMode": "WAIT_ENTRY",
+    "firstEntryMaxPriceCap": 2
+  }
+}
+```
+
+---
+
 ## References
 
 - [Cornix First Entry as Market](https://help.cornix.io/en/articles/5814856-first-entry-as-market)
