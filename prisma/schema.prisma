@@ -1119,6 +1119,68 @@ model ExchangeSyncStatus {
   @@unique([exchange, symbol, marketType, timeframe])
 }
 
+// ==================== CORNIX FEATURE METRICS ====================
+// Track usage of Cornix auto-trading features
+
+model CornixFeatureMetric {
+  id String @id @default(cuid())
+
+  // Feature identification
+  feature     String // firstentry, tpgrace, trailing, leverage, etc.
+  command     String // Full command string
+  userId      String?
+  source      String @default("ORACLE") // ORACLE, TELEGRAM, API
+
+  // Execution details
+  success     Boolean @default(true)
+  errorMessage String?
+  executionMs Int? // Execution time in milliseconds
+
+  // Configuration changes
+  configBefore String? // JSON of config before
+  configAfter  String? // JSON of config after
+
+  // Timestamp
+  createdAt DateTime @default(now())
+
+  @@index([feature, createdAt])
+  @@index([userId, createdAt])
+  @@index([source, createdAt])
+}
+
+// ==================== EXCHANGE CONNECTION STATUS ====================
+// Real-time exchange connection monitoring
+
+model ExchangeConnectionStatus {
+  id String @id @default(cuid())
+
+  // Exchange identification
+  exchange   String // binance, bybit, okx, etc.
+  marketType String @default("futures") // spot, futures, inverse
+
+  // Connection status
+  status      String @default("DISCONNECTED") // CONNECTED, DISCONNECTED, ERROR, MAINTENANCE
+  lastConnect DateTime?
+  lastError   String?
+  reconnectAttempts Int @default(0)
+
+  // API status
+  restApiStatus   String @default("UNKNOWN") // OK, SLOW, ERROR
+  wsStatus        String @default("UNKNOWN") // CONNECTED, DISCONNECTED
+  latencyMs       Int? // REST API latency
+
+  // Rate limits
+  rateLimitUsed   Int @default(0)
+  rateLimitMax    Int @default(1200) // Default Binance
+  rateLimitReset  DateTime?
+
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([exchange, marketType])
+}
+
 // ==================== EXTERNAL POSITION TRACKING ====================
 // Positions opened manually on exchange, detected via API
 

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { getDefaultUserId } from "@/lib/default-user";
 import type { BotConfigSettings, CommandResult } from "@/lib/telegram/types";
+import { CornixMetricsService } from "@/lib/monitoring/cornix-metrics";
 
 // ==================== HELPER FUNCTIONS ====================
 
@@ -834,9 +835,11 @@ async function handleReset(userId: string): Promise<CommandResult> {
 
 // POST - Execute Cornix command
 export async function POST(request: NextRequest) {
+  const startTime = Date.now();
+  
   try {
     const body = await request.json();
-    const { command, args = [], userId: providedUserId } = body;
+    const { command, args = [], userId: providedUserId, source = "ORACLE" } = body;
 
     if (!command) {
       return NextResponse.json(
@@ -898,10 +901,34 @@ export async function POST(request: NextRequest) {
         };
     }
 
+    // Record metrics
+    const executionMs = Date.now() - startTime;
+    await CornixMetricsService.recordMetric({
+      feature: command.toLowerCase(),
+      command: `/${command}${args.length > 0 ? ' ' + args.join(' ') : ''}`,
+      userId,
+      source: source as "ORACLE" | "TELEGRAM" | "API",
+      success: result.success,
+      errorMessage: result.error,
+      executionMs,
+      configAfter: result.config as Record<string, unknown>,
+    });
+
     return NextResponse.json(result);
 
   } catch (error) {
     console.error("Cornix command error:", error);
+    
+    // Record error metric
+    await CornixMetricsService.recordMetric({
+      feature: "error",
+      command: "unknown",
+      source: "API",
+      success: false,
+      errorMessage: error instanceof Error ? error.message : "UNKNOWN_ERROR",
+      executionMs: Date.now() - startTime,
+    });
+    
     return NextResponse.json(
       {
         success: false,
