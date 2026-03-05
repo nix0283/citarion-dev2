@@ -416,6 +416,18 @@ model BotConfig {
   // First Entry Grace Percentage
   firstEntryGracePercent Float @default(0) // 0 = disabled, 0.01-5% = enabled
 
+  // ==================== FIRST ENTRY AS MARKET ====================
+  // First Entry Mode: IMMEDIATE = fill immediately, WAIT_ENTRY = wait for entry price
+  firstEntryMode       String  @default("WAIT_ENTRY") // IMMEDIATE or WAIT_ENTRY
+  firstEntryMaxPriceCap Float  @default(0.5) // Maximum % above entry price (0.01-5%)
+  firstEntryAsMarket   Boolean @default(false) // Enable First Entry as Market feature
+
+  // ==================== TAKE-PROFIT GRACE ====================
+  // Retry partially/unfilled TP orders at adjusted prices
+  tpGraceEnabled   Boolean @default(false) // Enable TP Grace retries
+  tpGraceCapPercent Float  @default(0.5) // Max % price adjustment per retry (0.01-2%)
+  tpGraceMaxRetries Int    @default(3) // Maximum retry attempts per TP target
+
   // ==================== TRAILING SETTINGS ====================
   trailingEnabled      Boolean @default(false)
   trailingType         String? @default("BREAKEVEN") // BREAKEVEN, MOVING_TARGET, PERCENT_BELOW_HIGHEST, MOVING_2_TARGET

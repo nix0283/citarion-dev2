@@ -54,6 +54,11 @@ interface BotConfigData {
   closeOnTPSLBeforeEntry: boolean;
   firstEntryGracePercent: number;
   
+  // First Entry as Market
+  firstEntryMode: "IMMEDIATE" | "WAIT_ENTRY";
+  firstEntryMaxPriceCap: number;
+  firstEntryAsMarket: boolean;
+  
   // Trailing
   trailingEnabled: boolean;
   trailingType: "BREAKEVEN" | "MOVING_TARGET" | "MOVING_2_TARGET" | "PERCENT_BELOW_HIGHEST";
@@ -70,6 +75,11 @@ interface BotConfigData {
   tpStrategy: "ONE_TARGET" | "MULTIPLE_TARGETS" | "ALL_TARGETS";
   tpTargetCount: number;
   tpCustomRatios: number[];
+  
+  // Take-Profit Grace
+  tpGraceEnabled: boolean;
+  tpGraceCapPercent: number;
+  tpGraceMaxRetries: number;
   
   // Stop-Loss
   defaultStopLoss: number | null;
@@ -111,6 +121,11 @@ const DEFAULT_CONFIG: BotConfigData = {
   closeOnTPSLBeforeEntry: true,
   firstEntryGracePercent: 0,
   
+  // First Entry as Market
+  firstEntryMode: "WAIT_ENTRY",
+  firstEntryMaxPriceCap: 0.5,
+  firstEntryAsMarket: false,
+  
   trailingEnabled: false,
   trailingType: "BREAKEVEN",
   trailingTriggerType: "TARGET_REACHED",
@@ -124,6 +139,11 @@ const DEFAULT_CONFIG: BotConfigData = {
   tpStrategy: "ONE_TARGET",
   tpTargetCount: 1,
   tpCustomRatios: [],
+  
+  // Take-Profit Grace
+  tpGraceEnabled: false,
+  tpGraceCapPercent: 0.5,
+  tpGraceMaxRetries: 3,
   
   defaultStopLoss: 15,
   slTimeout: 0,
@@ -316,6 +336,98 @@ export function BotConfigForm() {
                   </span>
                 </div>
               </div>
+
+              <Separator />
+
+              {/* First Entry as Market */}
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <Label className="text-sm font-medium">First Entry as Market</Label>
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      Использовать лимитные ордера для имитации рыночного входа с защитой цены
+                    </p>
+                  </div>
+                  <Switch
+                    checked={config.firstEntryAsMarket}
+                    onCheckedChange={(v) => updateConfig("firstEntryAsMarket", v)}
+                  />
+                </div>
+
+                {config.firstEntryAsMarket && (
+                  <div className="space-y-4 p-4 rounded-lg bg-secondary/30 border border-primary/10">
+                    {/* Entry Mode */}
+                    <div className="space-y-2">
+                      <Label className="text-sm font-medium">Режим входа</Label>
+                      <p className="text-xs text-muted-foreground">
+                        Когда исполнять первый вход
+                      </p>
+                      <div className="grid grid-cols-2 gap-2">
+                        <button
+                          onClick={() => updateConfig("firstEntryMode", "IMMEDIATE")}
+                          className={cn(
+                            "p-3 rounded-lg border text-left transition-colors",
+                            config.firstEntryMode === "IMMEDIATE"
+                              ? "border-[#0ECB81] bg-[#0ECB81]/10"
+                              : "border-border hover:bg-secondary/50"
+                          )}
+                        >
+                          <p className="font-medium text-sm text-[#0ECB81]">Immediate</p>
+                          <p className="text-xs text-muted-foreground">
+                            Войти немедленно по текущей цене
+                          </p>
+                        </button>
+                        <button
+                          onClick={() => updateConfig("firstEntryMode", "WAIT_ENTRY")}
+                          className={cn(
+                            "p-3 rounded-lg border text-left transition-colors",
+                            config.firstEntryMode === "WAIT_ENTRY"
+                              ? "border-[#0ECB81] bg-[#0ECB81]/10"
+                              : "border-border hover:bg-secondary/50"
+                          )}
+                        >
+                          <p className="font-medium text-sm text-[#0ECB81]">Wait for Entry</p>
+                          <p className="text-xs text-muted-foreground">
+                            Ждать достижения цены входа из сигнала
+                          </p>
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Max Price Cap */}
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <Label className="text-sm">Maximum Entry Price Cap</Label>
+                        <Badge variant="outline" className="text-xs text-[#0ECB81] border-[#0ECB81]/30">
+                          {config.firstEntryMaxPriceCap}%
+                        </Badge>
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        Макс. % выше цены входа, при котором будет заполнен ордер
+                      </p>
+                      <div className="flex items-center gap-4">
+                        <Slider
+                          value={[config.firstEntryMaxPriceCap]}
+                          onValueChange={([v]) => updateConfig("firstEntryMaxPriceCap", v)}
+                          max={5}
+                          min={0.01}
+                          step={0.01}
+                          className="flex-1"
+                        />
+                        <span className="text-sm font-mono w-12 text-right">
+                          {config.firstEntryMaxPriceCap}%
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="p-3 rounded-lg bg-[#0ECB81]/5 border border-[#0ECB81]/20">
+                      <p className="text-xs text-muted-foreground">
+                        <span className="text-[#0ECB81] font-medium">ℹ️ Note:</span> First Entry as Market использует лимитные ордера для имитации рыночного поведения, гарантируя что вы не войдёте выше установленного капа и не купите выше цены TP на первом входе.
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </AccordionContent>
         </AccordionItem>
@@ -503,6 +615,79 @@ export function BotConfigForm() {
                       min={1}
                       max={10}
                     />
+                  </div>
+                )}
+              </div>
+
+              <Separator />
+
+              {/* Take-Profit Grace */}
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <Label className="text-sm font-medium">Take-Profit Grace</Label>
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      Автоматические повторы TP ордеров при частичном/полном неисполнении
+                    </p>
+                  </div>
+                  <Switch
+                    checked={config.tpGraceEnabled}
+                    onCheckedChange={(v) => updateConfig("tpGraceEnabled", v)}
+                  />
+                </div>
+
+                {config.tpGraceEnabled && (
+                  <div className="space-y-4 p-4 rounded-lg bg-secondary/30 border border-primary/10">
+                    {/* Grace Cap Percent */}
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <Label className="text-sm">Cap % per Retry</Label>
+                        <Badge variant="outline" className="text-xs text-[#0ECB81] border-[#0ECB81]/30">
+                          {config.tpGraceCapPercent}%
+                        </Badge>
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        Насколько снизить (LONG) / повысить (SHORT) цену TP при каждой попытке
+                      </p>
+                      <div className="flex items-center gap-4">
+                        <Slider
+                          value={[config.tpGraceCapPercent]}
+                          onValueChange={([v]) => updateConfig("tpGraceCapPercent", v)}
+                          max={2}
+                          min={0.01}
+                          step={0.01}
+                          className="flex-1"
+                        />
+                        <span className="text-sm font-mono w-12 text-right">
+                          {config.tpGraceCapPercent}%
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Max Retries */}
+                    <div className="space-y-2">
+                      <Label className="text-sm">Max Retry Attempts</Label>
+                      <p className="text-xs text-muted-foreground">
+                        Макс. количество повторных попыток для каждого TP
+                      </p>
+                      <div className="flex items-center gap-2">
+                        <Input
+                          type="number"
+                          value={config.tpGraceMaxRetries}
+                          onChange={(e) => updateConfig("tpGraceMaxRetries", parseInt(e.target.value))}
+                          className="w-20"
+                          min={1}
+                          max={10}
+                        />
+                        <span className="text-sm text-muted-foreground">попыток</span>
+                      </div>
+                    </div>
+
+                    <div className="p-3 rounded-lg bg-[#0ECB81]/5 border border-[#0ECB81]/20">
+                      <p className="text-xs text-muted-foreground">
+                        <span className="text-[#0ECB81] font-medium">ℹ️ How it works:</span> Если TP ордер не исполнился или исполнен частично, Cornix автоматически разместит новый TP ордер по скорректированной цене. Для LONG позиций цена будет снижена, для SHORT - повышена. Попытки продолжаются пока весь объём не будет закрыт или не достигнут лимит.
+                      </p>
+                    </div>
                   </div>
                 )}
               </div>
