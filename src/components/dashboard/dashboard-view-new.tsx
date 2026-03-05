@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -219,14 +219,21 @@ function PositionRow({ position }: { position: typeof DEMO_POSITIONS[0] }) {
 
 function SignalCard({ signal }: { signal: typeof DEMO_SIGNALS[0] }) {
   const isPositive = signal.pnl >= 0;
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const timeAgo = useMemo(() => {
+    if (!mounted) return "--";
     const diff = Date.now() - new Date(signal.receivedAt).getTime();
     const hours = Math.floor(diff / (1000 * 60 * 60));
     const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
 
     if (hours > 0) return `${hours}h ${minutes}m ago`;
     return `${minutes}m ago`;
-  }, [signal.receivedAt]);
+  }, [mounted, signal.receivedAt]);
 
   return (
     <div className="p-3 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors">

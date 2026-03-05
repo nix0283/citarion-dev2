@@ -213,12 +213,29 @@ function TimeAgo({ date }: { date: Date }) {
 // Component to safely render current time
 function CurrentTime({ date }: { date: Date | null }) {
   const mounted = useMounted();
-  
+
   if (!mounted || !date) {
     return <span>-</span>;
   }
-  
+
   return <span>{date.toLocaleTimeString()}</span>;
+}
+
+// Component to safely render time until a future date
+function TimeUntil({ date }: { date: Date }) {
+  const mounted = useMounted();
+
+  if (!mounted) {
+    return <span>-</span>;
+  }
+
+  const now = new Date();
+  const diff = date.getTime() - now.getTime();
+  const hoursUntil = Math.round(diff / (1000 * 60 * 60));
+  const daysUntil = Math.round(hoursUntil / 24);
+
+  if (hoursUntil < 24) return <span>In {hoursUntil}h</span>;
+  return <span>In {daysUntil}d</span>;
 }
 
 const formatTime = (date: Date) => {
@@ -1845,9 +1862,6 @@ function NewsView({ news, events }: NewsViewProps) {
         <ScrollArea className="flex-1">
           <div className="space-y-2">
             {events.sort((a, b) => a.eventDate.getTime() - b.eventDate.getTime()).map((event) => {
-              const hoursUntil = Math.round((event.eventDate.getTime() - Date.now()) / (1000 * 60 * 60));
-              const daysUntil = Math.round(hoursUntil / 24);
-              
               return (
                 <Card key={event.id}>
                   <CardContent className="p-3">
@@ -1874,7 +1888,7 @@ function NewsView({ news, events }: NewsViewProps) {
                             {event.category}
                           </Badge>
                           <span className="text-xs text-muted-foreground">
-                            {hoursUntil < 24 ? `In ${hoursUntil}h` : `In ${daysUntil}d`}
+                            <TimeUntil date={event.eventDate} />
                           </span>
                           {event.relatedSymbols && event.relatedSymbols.map((s) => (
                             <Badge key={s} variant="outline" className="text-[10px]">{s}</Badge>
