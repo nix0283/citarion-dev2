@@ -202,9 +202,9 @@ export function TelegramSettings() {
                 <div className="flex items-center justify-between p-3 rounded-lg bg-muted/50">
                   <div className="flex items-center gap-2">
                     {status.isConnected ? (
-                      <CheckCircle className="h-5 w-5 text-green-500" />
+                      <CheckCircle className="h-5 w-5 text-[#0ECB81]" />
                     ) : (
-                      <XCircle className="h-5 w-5 text-red-500" />
+                      <XCircle className="h-5 w-5 text-[#F6465D]" />
                     )}
                     <div>
                       <div className="font-medium">
@@ -239,7 +239,7 @@ export function TelegramSettings() {
                 )}
 
                 {status.chatId && (
-                  <div className="flex items-center justify-between p-2 rounded bg-green-500/10 text-green-600">
+                  <div className="flex items-center justify-between p-2 rounded bg-[#0ECB81]/10 text-[#0ECB81]">
                     <span className="text-sm">Chat ID настроен</span>
                     <span className="font-mono text-xs">{status.chatId}</span>
                   </div>

@@ -216,9 +216,9 @@ export function KronBotPanel() {
   const getTrendIcon = (direction: TrendDirection) => {
     switch (direction) {
       case "UPTREND":
-        return <ArrowUpRight className="h-4 w-4 text-green-500" />;
+        return <ArrowUpRight className="h-4 w-4 text-[#0ECB81]" />;
       case "DOWNTREND":
-        return <ArrowDownRight className="h-4 w-4 text-red-500" />;
+        return <ArrowDownRight className="h-4 w-4 text-[#F6465D]" />;
       default:
         return <Minus className="h-4 w-4 text-yellow-500" />;
     }
@@ -227,9 +227,9 @@ export function KronBotPanel() {
   const getTrendColor = (direction: TrendDirection) => {
     switch (direction) {
       case "UPTREND":
-        return "bg-green-500/10 text-green-500 border-green-500/20";
+        return "bg-[#0ECB81]/10 text-[#0ECB81] border-[#0ECB81]/20";
       case "DOWNTREND":
-        return "bg-red-500/10 text-red-500 border-red-500/20";
+        return "bg-[#F6465D]/10 text-[#F6465D] border-[#F6465D]/20";
       default:
         return "bg-yellow-500/10 text-yellow-500 border-yellow-500/20";
     }
@@ -261,7 +261,7 @@ export function KronBotPanel() {
         <div className="flex items-center gap-2">
           <Badge className={cn(
             "text-sm",
-            isRunning ? "bg-green-500/10 text-green-500 border-green-500/20" : "bg-gray-500/10 text-gray-500"
+            isRunning ? "bg-[#0ECB81]/10 text-[#0ECB81] border-[#0ECB81]/20" : "bg-gray-500/10 text-gray-500"
           )}>
             {isRunning ? "РАБОТАЕТ" : "ОСТАНОВЛЕН"}
           </Badge>
@@ -631,7 +631,7 @@ export function KronBotPanel() {
             <div className="text-sm text-muted-foreground">Процент побед</div>
             <div className={cn(
               "text-2xl font-bold",
-              stats.winRate >= 0.4 ? "text-green-500" : "text-red-500"
+              stats.winRate >= 0.4 ? "text-[#0ECB81]" : "text-[#F6465D]"
             )}>
               {(stats.winRate * 100).toFixed(1)}%
             </div>
@@ -640,7 +640,7 @@ export function KronBotPanel() {
         <Card>
           <CardContent className="p-4">
             <div className="text-sm text-muted-foreground">Средняя прибыль</div>
-            <div className="text-2xl font-bold text-green-500">
+            <div className="text-2xl font-bold text-[#0ECB81]">
               ${stats.avgWin.toFixed(2)}
             </div>
           </CardContent>
@@ -648,7 +648,7 @@ export function KronBotPanel() {
         <Card>
           <CardContent className="p-4">
             <div className="text-sm text-muted-foreground">Средний убыток</div>
-            <div className="text-2xl font-bold text-red-500">
+            <div className="text-2xl font-bold text-[#F6465D]">
               ${stats.avgLoss.toFixed(2)}
             </div>
           </CardContent>
@@ -658,7 +658,7 @@ export function KronBotPanel() {
             <div className="text-sm text-muted-foreground">Коэф. Шарпа</div>
             <div className={cn(
               "text-2xl font-bold",
-              stats.sharpeRatio >= 1.5 ? "text-green-500" : ""
+              stats.sharpeRatio >= 1.5 ? "text-[#0ECB81]" : ""
             )}>
               {stats.sharpeRatio.toFixed(2)}
             </div>
@@ -677,7 +677,7 @@ export function KronBotPanel() {
         <Card>
           <CardContent className="p-4">
             <div className="text-sm text-muted-foreground">Макс. просадка</div>
-            <div className="text-xl font-bold text-red-500">{(stats.maxDrawdown * 100).toFixed(1)}%</div>
+            <div className="text-xl font-bold text-[#F6465D]">{(stats.maxDrawdown * 100).toFixed(1)}%</div>
           </CardContent>
         </Card>
         <Card>
@@ -685,7 +685,7 @@ export function KronBotPanel() {
             <div className="text-sm text-muted-foreground">Средний PnL</div>
             <div className={cn(
               "text-xl font-bold",
-              stats.avgPnL >= 0 ? "text-green-500" : "text-red-500"
+              stats.avgPnL >= 0 ? "text-[#0ECB81]" : "text-[#F6465D]"
             )}>
               ${stats.avgPnL.toFixed(2)}
             </div>
@@ -697,7 +697,7 @@ export function KronBotPanel() {
               <Target className="h-3 w-3" />
               Захват тренда
             </div>
-            <div className="text-xl font-bold text-green-500">{(stats.trendCapture * 100).toFixed(1)}%</div>
+            <div className="text-xl font-bold text-[#0ECB81]">{(stats.trendCapture * 100).toFixed(1)}%</div>
           </CardContent>
         </Card>
       </div>
@@ -735,7 +735,7 @@ export function KronBotPanel() {
                     <div className="text-sm">
                       Сила: <span className={cn(
                         "font-medium",
-                        trend.strength >= 0.6 ? "text-green-500" : trend.strength >= 0.4 ? "text-yellow-500" : "text-red-500"
+                        trend.strength >= 0.6 ? "text-[#0ECB81]" : trend.strength >= 0.4 ? "text-yellow-500" : "text-[#F6465D]"
                       )}>
                         {(trend.strength * 100).toFixed(0)}%
                       </span>
@@ -743,7 +743,7 @@ export function KronBotPanel() {
                     <div className="text-sm">
                       ADX: <span className={cn(
                         "font-medium",
-                        trend.adx >= 25 ? "text-green-500" : "text-yellow-500"
+                        trend.adx >= 25 ? "text-[#0ECB81]" : "text-yellow-500"
                       )}>
                         {trend.adx.toFixed(0)}
                       </span>
@@ -770,9 +770,9 @@ export function KronBotPanel() {
                     <div className={cn(
                       "font-medium",
                       trend.emaFast > trend.emaMedium && trend.emaMedium > trend.emaSlow
-                        ? "text-green-500"
+                        ? "text-[#0ECB81]"
                         : trend.emaFast < trend.emaMedium && trend.emaMedium < trend.emaSlow
-                        ? "text-red-500"
+                        ? "text-[#F6465D]"
                         : "text-yellow-500"
                     )}>
                       {trend.emaFast > trend.emaMedium && trend.emaMedium > trend.emaSlow
@@ -814,7 +814,7 @@ export function KronBotPanel() {
                   <div className="flex justify-between items-center">
                     <div className="flex items-center gap-3">
                       <Badge variant="outline">{pos.symbol}</Badge>
-                      <Badge className={pos.side === "LONG" ? "bg-green-500/10 text-green-500" : "bg-red-500/10 text-red-500"}>
+                      <Badge variant="outline" className={pos.side === "LONG" ? "border-[#0ECB81] text-[#0ECB81]" : "border-[#F6465D] text-[#F6465D]"}>
                         {pos.side}
                       </Badge>
                       {pos.pyramidLevel > 0 && (
@@ -823,7 +823,7 @@ export function KronBotPanel() {
                     </div>
                     <div className={cn(
                       "font-medium",
-                      pos.pnl >= 0 ? "text-green-500" : "text-red-500"
+                      pos.pnl >= 0 ? "text-[#0ECB81]" : "text-[#F6465D]"
                     )}>
                       ${pos.pnl.toFixed(2)}
                     </div>

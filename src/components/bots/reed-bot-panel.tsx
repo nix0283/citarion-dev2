@@ -239,7 +239,7 @@ export function ReedBotPanel() {
         <div className="flex items-center gap-2">
           <Badge className={cn(
             "text-sm",
-            isRunning ? "bg-green-500/10 text-green-500 border-green-500/20" : "bg-gray-500/10 text-gray-500"
+            isRunning ? "bg-[#0ECB81]/10 text-[#0ECB81] border-[#0ECB81]/20" : "bg-gray-500/10 text-gray-500"
           )}>
             {isRunning ? "РАБОТАЕТ" : "ОСТАНОВЛЕН"}
           </Badge>
@@ -501,7 +501,7 @@ export function ReedBotPanel() {
             <div className="text-sm text-muted-foreground">Процент побед</div>
             <div className={cn(
               "text-2xl font-bold",
-              stats.winRate >= 0.5 ? "text-green-500" : "text-red-500"
+              stats.winRate >= 0.5 ? "text-[#0ECB81]" : "text-[#F6465D]"
             )}>
               {(stats.winRate * 100).toFixed(1)}%
             </div>
@@ -512,7 +512,7 @@ export function ReedBotPanel() {
             <div className="text-sm text-muted-foreground">Средний PnL</div>
             <div className={cn(
               "text-2xl font-bold",
-              stats.avgPnL >= 0 ? "text-green-500" : "text-red-500"
+              stats.avgPnL >= 0 ? "text-[#0ECB81]" : "text-[#F6465D]"
             )}>
               ${stats.avgPnL.toFixed(2)}
             </div>
@@ -523,7 +523,7 @@ export function ReedBotPanel() {
             <div className="text-sm text-muted-foreground">Info Ratio</div>
             <div className={cn(
               "text-2xl font-bold",
-              stats.informationRatio >= 0.5 ? "text-green-500" : ""
+              stats.informationRatio >= 0.5 ? "text-[#0ECB81]" : ""
             )}>
               {stats.informationRatio.toFixed(2)}
             </div>
@@ -557,7 +557,7 @@ export function ReedBotPanel() {
                 <div className="text-sm text-muted-foreground">{factor}</div>
                 <div className={cn(
                   "text-xl font-bold",
-                  value >= 0 ? "text-green-500" : "text-red-500"
+                  value >= 0 ? "text-[#0ECB81]" : "text-[#F6465D]"
                 )}>
                   {(value * 100).toFixed(2)}%
                 </div>
@@ -588,10 +588,10 @@ export function ReedBotPanel() {
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-3">
                     <Badge variant="outline" className="font-mono">{signal.symbol}</Badge>
-                    <Badge className={cn(
+                    <Badge variant="outline" className={cn(
                       signal.direction === "LONG" 
-                        ? "bg-green-500/10 text-green-500" 
-                        : "bg-red-500/10 text-red-500"
+                        ? "border-[#0ECB81] text-[#0ECB81]" 
+                        : "border-[#F6465D] text-[#F6465D]"
                     )}>
                       {signal.direction === "LONG" ? (
                         <TrendingUp className="h-3 w-3 mr-1" />
@@ -605,7 +605,7 @@ export function ReedBotPanel() {
                     <div className="text-sm">
                       Ож. доходность: <span className={cn(
                         "font-medium",
-                        signal.expectedReturn >= 0 ? "text-green-500" : "text-red-500"
+                        signal.expectedReturn >= 0 ? "text-[#0ECB81]" : "text-[#F6465D]"
                       )}>
                         {(signal.expectedReturn * 100).toFixed(2)}%
                       </span>
@@ -626,7 +626,7 @@ export function ReedBotPanel() {
                     <div key={factor.name} className="text-xs px-2 py-1 rounded bg-muted">
                       {factor.name}: <span className={cn(
                         "font-medium",
-                        factor.value >= 0 ? "text-green-500" : "text-red-500"
+                        factor.value >= 0 ? "text-[#0ECB81]" : "text-[#F6465D]"
                       )}>{factor.value.toFixed(3)}</span>
                     </div>
                   ))}
@@ -659,13 +659,13 @@ export function ReedBotPanel() {
                   <div className="flex justify-between items-center">
                     <div className="flex items-center gap-3">
                       <Badge variant="outline">{pos.symbol}</Badge>
-                      <Badge className={pos.side === "LONG" ? "bg-green-500/10 text-green-500" : "bg-red-500/10 text-red-500"}>
+                      <Badge variant="outline" className={pos.side === "LONG" ? "border-[#0ECB81] text-[#0ECB81]" : "border-[#F6465D] text-[#F6465D]"}>
                         {pos.side}
                       </Badge>
                     </div>
                     <div className={cn(
                       "font-medium",
-                      pos.pnl >= 0 ? "text-green-500" : "text-red-500"
+                      pos.pnl >= 0 ? "text-[#0ECB81]" : "text-[#F6465D]"
                     )}>
                       ${pos.pnl.toFixed(2)}
                     </div>

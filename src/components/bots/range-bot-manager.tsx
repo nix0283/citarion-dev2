@@ -155,8 +155,8 @@ export function RangeBotManager() {
 
   const getPositionColor = (position: string) => {
     switch (position) {
-      case 'TOP': return 'text-red-500';
-      case 'BOTTOM': return 'text-green-500';
+      case 'TOP': return 'text-[#F6465D]';
+      case 'BOTTOM': return 'text-[#0ECB81]';
       default: return 'text-muted-foreground';
     }
   };
@@ -164,9 +164,9 @@ export function RangeBotManager() {
   const getSignalBadge = (type: string) => {
     switch (type) {
       case 'BUY':
-        return <Badge className="bg-green-500">BUY</Badge>;
+        return <Badge variant="outline" className="text-[#0ECB81] border-[#0ECB81]">BUY</Badge>;
       case 'SELL':
-        return <Badge className="bg-red-500">SELL</Badge>;
+        return <Badge variant="outline" className="text-[#F6465D] border-[#F6465D]">SELL</Badge>;
       case 'BREAKOUT_UP':
         return <Badge className="bg-blue-500">BREAKOUT ↑</Badge>;
       case 'BREAKOUT_DOWN':
@@ -190,7 +190,7 @@ export function RangeBotManager() {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <Badge variant={isActive ? "default" : "outline"} className={isActive ? "bg-green-500" : ""}>
+          <Badge variant="outline" className={isActive ? "text-[#0ECB81] border-[#0ECB81]" : ""}>
             {isActive ? "Активен" : "Остановлен"}
           </Badge>
           <Button onClick={() => setIsActive(!isActive)} variant="outline">
@@ -230,8 +230,8 @@ export function RangeBotManager() {
               <div 
                 className={cn(
                   "absolute left-1/2 w-3 h-3 rounded-full -translate-x-1/2 animate-pulse",
-                  rangeState.position === 'BOTTOM' ? "bg-green-500" :
-                  rangeState.position === 'TOP' ? "bg-red-500" : "bg-primary"
+                  rangeState.position === 'BOTTOM' ? "bg-[#0ECB81]" :
+                  rangeState.position === 'TOP' ? "bg-[#F6465D]" : "bg-primary"
                 )}
                 style={{
                   top: rangeState.position === 'TOP' ? '20%' :
@@ -270,7 +270,7 @@ export function RangeBotManager() {
           <Card>
             <CardContent className="pt-4 text-center">
               <div className="text-sm text-muted-foreground">In Range</div>
-              <Badge className={rangeState.inRange ? "bg-green-500" : "bg-red-500"}>
+              <Badge variant="outline" className={rangeState.inRange ? "text-[#0ECB81] border-[#0ECB81]" : "text-[#F6465D] border-[#F6465D]"}>
                 {rangeState.inRange ? "YES" : "NO"}
               </Badge>
             </CardContent>
@@ -395,7 +395,7 @@ export function RangeBotManager() {
               <div key={pos.id} className="flex items-center justify-between p-3 rounded-lg border">
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
-                    <Badge className={pos.type === 'LONG' ? "bg-green-500" : "bg-red-500"}>
+                    <Badge variant="outline" className={pos.type === 'LONG' ? "text-[#0ECB81] border-[#0ECB81]" : "text-[#F6465D] border-[#F6465D]"}>
                       {pos.type}
                     </Badge>
                     <span className="text-sm text-muted-foreground">
@@ -407,10 +407,10 @@ export function RangeBotManager() {
                   </div>
                 </div>
                 <div className="text-right">
-                  <div className={cn("text-lg font-bold", pos.pnl >= 0 ? "text-green-500" : "text-red-500")}>
+                  <div className={cn("text-lg font-bold", pos.pnl >= 0 ? "text-[#0ECB81]" : "text-[#F6465D]")}>
                     ${pos.pnl.toFixed(2)}
                   </div>
-                  <div className={cn("text-xs", pos.pnlPercent >= 0 ? "text-green-500" : "text-red-500")}>
+                  <div className={cn("text-xs", pos.pnlPercent >= 0 ? "text-[#0ECB81]" : "text-[#F6465D]")}>
                     {pos.pnlPercent >= 0 ? '+' : ''}{pos.pnlPercent.toFixed(2)}%
                   </div>
                 </div>
@@ -431,8 +431,8 @@ export function RangeBotManager() {
               {levels.map((level, i) => (
                 <div key={i} className="flex items-center justify-between p-2 rounded border">
                   <div className="flex items-center gap-2">
-                    <Badge variant={level.type === 'SUPPORT' ? "default" : "destructive"}
-                      className={level.type === 'SUPPORT' ? "bg-green-500" : ""}>
+                    <Badge variant="outline"
+                      className={level.type === 'SUPPORT' ? "text-[#0ECB81] border-[#0ECB81]" : "text-[#F6465D] border-[#F6465D]"}>
                       {level.type}
                     </Badge>
                     <span className="font-mono">${level.price.toFixed(2)}</span>

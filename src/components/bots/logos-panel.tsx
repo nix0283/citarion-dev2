@@ -203,8 +203,8 @@ export function LogosPanel() {
 
   const getSignalColor = (signal: string) => {
     switch (signal) {
-      case "LONG": return "text-green-500";
-      case "SHORT": return "text-red-500";
+      case "LONG": return "text-[#0ECB81]";
+      case "SHORT": return "text-[#F6465D]";
       default: return "text-muted-foreground";
     }
   };
@@ -225,9 +225,9 @@ export function LogosPanel() {
         </div>
         
         <div className="flex items-center gap-2">
-          <Badge className={cn(
+          <Badge variant="outline" className={cn(
             "text-sm",
-            isRunning ? "bg-green-500/10 text-green-500 border-green-500/20" : "bg-gray-500/10 text-gray-500"
+            isRunning ? "bg-[#0ECB81]/10 text-[#0ECB81] border-[#0ECB81]/20" : "bg-gray-500/10 text-gray-500"
           )}>
             {isRunning ? "РАБОТАЕТ" : "ОСТАНОВЛЕН"}
           </Badge>
@@ -333,7 +333,7 @@ export function LogosPanel() {
             <div className="text-sm text-muted-foreground">Процент побед</div>
             <div className={cn(
               "text-2xl font-bold",
-              stats.winRate >= 0.5 ? "text-green-500" : "text-red-500"
+              stats.winRate >= 0.5 ? "text-[#0ECB81]" : "text-[#F6465D]"
             )}>
               {(stats.winRate * 100).toFixed(1)}%
             </div>
@@ -342,7 +342,7 @@ export function LogosPanel() {
         <Card>
           <CardContent className="p-4">
             <div className="text-sm text-muted-foreground">Средний возврат</div>
-            <div className="text-2xl font-bold text-green-500">
+            <div className="text-2xl font-bold text-[#0ECB81]">
               +{stats.avgReturn.toFixed(1)}%
             </div>
           </CardContent>
@@ -358,7 +358,7 @@ export function LogosPanel() {
             <div className="text-sm text-muted-foreground">Точность консенсуса</div>
             <div className={cn(
               "text-2xl font-bold",
-              stats.consensusAccuracy >= 0.7 ? "text-green-500" : ""
+              stats.consensusAccuracy >= 0.7 ? "text-[#0ECB81]" : ""
             )}>
               {(stats.consensusAccuracy * 100).toFixed(1)}%
             </div>
@@ -453,14 +453,14 @@ export function LogosPanel() {
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-2">
                         <Badge variant="outline">{signal.symbol}</Badge>
-                        <Badge className={cn(
-                          signal.direction === "LONG" ? "bg-green-500" : "bg-red-500"
+                        <Badge variant="outline" className={cn(
+                          signal.direction === "LONG" ? "bg-[#0ECB81]/10 text-[#0ECB81] border-[#0ECB81]/20" : "bg-[#F6465D]/10 text-[#F6465D] border-[#F6465D]/20"
                         )}>
                           {signal.direction}
                         </Badge>
                       </div>
                       <div className="text-sm font-medium">
-                        Качество: <span className="text-green-500">{(signal.qualityScore * 100).toFixed(0)}%</span>
+                        Качество: <span className="text-[#0ECB81]">{(signal.qualityScore * 100).toFixed(0)}%</span>
                       </div>
                     </div>
                     <div className="grid grid-cols-4 gap-2 text-xs text-muted-foreground">

@@ -277,8 +277,8 @@ function ServerStatusCard({ status }: { status: ServerStatus }) {
           <div className="flex items-center gap-2">
             {status.status === "online" ? (
               <>
-                <CheckCircle2 className="h-4 w-4 text-green-500" />
-                <Badge variant="outline" className="bg-green-500/10 text-green-500 border-green-500/20">
+                <CheckCircle2 className="h-4 w-4 text-[#0ECB81]" />
+                <Badge variant="outline" className="bg-[#0ECB81]/10 text-[#0ECB81] border-[#0ECB81]/20">
                   Онлайн
                 </Badge>
               </>
@@ -291,8 +291,8 @@ function ServerStatusCard({ status }: { status: ServerStatus }) {
               </>
             ) : (
               <>
-                <XCircle className="h-4 w-4 text-red-500" />
-                <Badge variant="outline" className="bg-red-500/10 text-red-500 border-red-500/20">
+                <XCircle className="h-4 w-4 text-[#F6465D]" />
+                <Badge variant="outline" className="bg-[#F6465D]/10 text-[#F6465D] border-[#F6465D]/20">
                   Оффлайн
                 </Badge>
               </>
@@ -465,7 +465,7 @@ function ExchangesCard() {
             <Badge 
               key={i} 
               variant="outline"
-              className="bg-green-500/10 text-green-500 border-green-500/20 text-xs"
+              className="bg-[#0ECB81]/10 text-[#0ECB81] border-[#0ECB81]/20 text-xs"
             >
               {ex.name}
             </Badge>

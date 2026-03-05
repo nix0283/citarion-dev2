@@ -360,12 +360,12 @@ export function VolatilityPanel() {
                 <div className="flex items-center gap-2 mt-1">
                   {state.result?.converged ? (
                     <>
-                      <Badge variant="default" className="bg-green-500/10 text-green-500">
+                      <Badge variant="outline" className="bg-[#0ECB81]/10 text-[#0ECB81] border-[#0ECB81]/30">
                         Сошлась
                       </Badge>
                     </>
                   ) : (
-                    <Badge variant="destructive" className="bg-red-500/10 text-red-500">
+                    <Badge variant="outline" className="bg-[#F6465D]/10 text-[#F6465D] border-[#F6465D]/30">
                       Не Сошлась
                     </Badge>
                   )}
@@ -539,18 +539,18 @@ export function VolatilityPanel() {
               <div className="flex items-center gap-2">
                 <span className="text-sm text-muted-foreground">Persistence (α + β):</span>
                 <Badge
-                  variant={(state.params.alpha + state.params.beta) < 1 ? "default" : "destructive"}
+                  variant="outline"
                   className={
                     (state.params.alpha + state.params.beta) < 1
-                      ? "bg-green-500/10 text-green-500"
-                      : "bg-red-500/10 text-red-500"
+                      ? "bg-[#0ECB81]/10 text-[#0ECB81] border-[#0ECB81]/30"
+                      : "bg-[#F6465D]/10 text-[#F6465D] border-[#F6465D]/30"
                   }
                 >
                   {formatNumber(state.params.alpha + state.params.beta, 3)}
                 </Badge>
               </div>
               {(state.params.alpha + state.params.beta) >= 1 && (
-                <div className="flex items-center gap-1 text-red-500">
+                <div className="flex items-center gap-1 text-[#F6465D]">
                   <AlertTriangle className="h-4 w-4" />
                   <span className="text-xs">Persistence ≥ 1 indicates non-stationary process</span>
                 </div>
@@ -564,7 +564,7 @@ export function VolatilityPanel() {
       {state.error && (
         <Card className="border-red-500/50 bg-red-500/5">
           <CardContent className="pt-4">
-            <div className="flex items-center gap-2 text-red-500">
+            <div className="flex items-center gap-2 text-[#F6465D]">
               <AlertTriangle className="h-4 w-4" />
               <span className="text-sm">{state.error}</span>
             </div>

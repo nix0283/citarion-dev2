@@ -176,7 +176,7 @@ export function SpectrumBotPanel() {
   const getStatusColor = (status: string) => {
     switch (status) {
       case "RUNNING":
-        return "bg-green-500/10 text-green-500 border-green-500/20";
+        return "bg-[#0ECB81]/10 text-[#0ECB81] border-[#0ECB81]/20";
       case "STOPPED":
         return "bg-gray-500/10 text-gray-500 border-gray-500/20";
       case "STARTING":
@@ -188,9 +188,9 @@ export function SpectrumBotPanel() {
 
   const getZScoreColor = (zScore: number) => {
     const abs = Math.abs(zScore);
-    if (abs >= 3) return "text-red-500";
+    if (abs >= 3) return "text-[#F6465D]";
     if (abs >= 2) return "text-yellow-500";
-    return "text-green-500";
+    return "text-[#0ECB81]";
   };
 
   return (
@@ -209,9 +209,9 @@ export function SpectrumBotPanel() {
         </div>
         
         <div className="flex items-center gap-2">
-          <Badge className={cn(
+          <Badge variant="outline" className={cn(
             "text-sm",
-            isRunning ? "bg-green-500/10 text-green-500 border-green-500/20" : "bg-gray-500/10 text-gray-500"
+            isRunning ? "bg-[#0ECB81]/10 text-[#0ECB81] border-[#0ECB81]/20" : "bg-gray-500/10 text-gray-500 border-gray-500/20"
           )}>
             {isRunning ? "РАБОТАЕТ" : "ОСТАНОВЛЕН"}
           </Badge>
@@ -457,7 +457,7 @@ export function SpectrumBotPanel() {
             <div className="text-sm text-muted-foreground">Процент побед</div>
             <div className={cn(
               "text-2xl font-bold",
-              stats.winRate >= 0.5 ? "text-green-500" : "text-red-500"
+              stats.winRate >= 0.5 ? "text-[#0ECB81]" : "text-[#F6465D]"
             )}>
               {(stats.winRate * 100).toFixed(1)}%
             </div>
@@ -468,7 +468,7 @@ export function SpectrumBotPanel() {
             <div className="text-sm text-muted-foreground">Средний PnL</div>
             <div className={cn(
               "text-2xl font-bold",
-              stats.avgPnL >= 0 ? "text-green-500" : "text-red-500"
+              stats.avgPnL >= 0 ? "text-[#0ECB81]" : "text-[#F6465D]"
             )}>
               ${stats.avgPnL.toFixed(2)}
             </div>
@@ -477,7 +477,7 @@ export function SpectrumBotPanel() {
         <Card>
           <CardContent className="p-4">
             <div className="text-sm text-muted-foreground">Макс. просадка</div>
-            <div className="text-2xl font-bold text-red-500">
+            <div className="text-2xl font-bold text-[#F6465D]">
               {(stats.maxDrawdown * 100).toFixed(1)}%
             </div>
           </CardContent>
@@ -487,7 +487,7 @@ export function SpectrumBotPanel() {
             <div className="text-sm text-muted-foreground">Коэф. Шарпа</div>
             <div className={cn(
               "text-2xl font-bold",
-              stats.sharpeRatio >= 1 ? "text-green-500" : ""
+              stats.sharpeRatio >= 1 ? "text-[#0ECB81]" : ""
             )}>
               {stats.sharpeRatio.toFixed(2)}
             </div>
@@ -585,7 +585,7 @@ export function SpectrumBotPanel() {
                     <div className="text-right">
                       <div className={cn(
                         "font-medium",
-                        pos.pnl >= 0 ? "text-green-500" : "text-red-500"
+                        pos.pnl >= 0 ? "text-[#0ECB81]" : "text-[#F6465D]"
                       )}>
                         ${pos.pnl.toFixed(2)}
                       </div>

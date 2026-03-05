@@ -376,7 +376,7 @@ export function CopyTradingPanel() {
                           <div className="text-right">
                             <div className={cn(
                               "text-lg font-bold flex items-center gap-1",
-                              trader.roi >= 0 ? "text-green-500" : "text-red-500"
+                              trader.roi >= 0 ? "text-[#0ECB81]" : "text-[#F6465D]"
                             )}>
                               {trader.roi >= 0 ? <TrendingUp className="h-4 w-4" /> : <TrendingDown className="h-4 w-4" />}
                               {trader.roi >= 0 ? '+' : ''}{formatNumber(trader.roi)}%
@@ -415,14 +415,14 @@ export function CopyTradingPanel() {
                             <div className="text-sm text-muted-foreground">Total PnL</div>
                             <div className={cn(
                               "font-semibold",
-                              trader.totalPnl >= 0 ? "text-green-500" : "text-red-500"
+                              trader.totalPnl >= 0 ? "text-[#0ECB81]" : "text-[#F6465D]"
                             )}>
                               ${formatNumber(trader.totalPnl)}
                             </div>
                           </div>
                           <div>
                             <div className="text-sm text-muted-foreground">Max Drawdown</div>
-                            <div className="font-semibold text-red-500">
+                            <div className="font-semibold text-[#F6465D]">
                               -{formatNumber(trader.maxDrawdown)}%
                             </div>
                           </div>
@@ -527,7 +527,7 @@ export function CopyTradingPanel() {
                     className="flex items-center justify-between p-3 bg-muted/50 rounded-lg"
                   >
                     <div className="flex items-center gap-4">
-                      <Badge variant={position.side === 'long' ? 'default' : 'destructive'}>
+                      <Badge variant="outline" className={position.side === 'long' ? 'border-[#0ECB81] text-[#0ECB81]' : 'border-[#F6465D] text-[#F6465D]'}>
                         {position.side.toUpperCase()}
                       </Badge>
                       <div>
@@ -548,7 +548,7 @@ export function CopyTradingPanel() {
                       </div>
                       <div className={cn(
                         "text-right font-semibold",
-                        position.unrealizedPnl >= 0 ? "text-green-500" : "text-red-500"
+                        position.unrealizedPnl >= 0 ? "text-[#0ECB81]" : "text-[#F6465D]"
                       )}>
                         {position.unrealizedPnl >= 0 ? '+' : ''}${formatNumber(position.unrealizedPnl)}
                       </div>
@@ -610,13 +610,13 @@ export function CopyTradingPanel() {
                         <div className="text-right">
                           <div className={cn(
                             "font-semibold",
-                            sub.totalPnl >= 0 ? "text-green-500" : "text-red-500"
+                            sub.totalPnl >= 0 ? "text-[#0ECB81]" : "text-[#F6465D]"
                           )}>
                             {sub.totalPnl >= 0 ? '+' : ''}${formatNumber(sub.totalPnl)}
                           </div>
                           <div className="text-xs text-muted-foreground">Total PnL</div>
                         </div>
-                        <Badge variant={sub.active ? "default" : "secondary"}>
+                        <Badge variant="outline" className={sub.active ? 'border-[#0ECB81] text-[#0ECB81]' : 'border-muted-foreground text-muted-foreground'}>
                           {sub.active ? 'Активно' : 'Приостановлено'}
                         </Badge>
                         {getApiSupport(sub.exchange).subscribe && (
@@ -718,21 +718,21 @@ export function CopyTradingPanel() {
                       <div className="font-medium">{exchange.toUpperCase()}</div>
                       <div className="text-center">
                         {support.publicApi ? (
-                          <CheckCircle2 className="h-4 w-4 text-green-500 mx-auto" />
+                          <CheckCircle2 className="h-4 w-4 text-[#0ECB81] mx-auto" />
                         ) : (
                           <span className="text-muted-foreground">-</span>
                         )}
                       </div>
                       <div className="text-center">
                         {support.subscribe ? (
-                          <CheckCircle2 className="h-4 w-4 text-green-500 mx-auto" />
+                          <CheckCircle2 className="h-4 w-4 text-[#0ECB81] mx-auto" />
                         ) : (
                           <span className="text-muted-foreground">-</span>
                         )}
                       </div>
                       <div className="text-center">
                         {support.manageFollowers ? (
-                          <CheckCircle2 className="h-4 w-4 text-green-500 mx-auto" />
+                          <CheckCircle2 className="h-4 w-4 text-[#0ECB81] mx-auto" />
                         ) : (
                           <span className="text-muted-foreground">-</span>
                         )}

@@ -688,7 +688,7 @@ export function StrategyLab() {
         <AccordionItem value="tp">
           <AccordionTrigger className="hover:no-underline">
             <div className="flex items-center gap-2">
-              <Target className="h-4 w-4 text-green-500" />
+              <Target className="h-4 w-4 text-[#0ECB81]" />
               <span>Take Profit</span>
               <Badge variant="outline" className="ml-2">{selectedTactics.takeProfit.type}</Badge>
             </div>
@@ -803,7 +803,7 @@ export function StrategyLab() {
         <AccordionItem value="sl">
           <AccordionTrigger className="hover:no-underline">
             <div className="flex items-center gap-2">
-              <Shield className="h-4 w-4 text-red-500" />
+              <Shield className="h-4 w-4 text-[#F6465D]" />
               <span>Stop Loss</span>
               <Badge variant="outline" className="ml-2">{selectedTactics.stopLoss.type}</Badge>
             </div>
@@ -933,7 +933,7 @@ export function StrategyLab() {
                   <div className="text-sm text-muted-foreground">Win Rate</div>
                   <div className={cn(
                     "text-2xl font-bold",
-                    backtestResult.metrics.winRate >= 50 ? "text-green-500" : "text-red-500"
+                    backtestResult.metrics.winRate >= 50 ? "text-[#0ECB81]" : "text-[#F6465D]"
                   )}>
                     {backtestResult.metrics.winRate.toFixed(1)}%
                   </div>
@@ -944,7 +944,7 @@ export function StrategyLab() {
                   <div className="text-sm text-muted-foreground">Общий PnL</div>
                   <div className={cn(
                     "text-2xl font-bold",
-                    backtestResult.metrics.totalPnl >= 0 ? "text-green-500" : "text-red-500"
+                    backtestResult.metrics.totalPnl >= 0 ? "text-[#0ECB81]" : "text-[#F6465D]"
                   )}>
                     ${backtestResult.metrics.totalPnl.toFixed(2)}
                   </div>
@@ -953,7 +953,7 @@ export function StrategyLab() {
               <Card>
                 <CardContent className="pt-4">
                   <div className="text-sm text-muted-foreground">Макс. просадка</div>
-                  <div className="text-2xl font-bold text-red-500">
+                  <div className="text-2xl font-bold text-[#F6465D]">
                     {backtestResult.metrics.maxDrawdownPercent.toFixed(1)}%
                   </div>
                 </CardContent>
@@ -966,7 +966,7 @@ export function StrategyLab() {
                   <div className="text-sm text-muted-foreground">Profit Factor</div>
                   <div className={cn(
                     "text-xl font-bold",
-                    backtestResult.metrics.profitFactor >= 1.5 ? "text-green-500" : ""
+                    backtestResult.metrics.profitFactor >= 1.5 ? "text-[#0ECB81]" : ""
                   )}>
                     {backtestResult.metrics.profitFactor.toFixed(2)}
                   </div>
@@ -977,7 +977,7 @@ export function StrategyLab() {
                   <div className="text-sm text-muted-foreground">Sharpe Ratio</div>
                   <div className={cn(
                     "text-xl font-bold",
-                    backtestResult.metrics.sharpeRatio >= 1 ? "text-green-500" : ""
+                    backtestResult.metrics.sharpeRatio >= 1 ? "text-[#0ECB81]" : ""
                   )}>
                     {backtestResult.metrics.sharpeRatio.toFixed(2)}
                   </div>
@@ -988,7 +988,7 @@ export function StrategyLab() {
                   <div className="text-sm text-muted-foreground">Финальный баланс</div>
                   <div className={cn(
                     "text-xl font-bold",
-                    backtestResult.finalBalance >= backtestResult.initialBalance ? "text-green-500" : "text-red-500"
+                    backtestResult.finalBalance >= backtestResult.initialBalance ? "text-[#0ECB81]" : "text-[#F6465D]"
                   )}>
                     ${backtestResult.finalBalance.toFixed(2)}
                   </div>
@@ -999,7 +999,7 @@ export function StrategyLab() {
                   <div className="text-sm text-muted-foreground">Изменение</div>
                   <div className={cn(
                     "text-xl font-bold",
-                    backtestResult.metrics.totalPnlPercent >= 0 ? "text-green-500" : "text-red-500"
+                    backtestResult.metrics.totalPnlPercent >= 0 ? "text-[#0ECB81]" : "text-[#F6465D]"
                   )}>
                     {backtestResult.metrics.totalPnlPercent >= 0 ? "+" : ""}
                     {backtestResult.metrics.totalPnlPercent.toFixed(2)}%
@@ -1114,7 +1114,7 @@ export function StrategyLab() {
                     <div className="flex items-center gap-2">
                       <h4 className="font-semibold">{bot.name}</h4>
                       <Badge className={cn(
-                        bot.status === "RUNNING" ? "bg-green-500/10 text-green-500" : "bg-gray-500/10 text-gray-500"
+                        bot.status === "RUNNING" ? "bg-[#0ECB81]/10 text-[#0ECB81]" : "bg-gray-500/10 text-gray-500"
                       )}>
                         {bot.status}
                       </Badge>
@@ -1129,7 +1129,7 @@ export function StrategyLab() {
                     <div className="flex items-center gap-2 text-sm">
                       <span className={cn(
                         "font-medium",
-                        bot.totalPnl >= 0 ? "text-green-500" : "text-red-500"
+                        bot.totalPnl >= 0 ? "text-[#0ECB81]" : "text-[#F6465D]"
                       )}>
                         PnL: ${bot.totalPnl.toFixed(2)}
                       </span>
@@ -1257,10 +1257,10 @@ export function StrategyLab() {
 
             {hyperoptResult.status === "COMPLETED" && hyperoptResult.bestParams && (
               <>
-                <div className="p-4 rounded-lg bg-green-500/10 border border-green-500/20">
+                <div className="p-4 rounded-lg bg-[#0ECB81]/10 border border-[#0ECB81]/20">
                   <div className="flex items-center gap-2 mb-2">
-                    <CheckCircle className="h-5 w-5 text-green-500" />
-                    <span className="font-semibold text-green-500">Лучший результат найден</span>
+                    <CheckCircle className="h-5 w-5 text-[#0ECB81]" />
+                    <span className="font-semibold text-[#0ECB81]">Лучший результат найден</span>
                   </div>
                   <div className="text-sm text-muted-foreground">
                     Objective Value: <span className="font-medium text-foreground">
@@ -1542,11 +1542,11 @@ export function StrategyLab() {
                       <span className="text-sm">Вход: {selectedTactics.entry.type}</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Target className="h-4 w-4 text-green-500" />
+                      <Target className="h-4 w-4 text-[#0ECB81]" />
                       <span className="text-sm">TP: {selectedTactics.takeProfit.type}</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Shield className="h-4 w-4 text-red-500" />
+                      <Shield className="h-4 w-4 text-[#F6465D]" />
                       <span className="text-sm">SL: {selectedTactics.stopLoss.type}</span>
                     </div>
                   </div>

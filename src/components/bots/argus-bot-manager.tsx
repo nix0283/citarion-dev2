@@ -210,7 +210,7 @@ export function ArgusBotManager() {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "ACTIVE":
-        return <Badge className="bg-green-500/10 text-green-500">Активен</Badge>;
+        return <Badge variant="outline" className="bg-[#0ECB81]/10 text-[#0ECB81] border-[#0ECB81]/20">Активен</Badge>;
       case "PAUSED":
         return <Badge className="bg-yellow-500/10 text-yellow-500">Пауза</Badge>;
       default:
@@ -221,14 +221,14 @@ export function ArgusBotManager() {
   const getSignalBadge = (type: string) => {
     if (type.includes("PUMP")) {
       return (
-        <Badge className="bg-green-500/10 text-green-500">
+        <Badge variant="outline" className="bg-[#0ECB81]/10 text-[#0ECB81] border-[#0ECB81]/20">
           <TrendingUp className="h-3 w-3 mr-1" />
           {type}
         </Badge>
       );
     }
     return (
-      <Badge className="bg-red-500/10 text-red-500">
+      <Badge variant="outline" className="bg-[#F6465D]/10 text-[#F6465D] border-[#F6465D]/20">
         <TrendingDown className="h-3 w-3 mr-1" />
         {type}
       </Badge>
@@ -396,7 +396,7 @@ export function ArgusBotManager() {
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center gap-2">
-              <Activity className="h-5 w-5 text-green-500" />
+              <Activity className="h-5 w-5 text-[#0ECB81]" />
               <div>
                 <div className="text-2xl font-bold">{bots.length}</div>
                 <div className="text-xs text-muted-foreground">Всего ботов</div>
@@ -420,7 +420,7 @@ export function ArgusBotManager() {
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center gap-2">
-              <TrendingUp className="h-5 w-5 text-green-500" />
+              <TrendingUp className="h-5 w-5 text-[#0ECB81]" />
               <div>
                 <div className="text-2xl font-bold">
                   {signals.filter((s) => s.type.includes("PUMP")).length}
@@ -433,7 +433,7 @@ export function ArgusBotManager() {
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center gap-2">
-              <TrendingDown className="h-5 w-5 text-red-500" />
+              <TrendingDown className="h-5 w-5 text-[#F6465D]" />
               <div>
                 <div className="text-2xl font-bold">
                   {signals.filter((s) => s.type.includes("DUMP")).length}
@@ -508,7 +508,7 @@ export function ArgusBotManager() {
                         <Button
                           size="sm"
                           variant="ghost"
-                          className="text-red-500"
+                          className="text-[#F6465D]"
                           onClick={() => handleDeleteBot(bot.id)}
                         >
                           <Trash2 className="h-4 w-4" />
@@ -555,7 +555,7 @@ export function ArgusBotManager() {
                     <TableCell>
                       <span
                         className={cn(
-                          signal.priceChange > 0 ? "text-green-500" : "text-red-500"
+                          signal.priceChange > 0 ? "text-[#0ECB81]" : "text-[#F6465D]"
                         )}
                       >
                         {signal.priceChange > 0 ? "+" : ""}
@@ -565,7 +565,7 @@ export function ArgusBotManager() {
                     <TableCell>{(signal.confidence * 100).toFixed(0)}%</TableCell>
                     <TableCell>
                       {signal.executed ? (
-                        <Badge className="bg-green-500/10 text-green-500">Да</Badge>
+                        <Badge variant="outline" className="bg-[#0ECB81]/10 text-[#0ECB81] border-[#0ECB81]/20">Да</Badge>
                       ) : (
                         <Badge variant="outline">Нет</Badge>
                       )}

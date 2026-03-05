@@ -95,15 +95,15 @@ const categoryStyles: Record<BotCategory, { icon: React.ElementType; color: stri
   operational: { icon: Activity, color: 'text-blue-400', bgColor: 'bg-blue-500/10' },
   institutional: { icon: Crown, color: 'text-purple-400', bgColor: 'bg-purple-500/10' },
   frequency: { icon: Cpu, color: 'text-orange-400', bgColor: 'bg-orange-500/10' },
-  meta: { icon: Brain, color: 'text-green-400', bgColor: 'bg-green-500/10' },
+  meta: { icon: Brain, color: 'text-[#0ECB81]', bgColor: 'bg-[#0ECB81]/10' },
 }
 
 const statusStyles: Record<BotStatus, { color: string; label: string }> = {
   idle: { color: 'bg-gray-500', label: 'Ожидание' },
   starting: { color: 'bg-yellow-500', label: 'Запуск' },
-  running: { color: 'bg-green-500', label: 'Работает' },
+  running: { color: 'bg-[#0ECB81]', label: 'Работает' },
   stopping: { color: 'bg-yellow-500', label: 'Остановка' },
-  error: { color: 'bg-red-500', label: 'Ошибка' },
+  error: { color: 'bg-[#F6465D]', label: 'Ошибка' },
   paused: { color: 'bg-orange-500', label: 'Пауза' },
 }
 
@@ -129,10 +129,10 @@ function FrequencyBotCard({
   // Latency indicator
   const avgLatency = bot.stats?.avgLatency ?? 0
   const latencyClass = avgLatency < 10 
-    ? 'text-green-400' 
+    ? 'text-[#0ECB81]' 
     : avgLatency < 100 
       ? 'text-yellow-400' 
-      : 'text-red-400'
+      : 'text-[#F6465D]'
 
   return (
     <Card className={`relative overflow-hidden border-border/50 ${style.bgColor}`}>
@@ -148,7 +148,7 @@ function FrequencyBotCard({
           <div className="flex items-center gap-2">
             <Badge 
               variant="outline" 
-              className={`text-xs ${isRunning ? 'border-green-500 text-green-400' : 'border-gray-500 text-gray-400'}`}
+              className={`text-xs ${isRunning ? 'border-[#0ECB81] text-[#0ECB81]' : 'border-gray-500 text-gray-400'}`}
             >
               <span className={`mr-1 h-2 w-2 rounded-full ${status.color}`} />
               {status.label}
@@ -168,13 +168,13 @@ function FrequencyBotCard({
             </div>
             <div className="text-center p-2 rounded bg-background/50">
               <div className="text-muted-foreground">Win Rate</div>
-              <div className={`font-mono font-bold ${bot.stats.winRate >= 0.5 ? 'text-green-400' : 'text-red-400'}`}>
+              <div className={`font-mono font-bold ${bot.stats.winRate >= 0.5 ? 'text-[#0ECB81]' : 'text-[#F6465D]'}`}>
                 {(bot.stats.winRate * 100).toFixed(1)}%
               </div>
             </div>
             <div className="text-center p-2 rounded bg-background/50">
               <div className="text-muted-foreground">PnL</div>
-              <div className={`font-mono font-bold ${bot.stats.totalPnl >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+              <div className={`font-mono font-bold ${bot.stats.totalPnl >= 0 ? 'text-[#0ECB81]' : 'text-[#F6465D]'}`}>
                 {bot.stats.totalPnl >= 0 ? '+' : ''}{bot.stats.totalPnl.toFixed(2)}
               </div>
             </div>
@@ -200,7 +200,7 @@ function FrequencyBotCard({
         
         {/* Error Display */}
         {bot.status === 'error' && bot.lastError && (
-          <div className="p-2 rounded bg-red-500/10 text-red-400 text-xs flex items-start gap-2">
+          <div className="p-2 rounded bg-[#F6465D]/10 text-[#F6465D] text-xs flex items-start gap-2">
             <AlertTriangle className="h-4 w-4 shrink-0 mt-0.5" />
             <span>{bot.lastError}</span>
           </div>
@@ -250,11 +250,11 @@ function LogosPanel({
   const isRunning = status?.status === 'running'
 
   return (
-    <Card className="border-green-500/30 bg-green-500/5">
+    <Card className="border-[#0ECB81]/30 bg-[#0ECB81]/5">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Brain className="h-5 w-5 text-green-400" />
+            <Brain className="h-5 w-5 text-[#0ECB81]" />
             <div>
               <CardTitle className="text-base font-mono">LOGOS</CardTitle>
               <CardDescription className="text-xs">Мета-бот - Агрегатор сигналов</CardDescription>
@@ -262,9 +262,9 @@ function LogosPanel({
           </div>
           <Badge 
             variant="outline" 
-            className={`text-xs ${isRunning ? 'border-green-500 text-green-400' : 'border-gray-500 text-gray-400'}`}
+            className={`text-xs ${isRunning ? 'border-[#0ECB81] text-[#0ECB81]' : 'border-gray-500 text-gray-400'}`}
           >
-            <span className={`mr-1 h-2 w-2 rounded-full ${isRunning ? 'bg-green-500' : 'bg-gray-500'}`} />
+            <span className={`mr-1 h-2 w-2 rounded-full ${isRunning ? 'bg-[#0ECB81]' : 'bg-gray-500'}`} />
             {isRunning ? 'Работает' : 'Ожидание'}
           </Badge>
         </div>
@@ -314,7 +314,7 @@ function LogosPanel({
               {signals.slice(0, 5).map(signal => (
                 <div key={signal.id} className="flex items-center justify-between text-xs p-1.5 rounded bg-background/30">
                   <div className="flex items-center gap-2">
-                    <Badge variant="outline" className={`text-xs ${signal.direction === 'LONG' ? 'text-green-400' : signal.direction === 'SHORT' ? 'text-red-400' : 'text-gray-400'}`}>
+                    <Badge variant="outline" className={`text-xs ${signal.direction === 'LONG' ? 'text-[#0ECB81]' : signal.direction === 'SHORT' ? 'text-[#F6465D]' : 'text-gray-400'}`}>
                       {signal.direction}
                     </Badge>
                     <span className="font-mono">{signal.symbol}</span>
@@ -377,7 +377,7 @@ function SignalFeed({ signals }: { signals: SignalInfo[] }) {
                 <div className="flex items-center gap-2">
                   <Badge 
                     variant="outline" 
-                    className={`text-xs ${signal.direction === 'LONG' ? 'text-green-400 border-green-500' : 'text-red-400 border-red-500'}`}
+                    className={`text-xs ${signal.direction === 'LONG' ? 'text-[#0ECB81] border-[#0ECB81]' : 'text-[#F6465D] border-[#F6465D]'}`}
                   >
                     {signal.direction}
                   </Badge>
@@ -620,7 +620,7 @@ export function FrequencyBotPanel() {
                   <div className="text-xs text-muted-foreground">Всего ботов</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold font-mono text-green-400">
+                  <div className="text-2xl font-bold font-mono text-[#0ECB81]">
                     {bots.filter(b => b.status === 'running').length}
                   </div>
                   <div className="text-xs text-muted-foreground">Работает</div>
@@ -632,7 +632,7 @@ export function FrequencyBotPanel() {
                   <div className="text-xs text-muted-foreground">Сигналов</div>
                 </div>
                 <div className="text-center">
-                  <div className={`text-2xl font-bold font-mono ${bots.reduce((sum, b) => sum + (b.stats?.totalPnl ?? 0), 0) >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                  <div className={`text-2xl font-bold font-mono ${bots.reduce((sum, b) => sum + (b.stats?.totalPnl ?? 0), 0) >= 0 ? 'text-[#0ECB81]' : 'text-[#F6465D]'}`}>
                     {bots.reduce((sum, b) => sum + (b.stats?.totalPnl ?? 0), 0).toFixed(2)}
                   </div>
                   <div className="text-xs text-muted-foreground">Общий PnL</div>

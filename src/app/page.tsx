@@ -10,6 +10,48 @@ import { PriceProvider, usePriceContext } from "@/components/providers/price-pro
 import { useRealtimePrice } from "@/hooks/use-realtime-prices";
 import { useCryptoStore } from "@/stores/crypto-store";
 import { cn } from "@/lib/utils";
+
+// Functional Components
+import { RiskDashboard } from "@/components/risk-management/risk-dashboard";
+import { HyperoptPanel } from "@/components/hyperopt/hyperopt-panel";
+import { StrategyLab } from "@/components/strategy-lab/strategy-lab";
+import { GridBotManager } from "@/components/bots/grid-bot-manager";
+import { DcaBotManager } from "@/components/bots/dca-bot-manager";
+import { BBBotManager } from "@/components/bots/bb-bot-manager";
+import { ArgusBotManager } from "@/components/bots/argus-bot-manager";
+import { OrionBotManager } from "@/components/bots/orion-bot-manager";
+import { VisionBotManager } from "@/components/bots/vision-bot-manager";
+import { RangeBotManager } from "@/components/bots/range-bot-manager";
+import { WolfBotPanel } from "@/components/bots/wolfbot-panel";
+import { SpectrumBotPanel } from "@/components/bots/spectrum-bot-panel";
+import { ReedBotPanel } from "@/components/bots/reed-bot-panel";
+import { ArchitectBotPanel } from "@/components/bots/architect-bot-panel";
+import { EquilibristBotPanel } from "@/components/bots/equilibrist-bot-panel";
+import { KronBotPanel } from "@/components/bots/kron-bot-panel";
+import { HFTBotPanel } from "@/components/bots/hft-bot-panel";
+import { MFTBotPanel } from "@/components/bots/mft-bot-panel";
+import { LFTBotPanel } from "@/components/bots/lft-bot-panel";
+import { FrequencyBotPanel } from "@/components/bots/frequency-bot-panel";
+import { LogosPanel } from "@/components/bots/logos-panel";
+import { LumibotPanel } from "@/components/lumibot/lumibot-panel";
+import { MLFilteringPanel } from "@/components/ml/ml-filtering-panel";
+import { SignalScorerPanel } from "@/components/ml/signal-scorer-panel";
+import { VolatilityPanel } from "@/components/volatility/volatility-panel";
+import { GeneticOptimizerPanel } from "@/components/self-learning/genetic-optimizer-panel";
+import { WorkspacePanel } from "@/components/workspace/workspace-panel";
+import { TelegramSettings } from "@/components/telegram/telegram-settings";
+import { AlertSystemPanel } from "@/components/alerts/alert-system-panel";
+import { ChatBot } from "@/components/chat/chat-bot";
+import { CopyTradingPanel } from "@/components/copy-trading/copy-trading-panel";
+import { MasterTraderPanel } from "@/components/copy-trading/master-trader-panel";
+import { PreviewPanel } from "@/components/preview/preview-panel";
+import { NotificationsPanel } from "@/components/notifications/notifications-panel";
+import { ConnectedAccounts } from "@/components/exchanges/connected-accounts";
+import { TradingForm } from "@/components/trading/trading-form";
+import { MultiChartPanel } from "@/components/chart/multi-chart-panel";
+import { MiniChart } from "@/components/chart/mini-chart";
+import { InstitutionalBotsPanel } from "@/components/institutional-bots/institutional-bots-panel";
+import { BotConfigForm } from "@/components/bot/bot-config-form";
 import {
   LineChart,
   Line,
@@ -67,6 +109,7 @@ import {
   ArrowRight,
   PieChart as PieChartIcon,
   Layers,
+  MessageSquare,
 } from "lucide-react";
 import {
   Card,
@@ -267,6 +310,102 @@ function DashboardContent() {
             <PriceChart />
           </div>
         );
+      // Advanced Menu Items - Functional Components
+      case "auto-trading-settings":
+        return <BotConfigForm />;
+      case "multi-chart":
+        return (
+          <MultiChartPanel
+            renderChart={(symbol, timeframe, chartId) => (
+              <div key={chartId} className="w-full h-full bg-[#0a0a0b]">
+                <MiniChart symbol={symbol} />
+              </div>
+            )}
+          />
+        );
+      case "trading":
+        return <TradingForm />;
+      case "strategy-lab":
+        return <StrategyLab />;
+      case "hyperopt":
+        return <HyperoptPanel />;
+      case "ml-filter":
+        return <MLFilteringPanel />;
+      case "signal-scorer":
+        return <SignalScorerPanel />;
+      case "volatility":
+        return <VolatilityPanel />;
+      case "self-learning":
+        return <GeneticOptimizerPanel />;
+      case "risk-management":
+        return <RiskDashboard />;
+      case "chat":
+        return <ChatBot />;
+      case "exchanges":
+        return <ConnectedAccounts />;
+      // Bottom Menu Items
+      case "preview":
+        return <PreviewPanel />;
+      case "workspace":
+        return <WorkspacePanel />;
+      case "notifications":
+        return <NotificationsPanel />;
+      case "telegram":
+        return <TelegramSettings />;
+      case "alerts":
+        return <AlertSystemPanel />;
+      case "help":
+        return <HelpView />;
+      // Bot Items - Meta
+      case "logos":
+        return <LogosPanel />;
+      // Bot Items - Operational
+      case "grid-bot":
+        return <GridBotManager />;
+      case "dca-bot":
+        return <DcaBotManager />;
+      case "bb-bot":
+        return <BBBotManager />;
+      // Bot Items - Institutional
+      case "institutional-bots":
+        return <InstitutionalBotsPanel />;
+      case "spectrum-bot":
+        return <SpectrumBotPanel />;
+      case "reed-bot":
+        return <ReedBotPanel />;
+      case "architect-bot":
+        return <ArchitectBotPanel />;
+      case "equilibrist-bot":
+        return <EquilibristBotPanel />;
+      case "kron-bot":
+        return <KronBotPanel />;
+      // Bot Items - Analytical
+      case "argus-bot":
+        return <ArgusBotManager />;
+      case "orion-bot":
+        return <OrionBotManager />;
+      case "vision-bot":
+        return <VisionBotManager />;
+      case "range-bot":
+        return <RangeBotManager />;
+      case "lumibot":
+        return <LumibotPanel />;
+      case "wolfbot":
+        return <WolfBotPanel />;
+      // Bot Items - Frequency
+      case "frequency-bots":
+        return <FrequencyBotPanel />;
+      case "hft-bot":
+        return <HFTBotPanel />;
+      case "mft-bot":
+        return <MFTBotPanel />;
+      case "lft-bot":
+        return <LFTBotPanel />;
+      // Copy Trading Items
+      case "copy-trading":
+        return <CopyTradingPanel />;
+      case "master-trading":
+        return <MasterTraderPanel />;
       default:
         return <DashboardView />;
     }
@@ -434,270 +573,11 @@ function ConnectionStatusBar({ btcPrice, connectionStatus, lastUpdated, exchange
 // Dashboard View (Main Overview)
 // ============================================
 
+// Import new dashboard view
+import { DashboardViewNew } from "@/components/dashboard/dashboard-view-new";
+
 function DashboardView() {
-  return (
-    <div className="flex flex-col h-full gap-4">
-      {/* Top Stats Row */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
-        <StatCard
-          title="Total Balance"
-          value={formatCurrency(demoMetrics.totalBalance)}
-          change={demoMetrics.totalPnLPercent}
-          icon={<Wallet className="h-4 w-4" />}
-          trend="up"
-        />
-        <StatCard
-          title="Today's P&L"
-          value={formatCurrency(demoMetrics.dailyPnL)}
-          change={demoMetrics.dailyPnLPercent}
-          icon={<TrendingUp className="h-4 w-4" />}
-          trend={demoMetrics.dailyPnL >= 0 ? "up" : "down"}
-        />
-        <StatCard
-          title="Active Bots"
-          value={`${demoMetrics.activeBots}/${demoMetrics.totalBots}`}
-          subtitle="Running"
-          icon={<Bot className="h-4 w-4" />}
-          trend="neutral"
-        />
-        <StatCard
-          title="Win Rate"
-          value={`${demoMetrics.winRate}%`}
-          subtitle={`${demoMetrics.totalTrades} trades`}
-          icon={<Target className="h-4 w-4" />}
-          trend="up"
-        />
-      </div>
-
-      {/* Main Content Grid */}
-      <div className="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-4 min-h-0">
-        {/* Left Column: Chart + Quick Actions */}
-        <div className="lg:col-span-2 flex flex-col gap-4 min-h-0">
-          {/* Equity Curve Chart */}
-          <Card className="flex-1 min-h-[300px]">
-            <CardHeader className="pb-2">
-              <div className="flex items-center justify-between">
-                <div>
-                  <CardTitle className="text-base">Equity Curve</CardTitle>
-                  <CardDescription>Portfolio performance over time</CardDescription>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Badge variant="outline" className="text-[#0ECB81] border-[#0ECB81]/30">
-                    +{demoMetrics.monthlyPnLPercent.toFixed(1)}%
-                  </Badge>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent className="h-[calc(100%-80px)]">
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={demoEquityCurve}>
-                  <defs>
-                    <linearGradient id="equityGradient" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor={COLORS.success} stopOpacity={0.3} />
-                      <stop offset="95%" stopColor={COLORS.success} stopOpacity={0} />
-                    </linearGradient>
-                  </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-                  <XAxis
-                    dataKey="date"
-                    tickFormatter={(value) => new Date(value).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
-                    stroke="hsl(var(--muted-foreground))"
-                    fontSize={10}
-                  />
-                  <YAxis
-                    stroke="hsl(var(--muted-foreground))"
-                    fontSize={10}
-                    tickFormatter={(value) => `$${(value / 1000).toFixed(1)}k`}
-                  />
-                  <Tooltip
-                    contentStyle={{
-                      backgroundColor: "hsl(var(--card))",
-                      border: "1px solid hsl(var(--border))",
-                      borderRadius: "8px",
-                    }}
-                    formatter={(value: number) => [formatCurrency(value), "Equity"]}
-                    labelFormatter={(label) => new Date(label).toLocaleDateString()}
-                  />
-                  <Area
-                    type="monotone"
-                    dataKey="equity"
-                    stroke={COLORS.success}
-                    strokeWidth={2}
-                    fill="url(#equityGradient)"
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
-
-          {/* Active Positions Preview */}
-          <Card>
-            <CardHeader className="pb-2">
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-base flex items-center gap-2">
-                  <Activity className="h-4 w-4 text-[#0ECB81]" />
-                  Active Positions
-                </CardTitle>
-                <Button variant="ghost" size="sm" className="text-xs">
-                  View All <ChevronRight className="h-3 w-3 ml-1" />
-                </Button>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                {demoPositions.slice(0, 3).map((position) => (
-                  <PositionRow key={position.id} position={position} />
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Right Column: Signals + Bots */}
-        <div className="flex flex-col gap-4 min-h-0 overflow-hidden">
-          {/* Active Signals */}
-          <Card className="flex-1 min-h-0">
-            <CardHeader className="pb-2">
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-base flex items-center gap-2">
-                  <Signal className="h-4 w-4 text-blue-500" />
-                  Active Signals
-                </CardTitle>
-                <Badge variant="outline" className="text-xs">
-                  {demoSignals.filter((s) => s.status === "active" || s.status === "in_progress").length}
-                </Badge>
-              </div>
-            </CardHeader>
-            <CardContent className="p-0">
-              <ScrollArea className="h-[300px]">
-                <div className="space-y-2 p-4 pt-0">
-                  {demoSignals.filter((s) => s.status === "active" || s.status === "in_progress").slice(0, 5).map((signal) => (
-                    <SignalRow key={signal.id} signal={signal} />
-                  ))}
-                </div>
-              </ScrollArea>
-            </CardContent>
-          </Card>
-
-          {/* Running Bots */}
-          <Card className="flex-1 min-h-0">
-            <CardHeader className="pb-2">
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-base flex items-center gap-2">
-                  <Bot className="h-4 w-4 text-[#F0B90B]" />
-                  Running Bots
-                </CardTitle>
-                <Badge variant="outline" className="text-xs text-[#0ECB81] border-[#0ECB81]/30">
-                  {demoMetrics.activeBots} Active
-                </Badge>
-              </div>
-            </CardHeader>
-            <CardContent className="p-0">
-              <ScrollArea className="h-[200px]">
-                <div className="space-y-2 p-4 pt-0">
-                  {demoBots.filter((b) => b.status === "running").slice(0, 4).map((bot) => (
-                    <BotRow key={bot.id} bot={bot} />
-                  ))}
-                </div>
-              </ScrollArea>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-
-      {/* Bottom Row: Journal Preview + Allocation */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Recent Journal */}
-        <Card>
-          <CardHeader className="pb-2">
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-base flex items-center gap-2">
-                <BookOpen className="h-4 w-4 text-purple-500" />
-                Trading Journal
-              </CardTitle>
-              <Button variant="ghost" size="sm" className="text-xs">
-                View All <ChevronRight className="h-3 w-3 ml-1" />
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {demoJournalEntries[0] && (
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium">{demoJournalEntries[0].title}</span>
-                  <Badge variant="outline" className="text-xs">
-                    {demoJournalEntries[0].trades} trades
-                  </Badge>
-                </div>
-                <p className="text-xs text-muted-foreground line-clamp-2">
-                  {demoJournalEntries[0].content}
-                </p>
-                <div className="flex items-center gap-2 text-xs">
-                  <span className={demoJournalEntries[0].pnl >= 0 ? "text-[#0ECB81]" : "text-[#F6465D]"}>
-                    {formatCurrency(demoJournalEntries[0].pnl)}
-                  </span>
-                  <span className="text-muted-foreground">•</span>
-                  <span className="text-muted-foreground"><TimeAgo date={demoJournalEntries[0].date} /></span>
-                </div>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-
-        {/* Asset Allocation */}
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-base flex items-center gap-2">
-              <BarChart3 className="h-4 w-4 text-cyan-500" />
-              Asset Allocation
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex items-center gap-4">
-              <div className="w-24 h-24">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={demoAssetAllocation}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={25}
-                      outerRadius={40}
-                      paddingAngle={2}
-                      dataKey="percent"
-                    >
-                      {demoAssetAllocation.map((_, index) => (
-                        <Cell key={`cell-${index}`} fill={PIE_COLORS[index % PIE_COLORS.length]} />
-                      ))}
-                    </Pie>
-                  </PieChart>
-                </ResponsiveContainer>
-              </div>
-              <div className="flex-1 space-y-1">
-                {demoAssetAllocation.slice(0, 4).map((asset, index) => (
-                  <div key={asset.symbol} className="flex items-center justify-between text-xs">
-                    <div className="flex items-center gap-2">
-                      <div
-                        className="w-2 h-2 rounded-full"
-                        style={{ backgroundColor: PIE_COLORS[index] }}
-                      />
-                      <span className="font-medium">{asset.symbol}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span>{asset.percent}%</span>
-                      <span className={asset.change >= 0 ? "text-[#0ECB81]" : "text-[#F6465D]"}>
-                        {asset.change >= 0 ? "+" : ""}{asset.change}%
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
+  return <DashboardViewNew />;
 }
 
 // ============================================
@@ -2009,6 +1889,105 @@ function NewsView({ news, events }: NewsViewProps) {
           </div>
         </ScrollArea>
       )}
+    </div>
+  );
+}
+
+// ============================================
+// Help View
+// ============================================
+
+function HelpView() {
+  return (
+    <div className="flex flex-col h-full gap-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-2xl font-bold">Помощь</h2>
+          <p className="text-muted-foreground">Документация и поддержка</p>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-base flex items-center gap-2">
+              <BookOpen className="h-5 w-5 text-primary" />
+              Документация
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <a href="#" className="block p-3 rounded-lg border hover:bg-muted/50 transition-colors">
+              <div className="font-medium text-sm">Начало работы</div>
+              <p className="text-xs text-muted-foreground">Как настроить первого бота</p>
+            </a>
+            <a href="#" className="block p-3 rounded-lg border hover:bg-muted/50 transition-colors">
+              <div className="font-medium text-sm">Торговые стратегии</div>
+              <p className="text-xs text-muted-foreground">Обзор доступных стратегий</p>
+            </a>
+            <a href="#" className="block p-3 rounded-lg border hover:bg-muted/50 transition-colors">
+              <div className="font-medium text-sm">API документация</div>
+              <p className="text-xs text-muted-foreground">Интеграция с внешними системами</p>
+            </a>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-base flex items-center gap-2">
+              <MessageSquare className="h-5 w-5 text-primary" />
+              Поддержка
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <div className="p-3 rounded-lg border">
+              <div className="font-medium text-sm">Telegram</div>
+              <p className="text-xs text-muted-foreground">@citarion_support</p>
+            </div>
+            <div className="p-3 rounded-lg border">
+              <div className="font-medium text-sm">Email</div>
+              <p className="text-xs text-muted-foreground">support@citarion.io</p>
+            </div>
+            <div className="p-3 rounded-lg border">
+              <div className="font-medium text-sm">Discord</div>
+              <p className="text-xs text-muted-foreground">discord.gg/citarion</p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base">Частые вопросы (FAQ)</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Accordion type="single" collapsible className="w-full">
+            <AccordionItem value="q1">
+              <AccordionTrigger className="text-sm">Как подключить биржу?</AccordionTrigger>
+              <AccordionContent className="text-sm text-muted-foreground">
+                Перейдите в раздел "Биржи" и нажмите "Добавить биржу". Введите API ключ и секретный ключ с вашей биржи.
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="q2">
+              <AccordionTrigger className="text-sm">Какие биржи поддерживаются?</AccordionTrigger>
+              <AccordionContent className="text-sm text-muted-foreground">
+                Binance, Bybit, OKX, Bitget, KuCoin, BingX, HyperLiquid, Aster DEX и другие.
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="q3">
+              <AccordionTrigger className="text-sm">Безопасно ли использовать API ключи?</AccordionTrigger>
+              <AccordionContent className="text-sm text-muted-foreground">
+                Да, все ключи хранятся в зашифрованном виде. Рекомендуем ограничить права ключа только торговлей.
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="q4">
+              <AccordionTrigger className="text-sm">Как работает демо-режим?</AccordionTrigger>
+              <AccordionContent className="text-sm text-muted-foreground">
+                Демо-режим позволяет тестировать стратегии без реальных средств. Все сделки виртуальные.
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        </CardContent>
+      </Card>
     </div>
   );
 }

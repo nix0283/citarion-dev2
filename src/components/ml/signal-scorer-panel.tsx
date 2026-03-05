@@ -143,29 +143,29 @@ const FEATURE_GROUPS = {
 
 // Get score color
 const getScoreColor = (score: number): string => {
-  if (score >= 70) return 'text-green-500'
+  if (score >= 70) return 'text-[#0ECB81]'
   if (score >= 40) return 'text-yellow-500'
-  return 'text-red-500'
+  return 'text-[#F6465D]'
 }
 
 // Get score background
 const getScoreBgColor = (score: number): string => {
-  if (score >= 70) return 'bg-green-500'
+  if (score >= 70) return 'bg-[#0ECB81]'
   if (score >= 40) return 'bg-yellow-500'
-  return 'bg-red-500'
+  return 'bg-[#F6465D]'
 }
 
-// Get quality badge variant
-const getQualityVariant = (quality: string): 'default' | 'secondary' | 'destructive' => {
-  if (quality === 'HIGH') return 'default'
-  if (quality === 'MEDIUM') return 'secondary'
-  return 'destructive'
+// Get quality badge className for outline variant
+const getQualityClassName = (quality: string): string => {
+  if (quality === 'HIGH') return 'border-[#0ECB81] text-[#0ECB81]'
+  if (quality === 'MEDIUM') return 'border-yellow-500 text-yellow-500'
+  return 'border-[#F6465D] text-[#F6465D]'
 }
 
 // Get direction icon
 const DirectionIcon = ({ direction }: { direction: string }) => {
-  if (direction === 'LONG') return <TrendingUp className="h-4 w-4 text-green-500" />
-  if (direction === 'SHORT') return <TrendingDown className="h-4 w-4 text-red-500" />
+  if (direction === 'LONG') return <TrendingUp className="h-4 w-4 text-[#0ECB81]" />
+  if (direction === 'SHORT') return <TrendingDown className="h-4 w-4 text-[#F6465D]" />
   return <Minus className="h-4 w-4 text-yellow-500" />
 }
 
@@ -379,7 +379,7 @@ export function SignalScorerPanel() {
                 <CardDescription>Прогнозирование качества сигнала с использованием ансамблей деревьев решений</CardDescription>
               </div>
             </div>
-            <Badge variant={modelStats?.trained ? 'default' : 'secondary'}>
+            <Badge variant="outline" className={modelStats?.trained ? 'border-[#0ECB81] text-[#0ECB81]' : ''}>
               {modelStats?.trained ? 'Обучен' : 'Не Обучен'}
             </Badge>
           </div>
@@ -427,7 +427,7 @@ export function SignalScorerPanel() {
                           <DirectionIcon direction={currentScore.direction} />
                           <span className="font-medium">{currentScore.direction}</span>
                         </div>
-                        <Badge variant={getQualityVariant(currentScore.quality)}>
+                        <Badge variant="outline" className={getQualityClassName(currentScore.quality)}>
                           {currentScore.quality} Качество
                         </Badge>
                       </div>
@@ -632,7 +632,7 @@ export function SignalScorerPanel() {
 
                   <div className="space-y-1">
                     <Label className="text-xs text-muted-foreground">Оценка Качества</Label>
-                    <Badge variant={getQualityVariant(currentScore.quality)} className="w-full justify-center">
+                    <Badge variant="outline" className={`${getQualityClassName(currentScore.quality)} w-full justify-center`}>
                       {currentScore.quality}
                     </Badge>
                   </div>
@@ -768,7 +768,7 @@ export function SignalScorerPanel() {
                           <div>
                             <div className="flex items-center gap-2">
                               <span className="font-medium">{item.symbol}</span>
-                              <Badge variant={getQualityVariant(item.quality)} className="text-xs">
+                              <Badge variant="outline" className={`${getQualityClassName(item.quality)} text-xs`}>
                                 {item.quality}
                               </Badge>
                             </div>

@@ -75,20 +75,20 @@ function VaRCalculatorPanel() {
           <CardContent className="p-6">
             <div className="text-center">
               <div className="text-sm text-muted-foreground mb-2">Стоимость под Риском</div>
-              <div className="text-4xl font-bold text-red-500">
+              <div className="text-4xl font-bold text-[#F6465D]">
                 ${varResult.var.toLocaleString()}
               </div>
               <div className="text-sm text-muted-foreground mt-2">
                 {config.confidenceLevel * 100}% уверенность, {config.timeHorizon}д горизонт
               </div>
               <Badge
-                variant={riskLevel === 'LOW' ? 'secondary' : riskLevel === 'CRITICAL' ? 'destructive' : 'default'}
+                variant="outline"
                 className={cn(
                   "mt-4",
-                  riskLevel === 'LOW' && "bg-green-500/10 text-green-500",
-                  riskLevel === 'MEDIUM' && "bg-yellow-500/10 text-yellow-500",
-                  riskLevel === 'HIGH' && "bg-orange-500/10 text-orange-500",
-                  riskLevel === 'CRITICAL' && "bg-red-500/10 text-red-500"
+                  riskLevel === 'LOW' && "bg-[#0ECB81]/10 text-[#0ECB81] border-[#0ECB81]/30",
+                  riskLevel === 'MEDIUM' && "bg-yellow-500/10 text-yellow-500 border-yellow-500/30",
+                  riskLevel === 'HIGH' && "bg-orange-500/10 text-orange-500 border-orange-500/30",
+                  riskLevel === 'CRITICAL' && "bg-[#F6465D]/10 text-[#F6465D] border-[#F6465D]/30"
                 )}
               >
                 {riskLevel} РИСК
@@ -257,7 +257,7 @@ function PositionLimiterPanel() {
         <Card>
           <CardContent className="p-4">
             <div className="text-sm text-muted-foreground">Available Margin</div>
-            <div className="text-2xl font-bold text-green-500">
+            <div className="text-2xl font-bold text-[#0ECB81]">
               ${(config.maxTotalExposure - currentExposure.total).toLocaleString()}
             </div>
           </CardContent>
@@ -356,11 +356,11 @@ function DrawdownMonitorPanel() {
 
   const getLevelColor = (level: string) => {
     switch (level) {
-      case 'none': return 'text-green-500';
+      case 'none': return 'text-[#0ECB81]';
       case 'warning': return 'text-yellow-500';
       case 'critical': return 'text-orange-500';
-      case 'breach': return 'text-red-500';
-      default: return 'text-green-500';
+      case 'breach': return 'text-[#F6465D]';
+      default: return 'text-[#0ECB81]';
     }
   };
 
@@ -379,13 +379,13 @@ function DrawdownMonitorPanel() {
               </div>
               <div className="text-right">
                 <Badge
-                  variant={drawdownState.level === 'none' ? 'secondary' : 'destructive'}
+                  variant="outline"
                   className={cn(
                     "text-lg px-4 py-2",
-                    drawdownState.level === 'none' && "bg-green-500/10 text-green-500",
-                    drawdownState.level === 'warning' && "bg-yellow-500/10 text-yellow-500",
-                    drawdownState.level === 'critical' && "bg-orange-500/10 text-orange-500",
-                    drawdownState.level === 'breach' && "bg-red-500/10 text-red-500"
+                    drawdownState.level === 'none' && "bg-[#0ECB81]/10 text-[#0ECB81] border-[#0ECB81]/30",
+                    drawdownState.level === 'warning' && "bg-yellow-500/10 text-yellow-500 border-yellow-500/30",
+                    drawdownState.level === 'critical' && "bg-orange-500/10 text-orange-500 border-orange-500/30",
+                    drawdownState.level === 'breach' && "bg-[#F6465D]/10 text-[#F6465D] border-[#F6465D]/30"
                   )}
                 >
                   {drawdownState.level.toUpperCase()}
@@ -402,7 +402,7 @@ function DrawdownMonitorPanel() {
                 <span>0%</span>
                 <span className="text-yellow-500">Warning {thresholds.warning}%</span>
                 <span className="text-orange-500">Critical {thresholds.critical}%</span>
-                <span className="text-red-500">Breach {thresholds.breach}%</span>
+                <span className="text-[#F6465D]">Breach {thresholds.breach}%</span>
               </div>
               <div className="h-6 rounded-full bg-muted relative overflow-hidden">
                 <div className="absolute inset-y-0 left-0 w-1/4 bg-green-500/20" />
@@ -421,7 +421,7 @@ function DrawdownMonitorPanel() {
         <Card>
           <CardContent className="p-4">
             <div className="text-sm text-muted-foreground">Max Drawdown</div>
-            <div className="text-3xl font-bold text-red-500">{drawdownState.max.toFixed(1)}%</div>
+            <div className="text-3xl font-bold text-[#F6465D]">{drawdownState.max.toFixed(1)}%</div>
             <div className="text-xs text-muted-foreground mt-2">Historical maximum</div>
           </CardContent>
         </Card>
@@ -551,8 +551,8 @@ function KillSwitchPanel() {
       {/* Kill Switch Status */}
       <Card className={cn(
         "border-2",
-        state === 'ARMED' && "border-green-500/50",
-        state === 'TRIGGERED' && "border-red-500/50",
+        state === 'ARMED' && "border-[#0ECB81]/50",
+        state === 'TRIGGERED' && "border-[#F6465D]/50",
         state === 'RECOVERING' && "border-yellow-500/50",
         state === 'DISARMED' && "border-gray-500/50"
       )}>
@@ -561,13 +561,13 @@ function KillSwitchPanel() {
             <div className="flex items-center gap-4">
               <div className={cn(
                 "p-4 rounded-full",
-                state === 'ARMED' && "bg-green-500/10",
-                state === 'TRIGGERED' && "bg-red-500/10",
+                state === 'ARMED' && "bg-[#0ECB81]/10",
+                state === 'TRIGGERED' && "bg-[#F6465D]/10",
                 state === 'RECOVERING' && "bg-yellow-500/10",
                 state === 'DISARMED' && "bg-gray-500/10"
               )}>
-                {state === 'ARMED' && <Lock className="h-8 w-8 text-green-500" />}
-                {state === 'TRIGGERED' && <AlertCircle className="h-8 w-8 text-red-500" />}
+                {state === 'ARMED' && <Lock className="h-8 w-8 text-[#0ECB81]" />}
+                {state === 'TRIGGERED' && <AlertCircle className="h-8 w-8 text-[#F6465D]" />}
                 {state === 'RECOVERING' && <RefreshCw className="h-8 w-8 text-yellow-500 animate-spin" />}
                 {state === 'DISARMED' && <Unlock className="h-8 w-8 text-gray-500" />}
               </div>
@@ -575,8 +575,8 @@ function KillSwitchPanel() {
                 <div className="text-sm text-muted-foreground">Kill Switch State</div>
                 <div className={cn(
                   "text-3xl font-bold",
-                  state === 'ARMED' && "text-green-500",
-                  state === 'TRIGGERED' && "text-red-500",
+                  state === 'ARMED' && "text-[#0ECB81]",
+                  state === 'TRIGGERED' && "text-[#F6465D]",
                   state === 'RECOVERING' && "text-yellow-500",
                   state === 'DISARMED' && "text-gray-500"
                 )}>
@@ -630,7 +630,7 @@ function KillSwitchPanel() {
         <Card>
           <CardContent className="p-4">
             <div className="text-sm text-muted-foreground">PnL Saved</div>
-            <div className="text-2xl font-bold text-green-500">${stats.pnlSaved}</div>
+            <div className="text-2xl font-bold text-[#0ECB81]">${stats.pnlSaved}</div>
             <div className="text-xs text-muted-foreground">By early termination</div>
           </CardContent>
         </Card>
@@ -729,13 +729,13 @@ export function RiskDashboard() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <Shield className="h-8 w-8 text-red-500" />
+          <Shield className="h-8 w-8 text-[#F6465D]" />
           <div>
             <h1 className="text-2xl font-bold">Управление Рисками</h1>
             <p className="text-muted-foreground">Мониторинг и контроль торговых рисков</p>
           </div>
         </div>
-        <Badge variant="outline" className="px-4 py-2 bg-green-500/10 text-green-500 border-green-500/30">
+        <Badge variant="outline" className="px-4 py-2 bg-[#0ECB81]/10 text-[#0ECB81] border-[#0ECB81]/30">
           Система Защищена
         </Badge>
       </div>
@@ -771,7 +771,7 @@ export function RiskDashboard() {
                     <div className="text-sm text-muted-foreground">Оценка Риска</div>
                     <div className="text-2xl font-bold">32/100</div>
                   </div>
-                  <Badge className="bg-green-500/10 text-green-500">НИЗКИЙ</Badge>
+                  <Badge variant="outline" className="bg-[#0ECB81]/10 text-[#0ECB81] border-[#0ECB81]/30">НИЗКИЙ</Badge>
                 </div>
               </CardContent>
             </Card>
@@ -802,9 +802,9 @@ export function RiskDashboard() {
                 <div className="flex items-center justify-between">
                   <div>
                     <div className="text-sm text-muted-foreground">Kill Switch</div>
-                    <div className="text-2xl font-bold text-green-500">ВКЛЮЧЁН</div>
+                    <div className="text-2xl font-bold text-[#0ECB81]">ВКЛЮЧЁН</div>
                   </div>
-                  <Lock className="h-6 w-6 text-green-500" />
+                  <Lock className="h-6 w-6 text-[#0ECB81]" />
                 </div>
               </CardContent>
             </Card>

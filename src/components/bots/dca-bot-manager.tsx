@@ -336,7 +336,7 @@ export function DcaBotManager() {
   const getStatusColor = (status: string) => {
     switch (status) {
       case "RUNNING":
-        return "bg-green-500/10 text-green-500 border-green-500/20";
+        return "bg-[#0ECB81]/10 text-[#0ECB81] border-[#0ECB81]/30";
       case "STOPPED":
         return "bg-gray-500/10 text-gray-500 border-gray-500/20";
       case "PAUSED":
@@ -433,9 +433,9 @@ export function DcaBotManager() {
 
   // Get confidence color
   const getConfidenceColor = (confidence: number) => {
-    if (confidence >= 0.7) return "text-green-500";
+    if (confidence >= 0.7) return "text-[#0ECB81]";
     if (confidence >= 0.5) return "text-yellow-500";
-    return "text-red-500";
+    return "text-[#F6465D]";
   };
 
   return (
@@ -512,7 +512,7 @@ export function DcaBotManager() {
                 <div className="grid grid-cols-2 gap-2">
                   <Button
                     variant={direction === "LONG" ? "default" : "outline"}
-                    className={cn(direction === "LONG" && "bg-green-500 hover:bg-green-600")}
+                    className={cn(direction === "LONG" && "bg-[#0ECB81] hover:bg-[#0ECB81]/90")}
                     onClick={() => setDirection("LONG")}
                   >
                     <TrendingUp className="h-4 w-4 mr-2" />
@@ -520,7 +520,7 @@ export function DcaBotManager() {
                   </Button>
                   <Button
                     variant={direction === "SHORT" ? "default" : "outline"}
-                    className={cn(direction === "SHORT" && "bg-red-500 hover:bg-red-600")}
+                    className={cn(direction === "SHORT" && "bg-[#F6465D] hover:bg-[#F6465D]/90")}
                     onClick={() => setDirection("SHORT")}
                   >
                     <TrendingDown className="h-4 w-4 mr-2" />
@@ -744,7 +744,7 @@ export function DcaBotManager() {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr className="border-t bg-green-500/5">
+                    <tr className="border-t bg-[#0ECB81]/5">
                       <td className="px-3 py-2 font-mono">0 (Первый)</td>
                       <td className="px-3 py-2 font-mono">$65,000.00</td>
                       <td className="px-3 py-2 font-mono">${baseAmount || "100"}</td>
@@ -795,16 +795,16 @@ export function DcaBotManager() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     {currentFilterResult.approved ? (
-                      <CheckCircle2 className="h-5 w-5 text-green-500" />
+                      <CheckCircle2 className="h-5 w-5 text-[#0ECB81]" />
                     ) : (
-                      <XCircle className="h-5 w-5 text-red-500" />
+                      <XCircle className="h-5 w-5 text-[#F6465D]" />
                     )}
                     <span className="font-medium">
                       {currentFilterResult.approved ? `Уровень DCA ${currentFilterResult.level} одобрен` : 'DCA не рекомендуется'}
                     </span>
                   </div>
                   <div className="flex gap-2">
-                    <Badge className={cn(
+                    <Badge variant="outline" className={cn(
                       "font-mono",
                       getConfidenceColor(currentFilterResult.confidence)
                     )}>
@@ -836,7 +836,7 @@ export function DcaBotManager() {
                       <div className="text-xs text-muted-foreground">Сумма</div>
                     </div>
                     <div>
-                      <div className="text-lg font-bold text-green-500">
+                      <div className="text-lg font-bold text-[#0ECB81]">
                         {currentFilterResult.avgEntryAdjustment >= 0 ? '+' : ''}{(currentFilterResult.avgEntryAdjustment).toFixed(2)}
                       </div>
                       <div className="text-xs text-muted-foreground">Ср. цена Δ</div>
@@ -888,11 +888,11 @@ export function DcaBotManager() {
                   <div className="space-y-2">
                     <div className="flex items-center gap-2">
                       <h3 className="font-semibold">{bot.name}</h3>
-                      <Badge className={getStatusColor(bot.status)}>
+                      <Badge variant="outline" className={getStatusColor(bot.status)}>
                         {bot.status}
                       </Badge>
                       {bot.isActive && (
-                        <Badge className="bg-green-500/10 text-green-500">
+                        <Badge variant="outline" className="bg-[#0ECB81]/10 text-[#0ECB81] border-[#0ECB81]/30">
                           Активен
                         </Badge>
                       )}
@@ -904,8 +904,8 @@ export function DcaBotManager() {
                       )}
                       <Badge variant="outline" className={cn(
                         bot.direction === "LONG" 
-                          ? "bg-green-500/10 text-green-500" 
-                          : "bg-red-500/10 text-red-500"
+                          ? "bg-[#0ECB81]/10 text-[#0ECB81] border-[#0ECB81]/30" 
+                          : "bg-[#F6465D]/10 text-[#F6465D] border-[#F6465D]/30"
                       )}>
                         {bot.direction === "LONG" ? (
                           <TrendingUp className="h-3 w-3 mr-1" />
@@ -1070,7 +1070,7 @@ export function DcaBotManager() {
                   <div className="text-sm text-muted-foreground">Прибыль</div>
                   <div className={cn(
                     "text-lg font-bold",
-                    backtestResult.totalProfit >= 0 ? "text-green-500" : "text-red-500"
+                    backtestResult.totalProfit >= 0 ? "text-[#0ECB81]" : "text-[#F6465D]"
                   )}>
                     ${backtestResult.totalProfit.toFixed(2)}
                   </div>
@@ -1083,20 +1083,20 @@ export function DcaBotManager() {
                   <div className="text-sm text-muted-foreground">Win Rate</div>
                   <div className={cn(
                     "text-lg font-bold",
-                    backtestResult.winRate >= 50 ? "text-green-500" : ""
+                    backtestResult.winRate >= 50 ? "text-[#0ECB81]" : ""
                   )}>
                     {backtestResult.winRate.toFixed(1)}%
                   </div>
                 </div>
                 <div className="text-center">
                   <div className="text-sm text-muted-foreground">Просадка</div>
-                  <div className="text-lg font-bold text-red-500">
+                  <div className="text-lg font-bold text-[#F6465D]">
                     {backtestResult.maxDrawdown.toFixed(1)}%
                   </div>
                 </div>
                 <div className="text-center">
                   <div className="text-sm text-muted-foreground">Улучшение входа</div>
-                  <div className="text-lg font-bold text-green-500">
+                  <div className="text-lg font-bold text-[#0ECB81]">
                     -{backtestResult.avgEntryImprovement.toFixed(1)}%
                   </div>
                 </div>

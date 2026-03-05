@@ -372,7 +372,7 @@ export function OrionBotManager() {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "RUNNING":
-        return <Badge className="bg-green-500/10 text-green-500">Активен</Badge>;
+        return <Badge variant="outline" className="bg-[#0ECB81]/10 text-[#0ECB81] border-[#0ECB81]/20">Активен</Badge>;
       case "HALTED":
         return <Badge className="bg-yellow-500/10 text-yellow-500">Пауза</Badge>;
       case "STARTING":
@@ -385,11 +385,11 @@ export function OrionBotManager() {
   const getValidationBadge = (status: string) => {
     switch (status) {
       case "VALIDATED":
-        return <Badge className="bg-green-500/10 text-green-500"><CheckCircle2 className="h-3 w-3 mr-1" />Валидирован</Badge>;
+        return <Badge variant="outline" className="bg-[#0ECB81]/10 text-[#0ECB81] border-[#0ECB81]/20"><CheckCircle2 className="h-3 w-3 mr-1" />Валидирован</Badge>;
       case "RUNNING":
         return <Badge className="bg-blue-500/10 text-blue-500"><Loader2 className="h-3 w-3 mr-1 animate-spin" />Валидация...</Badge>;
       case "FAILED":
-        return <Badge className="bg-red-500/10 text-red-500"><AlertTriangle className="h-3 w-3 mr-1" />Ошибка</Badge>;
+        return <Badge variant="outline" className="bg-[#F6465D]/10 text-[#F6465D] border-[#F6465D]/20"><AlertTriangle className="h-3 w-3 mr-1" />Ошибка</Badge>;
       default:
         return <Badge variant="outline">Ожидание</Badge>;
     }
@@ -587,7 +587,7 @@ export function OrionBotManager() {
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center gap-2">
-              <TrendingUp className="h-5 w-5 text-green-500" />
+              <TrendingUp className="h-5 w-5 text-[#0ECB81]" />
               <div>
                 <div className="text-2xl font-bold">
                   {stats?.winRate ? (stats.winRate * 100).toFixed(0) : 0}%
@@ -627,14 +627,14 @@ export function OrionBotManager() {
           <CardContent className="p-4">
             <div className="flex items-center gap-2">
               {stats?.totalPnL && stats.totalPnL >= 0 ? (
-                <TrendingUp className="h-5 w-5 text-green-500" />
+                <TrendingUp className="h-5 w-5 text-[#0ECB81]" />
               ) : (
-                <TrendingDown className="h-5 w-5 text-red-500" />
+                <TrendingDown className="h-5 w-5 text-[#F6465D]" />
               )}
               <div>
                 <div className={cn(
                   "text-2xl font-bold",
-                  stats?.totalPnL && stats.totalPnL >= 0 ? "text-green-500" : "text-red-500"
+                  stats?.totalPnL && stats.totalPnL >= 0 ? "text-[#0ECB81]" : "text-[#F6465D]"
                 )}>
                   {stats?.totalPnL ? `$${stats.totalPnL.toFixed(2)}` : "$0.00"}
                 </div>
@@ -759,10 +759,10 @@ export function OrionBotManager() {
                   <TableRow key={position.id}>
                     <TableCell className="font-medium">{position.symbol}</TableCell>
                     <TableCell>
-                      <Badge className={cn(
+                      <Badge variant="outline" className={cn(
                         position.side === "LONG"
-                          ? "bg-green-500/10 text-green-500"
-                          : "bg-red-500/10 text-red-500"
+                          ? "bg-[#0ECB81]/10 text-[#0ECB81] border-[#0ECB81]/20"
+                          : "bg-[#F6465D]/10 text-[#F6465D] border-[#F6465D]/20"
                       )}>
                         {position.side === "LONG"
                           ? <TrendingUp className="h-3 w-3 mr-1" />
@@ -775,7 +775,7 @@ export function OrionBotManager() {
                     <TableCell>${position.currentPrice.toFixed(2)}</TableCell>
                     <TableCell>{position.size.toFixed(4)}</TableCell>
                     <TableCell>
-                      <span className={position.unrealizedPnL >= 0 ? "text-green-500" : "text-red-500"}>
+                      <span className={position.unrealizedPnL >= 0 ? "text-[#0ECB81]" : "text-[#F6465D]"}>
                         {position.unrealizedPnL >= 0 ? "+" : ""}
                         ${position.unrealizedPnL.toFixed(2)}
                         <span className="text-xs ml-1">
@@ -789,7 +789,7 @@ export function OrionBotManager() {
                       <Button
                         size="sm"
                         variant="ghost"
-                        className="text-red-500"
+                        className="text-[#F6465D] hover:text-[#F6465D] hover:bg-[#F6465D]/10"
                         onClick={() => handleClosePosition(position.id)}
                       >
                         Закрыть

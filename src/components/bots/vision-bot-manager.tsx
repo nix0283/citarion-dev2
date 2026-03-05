@@ -346,9 +346,9 @@ export function VisionBotManager() {
   const getSignalIcon = (signal: string) => {
     switch (signal) {
       case "LONG":
-        return <TrendingUp className="h-5 w-5 text-green-500" />;
+        return <TrendingUp className="h-5 w-5 text-[#0ECB81]" />;
       case "SHORT":
-        return <TrendingDown className="h-5 w-5 text-red-500" />;
+        return <TrendingDown className="h-5 w-5 text-[#F6465D]" />;
       default:
         return <Minus className="h-5 w-5 text-yellow-500" />;
     }
@@ -357,9 +357,9 @@ export function VisionBotManager() {
   const getSignalColor = (signal: string) => {
     switch (signal) {
       case "LONG":
-        return "text-green-500";
+        return "text-[#0ECB81]";
       case "SHORT":
-        return "text-red-500";
+        return "text-[#F6465D]";
       default:
         return "text-yellow-500";
     }
@@ -367,9 +367,9 @@ export function VisionBotManager() {
 
   // Get ensemble score color
   const getScoreColor = (score: number) => {
-    if (score >= 0.7) return "text-green-500";
+    if (score >= 0.7) return "text-[#0ECB81]";
     if (score >= 0.5) return "text-yellow-500";
-    return "text-red-500";
+    return "text-[#F6465D]";
   };
 
   // Get recommended action
@@ -377,11 +377,11 @@ export function VisionBotManager() {
     if (!ensembleScore) return null;
     
     if (ensembleScore.overall >= 0.7) {
-      return { action: "ENTER", color: "text-green-500", icon: CheckCircle2 };
+      return { action: "ENTER", color: "text-[#0ECB81]", icon: CheckCircle2 };
     } else if (ensembleScore.overall >= 0.5) {
       return { action: "WAIT", color: "text-yellow-500", icon: AlertTriangle };
     }
-    return { action: "AVOID", color: "text-red-500", icon: XCircle };
+    return { action: "AVOID", color: "text-[#F6465D]", icon: XCircle };
   };
 
   return (
@@ -517,9 +517,9 @@ export function VisionBotManager() {
             {ensembleScore && (
               <div className={cn(
                 "p-4 rounded-lg border-2 flex items-center justify-between",
-                ensembleScore.overall >= 0.7 ? "border-green-500/50 bg-green-500/5" :
+                ensembleScore.overall >= 0.7 ? "border-[#0ECB81]/50 bg-[#0ECB81]/5" :
                 ensembleScore.overall >= 0.5 ? "border-yellow-500/50 bg-yellow-500/5" :
-                "border-red-500/50 bg-red-500/5"
+                "border-[#F6465D]/50 bg-[#F6465D]/5"
               )}>
                 <div className="flex items-center gap-3">
                   {(() => {
@@ -537,11 +537,11 @@ export function VisionBotManager() {
                 </div>
                 <div className="flex items-center gap-2">
                   {getSignalIcon(ensembleScore.direction)}
-                  <Badge className={cn(
+                  <Badge variant="outline" className={cn(
                     "text-lg px-4 py-1",
-                    ensembleScore.direction === "LONG" ? "bg-green-500/20 text-green-500" :
-                    ensembleScore.direction === "SHORT" ? "bg-red-500/20 text-red-500" :
-                    "bg-gray-500/20 text-gray-500"
+                    ensembleScore.direction === "LONG" ? "border-[#0ECB81]/50 text-[#0ECB81] bg-[#0ECB81]/10" :
+                    ensembleScore.direction === "SHORT" ? "border-[#F6465D]/50 text-[#F6465D] bg-[#F6465D]/10" :
+                    "border-gray-500/50 text-gray-500 bg-gray-500/10"
                   )}>
                     {ensembleScore.direction}
                   </Badge>
@@ -702,22 +702,22 @@ export function VisionBotManager() {
                 <div>
                   <div className="flex justify-between text-sm mb-1">
                     <span className="flex items-center gap-1">
-                      <TrendingUp className="h-4 w-4 text-green-500" />
+                      <TrendingUp className="h-4 w-4 text-[#0ECB81]" />
                       Upward
                     </span>
                     <span className="font-medium">{(currentForecast.probabilities.upward * 100).toFixed(1)}%</span>
                   </div>
-                  <Progress value={currentForecast.probabilities.upward * 100} className="h-2 bg-muted [&>div]:bg-green-500" />
+                  <Progress value={currentForecast.probabilities.upward * 100} className="h-2 bg-muted [&>div]:bg-[#0ECB81]" />
                 </div>
                 <div>
                   <div className="flex justify-between text-sm mb-1">
                     <span className="flex items-center gap-1">
-                      <TrendingDown className="h-4 w-4 text-red-500" />
+                      <TrendingDown className="h-4 w-4 text-[#F6465D]" />
                       Downward
                     </span>
                     <span className="font-medium">{(currentForecast.probabilities.downward * 100).toFixed(1)}%</span>
                   </div>
-                  <Progress value={currentForecast.probabilities.downward * 100} className="h-2 bg-muted [&>div]:bg-red-500" />
+                  <Progress value={currentForecast.probabilities.downward * 100} className="h-2 bg-muted [&>div]:bg-[#F6465D]" />
                 </div>
                 <div>
                   <div className="flex justify-between text-sm mb-1">
@@ -817,7 +817,7 @@ export function VisionBotManager() {
                       <Button
                         size="sm"
                         variant="ghost"
-                        className="text-red-500"
+                        className="text-[#F6465D]"
                         onClick={() => handleDeleteBot(bot.id)}
                       >
                         <Trash2 className="h-4 w-4" />
@@ -903,7 +903,7 @@ export function VisionBotManager() {
                       <span className="text-muted-foreground">Доходность:</span>
                       <span className={cn(
                         "ml-2 font-bold",
-                        backtestResult.totalReturnPct >= 0 ? "text-green-500" : "text-red-500"
+                        backtestResult.totalReturnPct >= 0 ? "text-[#0ECB81]" : "text-[#F6465D]"
                       )}>
                         {backtestResult.totalReturnPct >= 0 ? "+" : ""}{backtestResult.totalReturnPct}%
                       </span>
@@ -914,7 +914,7 @@ export function VisionBotManager() {
                     </div>
                     <div>
                       <span className="text-muted-foreground">Max DD:</span>
-                      <span className="ml-2 font-bold text-red-500">{backtestResult.maxDrawdownPct}%</span>
+                      <span className="ml-2 font-bold text-[#F6465D]">{backtestResult.maxDrawdownPct}%</span>
                     </div>
                     <div>
                       <span className="text-muted-foreground">Win Rate:</span>

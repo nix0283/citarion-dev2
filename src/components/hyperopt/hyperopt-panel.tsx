@@ -491,9 +491,9 @@ export function HyperoptPanel() {
       IDLE: { color: "bg-gray-500/20 text-gray-400 border-gray-500/30", icon: <Clock className="h-3 w-3" />, label: "Готов" },
       RUNNING: { color: "bg-blue-500/20 text-blue-400 border-blue-500/30", icon: <RefreshCw className="h-3 w-3 animate-spin" />, label: "Выполнение" },
       PAUSED: { color: "bg-amber-500/20 text-amber-400 border-amber-500/30", icon: <Pause className="h-3 w-3" />, label: "Пауза" },
-      COMPLETED: { color: "bg-green-500/20 text-green-400 border-green-500/30", icon: <CheckCircle className="h-3 w-3" />, label: "Завершено" },
-      CANCELLED: { color: "bg-red-500/20 text-red-400 border-red-500/30", icon: <XCircle className="h-3 w-3" />, label: "Отменено" },
-      FAILED: { color: "bg-red-500/20 text-red-400 border-red-500/30", icon: <AlertTriangle className="h-3 w-3" />, label: "Ошибка" },
+      COMPLETED: { color: "bg-[#0ECB81]/20 text-[#0ECB81] border-[#0ECB81]/30", icon: <CheckCircle className="h-3 w-3" />, label: "Завершено" },
+      CANCELLED: { color: "bg-[#F6465D]/20 text-[#F6465D] border-[#F6465D]/30", icon: <XCircle className="h-3 w-3" />, label: "Отменено" },
+      FAILED: { color: "bg-[#F6465D]/20 text-[#F6465D] border-[#F6465D]/30", icon: <AlertTriangle className="h-3 w-3" />, label: "Ошибка" },
     };
     const { color, icon, label } = styles[status];
     return (
@@ -925,7 +925,7 @@ export function HyperoptPanel() {
                   </div>
                   <div className="p-3 rounded-lg bg-secondary/50">
                     <p className="text-xs text-muted-foreground">Лучший {getObjectiveLabel(objective)}</p>
-                    <p className="text-lg font-mono font-semibold text-green-500">
+                    <p className="text-lg font-mono font-semibold text-[#0ECB81]">
                       {result.bestObjectiveValue.toFixed(4)}
                     </p>
                   </div>
@@ -945,9 +945,9 @@ export function HyperoptPanel() {
 
                 {/* Best Parameters Preview */}
                 {Object.keys(result.bestParams).length > 0 && (
-                  <div className="p-3 rounded-lg bg-green-500/10 border border-green-500/20">
+                  <div className="p-3 rounded-lg bg-[#0ECB81]/10 border border-[#0ECB81]/20">
                     <div className="flex items-center justify-between mb-2">
-                      <p className="text-sm font-medium text-green-500">Найдены лучшие параметры</p>
+                      <p className="text-sm font-medium text-[#0ECB81]">Найдены лучшие параметры</p>
                       <div className="flex gap-1">
                         <Button
                           variant="ghost"
@@ -971,7 +971,7 @@ export function HyperoptPanel() {
                     </div>
                     <div className="flex flex-wrap gap-2">
                       {Object.entries(result.bestParams).map(([key, value]) => (
-                        <Badge key={key} variant="outline" className="bg-green-500/5">
+                        <Badge key={key} variant="outline" className="bg-[#0ECB81]/5">
                           {key}: <span className="font-mono ml-1">{typeof value === "number" ? value.toFixed(2) : value}</span>
                         </Badge>
                       ))}
@@ -1034,13 +1034,13 @@ export function HyperoptPanel() {
                           key={trial.id}
                           className={cn(
                             "cursor-pointer hover:bg-secondary/50",
-                            index === 0 && "bg-green-500/5"
+                            index === 0 && "bg-[#0ECB81]/5"
                           )}
                           onClick={() => setSelectedTrial(trial)}
                         >
                           <TableCell className="font-mono">
                             {index === 0 ? (
-                              <Badge className="bg-green-500/20 text-green-400 border-green-500/30">
+                              <Badge className="bg-[#0ECB81]/20 text-[#0ECB81] border-[#0ECB81]/30">
                                 #{trial.id}
                               </Badge>
                             ) : (
@@ -1068,22 +1068,22 @@ export function HyperoptPanel() {
                             {trial.trades}
                           </TableCell>
                           <TableCell className="text-right font-mono">
-                            <span className={trial.winRate >= 50 ? "text-green-500" : "text-red-500"}>
+                            <span className={trial.winRate >= 50 ? "text-[#0ECB81]" : "text-[#F6465D]"}>
                               {trial.winRate.toFixed(1)}%
                             </span>
                           </TableCell>
                           <TableCell className="text-right font-mono">
-                            <span className={trial.pnl >= 0 ? "text-green-500" : "text-red-500"}>
+                            <span className={trial.pnl >= 0 ? "text-[#0ECB81]" : "text-[#F6465D]"}>
                               {trial.pnl >= 0 ? "+" : ""}{trial.pnl.toFixed(2)}
                             </span>
                           </TableCell>
                           <TableCell className="text-right font-mono">
-                            <span className={trial.sharpeRatio >= 1 ? "text-green-500" : "text-amber-500"}>
+                            <span className={trial.sharpeRatio >= 1 ? "text-[#0ECB81]" : "text-amber-500"}>
                               {trial.sharpeRatio.toFixed(2)}
                             </span>
                           </TableCell>
                           <TableCell className="text-right font-mono">
-                            <span className={trial.maxDrawdown <= 20 ? "text-green-500" : trial.maxDrawdown <= 30 ? "text-amber-500" : "text-red-500"}>
+                            <span className={trial.maxDrawdown <= 20 ? "text-[#0ECB81]" : trial.maxDrawdown <= 30 ? "text-amber-500" : "text-[#F6465D]"}>
                               {trial.maxDrawdown.toFixed(1)}%
                             </span>
                           </TableCell>
@@ -1150,7 +1150,7 @@ export function HyperoptPanel() {
                   </div>
                   <div className="p-2 rounded-lg bg-secondary/50">
                     <p className="text-xs text-muted-foreground">PnL</p>
-                    <p className={cn("font-mono font-semibold", selectedTrial.pnl >= 0 ? "text-green-500" : "text-red-500")}>
+                    <p className={cn("font-mono font-semibold", selectedTrial.pnl >= 0 ? "text-[#0ECB81]" : "text-[#F6465D]")}>
                       {selectedTrial.pnl >= 0 ? "+" : ""}{selectedTrial.pnl.toFixed(2)}
                     </p>
                   </div>
@@ -1160,7 +1160,7 @@ export function HyperoptPanel() {
                   </div>
                   <div className="p-2 rounded-lg bg-secondary/50">
                     <p className="text-xs text-muted-foreground">Max DD</p>
-                    <p className="font-mono font-semibold text-red-500">{selectedTrial.maxDrawdown.toFixed(1)}%</p>
+                    <p className="font-mono font-semibold text-[#F6465D]">{selectedTrial.maxDrawdown.toFixed(1)}%</p>
                   </div>
                 </div>
               </div>

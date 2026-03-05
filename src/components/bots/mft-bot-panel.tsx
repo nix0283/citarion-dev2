@@ -115,14 +115,14 @@ function SwingPointsVisualization({
         {/* Price Range */}
         <div className="relative h-20 bg-muted/50 rounded-lg overflow-hidden">
           {/* Resistance Line */}
-          <div className="absolute top-2 left-0 right-0 border-t-2 border-dashed border-red-500/50" />
-          <div className="absolute top-1 right-2 text-xs text-red-400 font-mono">
+          <div className="absolute top-2 left-0 right-0 border-t-2 border-dashed border-[#F6465D]/50" />
+          <div className="absolute top-1 right-2 text-xs text-[#F6465D] font-mono">
             R: ${swingHigh.toFixed(2)}
           </div>
           
           {/* Support Line */}
-          <div className="absolute bottom-2 left-0 right-0 border-t-2 border-dashed border-green-500/50" />
-          <div className="absolute bottom-1 right-2 text-xs text-green-400 font-mono">
+          <div className="absolute bottom-2 left-0 right-0 border-t-2 border-dashed border-[#0ECB81]/50" />
+          <div className="absolute bottom-1 right-2 text-xs text-[#0ECB81] font-mono">
             S: ${swingLow.toFixed(2)}
           </div>
           
@@ -130,8 +130,8 @@ function SwingPointsVisualization({
           <div className="absolute inset-0 flex items-center justify-center">
             <div className={cn(
               "text-3xl",
-              trend === 'UP' ? "text-green-400" : 
-              trend === 'DOWN' ? "text-red-400 rotate-180" : 
+              trend === 'UP' ? "text-[#0ECB81]" : 
+              trend === 'DOWN' ? "text-[#F6465D] rotate-180" : 
               "text-gray-400 rotate-90"
             )}>
               {trend === 'UP' ? '↑' : trend === 'DOWN' ? '↓' : '→'}
@@ -153,8 +153,8 @@ function SwingPointsVisualization({
             <div className="text-muted-foreground">Тренд</div>
             <div className={cn(
               "font-mono font-bold",
-              trend === 'UP' ? "text-green-400" : 
-              trend === 'DOWN' ? "text-red-400" : 
+              trend === 'UP' ? "text-[#0ECB81]" : 
+              trend === 'DOWN' ? "text-[#F6465D]" : 
               "text-gray-400"
             )}>
               {trend}
@@ -184,7 +184,7 @@ function TrendIndicator({ trend, confidence }: { trend: 'UP' | 'DOWN' | 'SIDEWAY
           {/* Down Arrow */}
           <div className={cn(
             "flex flex-col items-center",
-            trend === 'DOWN' ? "text-red-400" : "text-gray-600"
+            trend === 'DOWN' ? "text-[#F6465D]" : "text-gray-600"
           )}>
             <TrendingDown className="h-8 w-8" />
             <span className="text-xs mt-1">Медвежий</span>
@@ -194,14 +194,14 @@ function TrendIndicator({ trend, confidence }: { trend: 'UP' | 'DOWN' | 'SIDEWAY
           <div className="flex flex-col items-center">
             <div className={cn(
               "w-16 h-16 rounded-full border-4 flex items-center justify-center",
-              trend === 'UP' ? "border-green-500" : 
-              trend === 'DOWN' ? "border-red-500" : 
+              trend === 'UP' ? "border-[#0ECB81]" : 
+              trend === 'DOWN' ? "border-[#F6465D]" : 
               "border-gray-500"
             )}>
               <span className={cn(
                 "text-lg font-bold",
-                trend === 'UP' ? "text-green-400" : 
-                trend === 'DOWN' ? "text-red-400" : 
+                trend === 'UP' ? "text-[#0ECB81]" : 
+                trend === 'DOWN' ? "text-[#F6465D]" : 
                 "text-gray-400"
               )}>
                 {trend === 'UP' ? '↑' : trend === 'DOWN' ? '↓' : '–'}
@@ -215,7 +215,7 @@ function TrendIndicator({ trend, confidence }: { trend: 'UP' | 'DOWN' | 'SIDEWAY
           {/* Up Arrow */}
           <div className={cn(
             "flex flex-col items-center",
-            trend === 'UP' ? "text-green-400" : "text-gray-600"
+            trend === 'UP' ? "text-[#0ECB81]" : "text-gray-600"
           )}>
             <TrendingUp className="h-8 w-8" />
             <span className="text-xs mt-1">Бычий</span>
@@ -258,8 +258,8 @@ function SignalFeed({ signals }: { signals: SignalInfo[] }) {
                     variant="outline" 
                     className={cn(
                       "text-xs",
-                      signal.direction === 'LONG' ? "text-green-400 border-green-500" : 
-                      signal.direction === 'SHORT' ? "text-red-400 border-red-500" : 
+                      signal.direction === 'LONG' ? "text-[#0ECB81] border-[#0ECB81]" : 
+                      signal.direction === 'SHORT' ? "text-[#F6465D] border-[#F6465D]" : 
                       "text-gray-400"
                     )}
                   >
@@ -509,7 +509,7 @@ export function MFTBotPanel() {
             <div className="text-center">
               <div className={cn(
                 "text-2xl font-bold font-mono",
-                (stats?.winRate ?? 0) >= 0.5 ? "text-green-400" : "text-red-400"
+                (stats?.winRate ?? 0) >= 0.5 ? "text-[#0ECB81]" : "text-[#F6465D]"
               )}>
                 {((stats?.winRate ?? 0) * 100).toFixed(1)}%
               </div>
@@ -522,7 +522,7 @@ export function MFTBotPanel() {
             <div className="text-center">
               <div className={cn(
                 "text-2xl font-bold font-mono",
-                (stats?.totalPnl ?? 0) >= 0 ? "text-green-400" : "text-red-400"
+                (stats?.totalPnl ?? 0) >= 0 ? "text-[#0ECB81]" : "text-[#F6465D]"
               )}>
                 {(stats?.totalPnl ?? 0) >= 0 ? '+' : ''}{(stats?.totalPnl ?? 0).toFixed(2)}
               </div>
@@ -556,15 +556,15 @@ export function MFTBotPanel() {
           variant="outline" 
           className={cn(
             "text-sm",
-            isRunning ? "border-green-500 text-green-400" : 
-            status === 'error' ? "border-red-500 text-red-400" : 
+            isRunning ? "border-[#0ECB81] text-[#0ECB81]" : 
+            status === 'error' ? "border-[#F6465D] text-[#F6465D]" : 
             "border-gray-500 text-gray-400"
           )}
         >
           <span className={cn(
             "mr-2 h-2 w-2 rounded-full",
-            isRunning ? "bg-green-500 animate-pulse" : 
-            status === 'error' ? "bg-red-500" : 
+            isRunning ? "bg-[#0ECB81] animate-pulse" : 
+            status === 'error' ? "bg-[#F6465D]" : 
             "bg-gray-500"
           )} />
           {status.toUpperCase()}

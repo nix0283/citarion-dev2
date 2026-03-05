@@ -175,7 +175,7 @@ function ApiStatusPanel() {
           <CardContent className="pt-4">
             <div className="flex items-center justify-between">
               <span className="text-sm text-muted-foreground">Активных</span>
-              <Badge className="bg-green-500/10 text-green-500">46</Badge>
+              <Badge variant="outline" className="bg-[#0ECB81]/10 text-[#0ECB81] border-[#0ECB81]/20">46</Badge>
             </div>
           </CardContent>
         </Card>
@@ -226,7 +226,7 @@ function ApiStatusPanel() {
                       variant="outline"
                       className={cn(
                         endpoint.status === "active" 
-                          ? "bg-green-500/10 text-green-500 border-green-500/20"
+                          ? "bg-[#0ECB81]/10 text-[#0ECB81] border-[#0ECB81]/20"
                           : "bg-blue-500/10 text-blue-500 border-blue-500/20"
                       )}
                     >
@@ -257,7 +257,7 @@ function WebSocketPanel() {
           <CardContent className="pt-4">
             <div className="flex items-center justify-between">
               <span className="text-sm text-muted-foreground">Exchanges</span>
-              <Badge className="bg-green-500/10 text-green-500">8 Connected</Badge>
+              <Badge variant="outline" className="bg-[#0ECB81]/10 text-[#0ECB81] border-[#0ECB81]/20">8 Connected</Badge>
             </div>
           </CardContent>
         </Card>
@@ -296,7 +296,7 @@ function WebSocketPanel() {
                 <div className="flex items-center gap-3">
                   <Activity className={cn(
                     "h-4 w-4",
-                    ws.status === "connected" ? "text-green-500" : "text-red-500"
+                    ws.status === "connected" ? "text-[#0ECB81]" : "text-[#F6465D]"
                   )} />
                   <span className="font-medium">{ws.exchange}</span>
                 </div>
@@ -306,7 +306,7 @@ function WebSocketPanel() {
                   </span>
                   <Badge 
                     variant="outline"
-                    className="bg-green-500/10 text-green-500 border-green-500/20"
+                    className="bg-[#0ECB81]/10 text-[#0ECB81] border-[#0ECB81]/20"
                   >
                     {ws.status}
                   </Badge>
@@ -328,10 +328,10 @@ function LogsPanel() {
 
   const getLogColor = (level: string) => {
     switch (level) {
-      case "error": return "text-red-500";
+      case "error": return "text-[#F6465D]";
       case "warn": return "text-yellow-500";
       case "debug": return "text-blue-500";
-      default: return "text-green-500";
+      default: return "text-[#0ECB81]";
     }
   };
 
@@ -339,7 +339,7 @@ function LogsPanel() {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Badge variant="outline" className="bg-green-500/10 text-green-500">
+          <Badge variant="outline" className="bg-[#0ECB81]/10 text-[#0ECB81] border-[#0ECB81]/20">
             Live
           </Badge>
           <span className="text-sm text-muted-foreground">
@@ -399,7 +399,7 @@ export function PreviewPanel() {
             Live preview and system monitoring
           </p>
         </div>
-        <Badge variant="outline" className="bg-green-500/10 text-green-500 border-green-500/20">
+        <Badge variant="outline" className="bg-[#0ECB81]/10 text-[#0ECB81] border-[#0ECB81]/20">
           <Activity className="h-3 w-3 mr-1" />
           Live
         </Badge>

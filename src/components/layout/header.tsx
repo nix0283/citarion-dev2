@@ -79,6 +79,19 @@ export function Header() {
             </span>
           </div>
 
+          {/* Reset Balance (Demo only) - Hidden on mobile */}
+          {isDemo && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleResetBalance}
+              className="hidden md:flex h-8"
+            >
+              <RefreshCw className="mr-2 h-3.5 w-3.5" />
+              Сбросить
+            </Button>
+          )}
+
           {/* Trading Mode Switch - Hidden on mobile */}
           <div className="hidden sm:flex items-center gap-2 rounded-lg border border-border px-3 py-1.5">
             <Label
@@ -108,19 +121,6 @@ export function Header() {
               DEMO
             </Label>
           </div>
-
-          {/* Reset Balance (Demo only) - Hidden on mobile */}
-          {isDemo && (
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleResetBalance}
-              className="hidden md:flex h-8"
-            >
-              <RefreshCw className="mr-2 h-3.5 w-3.5" />
-              Сбросить
-            </Button>
-          )}
 
           {/* Notification Bell - Desktop */}
           <Button

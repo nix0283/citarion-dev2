@@ -209,7 +209,7 @@ export function MasterTraderPanel() {
             >
               {exchange}
               {support.full && (
-                <CheckCircle2 className="h-3 w-3 ml-1 text-green-500" />
+                <CheckCircle2 className="h-3 w-3 ml-1 text-[#0ECB81]" />
               )}
             </Button>
           ))}
@@ -307,10 +307,10 @@ export function MasterTraderPanel() {
               <Card>
                 <CardContent className="pt-6">
                   <div className="flex items-center gap-2">
-                    <DollarSign className="h-5 w-5 text-green-500" />
+                    <DollarSign className="h-5 w-5 text-[#0ECB81]" />
                     <span className="text-sm text-muted-foreground">Заработок</span>
                   </div>
-                  <div className="text-2xl font-bold mt-2 text-green-500">
+                  <div className="text-2xl font-bold mt-2 text-[#0ECB81]">
                     ${formatNumber(stats.totalProfitShared)}
                   </div>
                   <p className="text-xs text-muted-foreground">от profit sharing</p>
@@ -351,7 +351,7 @@ export function MasterTraderPanel() {
                     {positions.map((pos, i) => (
                       <div key={i} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
                         <div className="flex items-center gap-3">
-                          <Badge variant={pos.side === 'long' ? 'default' : 'destructive'}>
+                          <Badge variant="outline" className={pos.side === 'long' ? 'border-[#0ECB81] text-[#0ECB81]' : 'border-[#F6465D] text-[#F6465D]'}>
                             {pos.side.toUpperCase()}
                           </Badge>
                           <div>
@@ -365,7 +365,7 @@ export function MasterTraderPanel() {
                           <div className="text-right">
                             <div className={cn(
                               "font-semibold",
-                              pos.unrealizedPnl >= 0 ? "text-green-500" : "text-red-500"
+                              pos.unrealizedPnl >= 0 ? "text-[#0ECB81]" : "text-[#F6465D]"
                             )}>
                               {pos.unrealizedPnl >= 0 ? '+' : ''}${formatNumber(pos.unrealizedPnl)}
                             </div>
@@ -425,7 +425,7 @@ export function MasterTraderPanel() {
                             </div>
                             <div className={cn(
                               "text-right font-semibold",
-                              follower.totalPnl >= 0 ? "text-green-500" : "text-red-500"
+                              follower.totalPnl >= 0 ? "text-[#0ECB81]" : "text-[#F6465D]"
                             )}>
                               {follower.totalPnl >= 0 ? '+' : ''}${formatNumber(follower.totalPnl)}
                             </div>
@@ -436,7 +436,7 @@ export function MasterTraderPanel() {
                               disabled={loading}
                               title="Удалить подписчика"
                             >
-                              <UserMinus className="h-4 w-4 text-red-500" />
+                              <UserMinus className="h-4 w-4 text-[#F6465D]" />
                             </Button>
                           </div>
                         </div>

@@ -46,15 +46,15 @@ interface NotificationSettings {
 }
 
 const NOTIFICATION_TYPES: Record<string, { icon: typeof Bell; color: string; label: string }> = {
-  POSITION_OPENED: { icon: TrendingUp, color: "text-green-500", label: "Позиция открыта" },
+  POSITION_OPENED: { icon: TrendingUp, color: "text-[#0ECB81]", label: "Позиция открыта" },
   POSITION_CLOSED: { icon: CheckCircle, color: "text-blue-500", label: "Позиция закрыта" },
-  TP_HIT: { icon: TrendingUp, color: "text-green-500", label: "Take Profit" },
-  SL_HIT: { icon: TrendingDown, color: "text-red-500", label: "Stop Loss" },
+  TP_HIT: { icon: TrendingUp, color: "text-[#0ECB81]", label: "Take Profit" },
+  SL_HIT: { icon: TrendingDown, color: "text-[#F6465D]", label: "Stop Loss" },
   NEW_SIGNAL: { icon: Info, color: "text-blue-500", label: "Новый сигнал" },
   EXTERNAL_POSITION_DETECTED: { icon: ExternalLink, color: "text-purple-500", label: "Внешняя позиция" },
   FUNDING_RATE_WARNING: { icon: AlertTriangle, color: "text-yellow-500", label: "Funding Rate" },
   SYSTEM_WARNING: { icon: AlertTriangle, color: "text-yellow-500", label: "Предупреждение" },
-  SYSTEM_ERROR: { icon: XCircle, color: "text-red-500", label: "Ошибка" },
+  SYSTEM_ERROR: { icon: XCircle, color: "text-[#F6465D]", label: "Ошибка" },
 };
 
 const DEFAULT_SETTINGS: NotificationSettings = {
@@ -177,9 +177,9 @@ export function NotificationsPanel() {
   const getPriorityBadge = (priority: string) => {
     switch (priority) {
       case "critical":
-        return <Badge className="bg-red-500 text-xs">Критический</Badge>;
+        return <Badge variant="outline" className="text-xs bg-[#F6465D]/10 text-[#F6465D] border-[#F6465D]/20">Критический</Badge>;
       case "high":
-        return <Badge className="bg-orange-500 text-xs">Высокий</Badge>;
+        return <Badge variant="outline" className="text-xs bg-orange-500/10 text-orange-500 border-orange-500/20">Высокий</Badge>;
       case "normal":
         return <Badge variant="outline" className="text-xs">Обычный</Badge>;
       default:
@@ -222,10 +222,11 @@ export function NotificationsPanel() {
 
         <div className="flex items-center gap-2">
           <Badge
+            variant="outline"
             className={cn(
               isConnected
-                ? "bg-green-500/10 text-green-500"
-                : "bg-red-500/10 text-red-500"
+                ? "bg-[#0ECB81]/10 text-[#0ECB81] border-[#0ECB81]/20"
+                : "bg-[#F6465D]/10 text-[#F6465D] border-[#F6465D]/20"
             )}
           >
             {isConnected ? (

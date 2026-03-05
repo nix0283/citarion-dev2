@@ -191,9 +191,9 @@ export function ArchitectBotPanel() {
 
   const getInventoryColor = (skew: number) => {
     const abs = Math.abs(skew);
-    if (abs >= 0.7) return "text-red-500";
+    if (abs >= 0.7) return "text-[#F6465D]";
     if (abs >= 0.4) return "text-yellow-500";
-    return "text-green-500";
+    return "text-[#0ECB81]";
   };
 
   return (
@@ -214,7 +214,7 @@ export function ArchitectBotPanel() {
         <div className="flex items-center gap-2">
           <Badge className={cn(
             "text-sm",
-            isRunning ? "bg-green-500/10 text-green-500 border-green-500/20" : "bg-gray-500/10 text-gray-500"
+            isRunning ? "bg-[#0ECB81]/10 text-[#0ECB81] border-[#0ECB81]/20" : "bg-gray-500/10 text-gray-500"
           )}>
             {isRunning ? "РАБОТАЕТ" : "ОСТАНОВЛЕН"}
           </Badge>
@@ -473,7 +473,7 @@ export function ArchitectBotPanel() {
         <Card>
           <CardContent className="p-4">
             <div className="text-sm text-muted-foreground">Захваченный спред</div>
-            <div className="text-2xl font-bold text-green-500">${stats.capturedSpread.toFixed(2)}</div>
+            <div className="text-2xl font-bold text-[#0ECB81]">${stats.capturedSpread.toFixed(2)}</div>
           </CardContent>
         </Card>
         <Card>
@@ -481,7 +481,7 @@ export function ArchitectBotPanel() {
             <div className="text-sm text-muted-foreground">Общий PnL</div>
             <div className={cn(
               "text-2xl font-bold",
-              stats.totalPnl >= 0 ? "text-green-500" : "text-red-500"
+              stats.totalPnl >= 0 ? "text-[#0ECB81]" : "text-[#F6465D]"
             )}>
               ${stats.totalPnl.toFixed(2)}
             </div>
@@ -492,7 +492,7 @@ export function ArchitectBotPanel() {
             <div className="text-sm text-muted-foreground">Коэф. Шарпа</div>
             <div className={cn(
               "text-2xl font-bold",
-              stats.sharpeRatio >= 2 ? "text-green-500" : ""
+              stats.sharpeRatio >= 2 ? "text-[#0ECB81]" : ""
             )}>
               {stats.sharpeRatio.toFixed(2)}
             </div>
@@ -519,7 +519,7 @@ export function ArchitectBotPanel() {
             <div className="text-sm text-muted-foreground">PnL инвентаря</div>
             <div className={cn(
               "text-xl font-bold",
-              stats.inventoryPnl >= 0 ? "text-green-500" : "text-red-500"
+              stats.inventoryPnl >= 0 ? "text-[#0ECB81]" : "text-[#F6465D]"
             )}>
               ${stats.inventoryPnl.toFixed(2)}
             </div>
@@ -531,7 +531,7 @@ export function ArchitectBotPanel() {
               <AlertTriangle className="h-3 w-3" />
               Стоим. неблаг. отбора
             </div>
-            <div className="text-xl font-bold text-red-500">${stats.adverseSelectionCost.toFixed(2)}</div>
+            <div className="text-xl font-bold text-[#F6465D]">${stats.adverseSelectionCost.toFixed(2)}</div>
           </CardContent>
         </Card>
       </div>
@@ -567,17 +567,17 @@ export function ArchitectBotPanel() {
                 </div>
                 
                 <div className="grid grid-cols-2 gap-4 mt-3">
-                  <div className="p-2 rounded bg-green-500/10 border border-green-500/20">
+                  <div className="p-2 rounded bg-[#0ECB81]/10 border border-[#0ECB81]/20">
                     <div className="text-xs text-muted-foreground mb-1">BID</div>
                     <div className="flex items-center justify-between">
-                      <span className="text-lg font-bold text-green-500">${quote.bidPrice.toFixed(2)}</span>
+                      <span className="text-lg font-bold text-[#0ECB81]">${quote.bidPrice.toFixed(2)}</span>
                       <span className="text-sm">{quote.bidSize}</span>
                     </div>
                   </div>
-                  <div className="p-2 rounded bg-red-500/10 border border-red-500/20">
+                  <div className="p-2 rounded bg-[#F6465D]/10 border border-[#F6465D]/20">
                     <div className="text-xs text-muted-foreground mb-1">ASK</div>
                     <div className="flex items-center justify-between">
-                      <span className="text-lg font-bold text-red-500">${quote.askPrice.toFixed(2)}</span>
+                      <span className="text-lg font-bold text-[#F6465D]">${quote.askPrice.toFixed(2)}</span>
                       <span className="text-sm">{quote.askSize}</span>
                     </div>
                   </div>
@@ -610,14 +610,14 @@ export function ArchitectBotPanel() {
                   <div className="flex items-center gap-3">
                     <Badge variant="outline" className="font-mono">{inv.symbol}</Badge>
                     <Badge className={cn(
-                      inv.netPosition >= 0 ? "bg-green-500/10 text-green-500" : "bg-red-500/10 text-red-500"
+                      inv.netPosition >= 0 ? "bg-[#0ECB81]/10 text-[#0ECB81]" : "bg-[#F6465D]/10 text-[#F6465D]"
                     )}>
                       {inv.netPosition >= 0 ? "Лонг" : "Шорт"}
                     </Badge>
                   </div>
                   <div className={cn(
                     "font-medium",
-                    inv.unrealizedPnl >= 0 ? "text-green-500" : "text-red-500"
+                    inv.unrealizedPnl >= 0 ? "text-[#0ECB81]" : "text-[#F6465D]"
                   )}>
                     PnL: ${inv.unrealizedPnl.toFixed(2)}
                   </div>

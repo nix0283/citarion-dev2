@@ -111,17 +111,17 @@ function OrderbookVisualization({
         {/* Imbalance Bar */}
         <div className="space-y-2">
           <div className="flex justify-between text-xs">
-            <span className="text-green-400">Биды {bidPercent.toFixed(1)}%</span>
+            <span className="text-[#0ECB81]">Биды {bidPercent.toFixed(1)}%</span>
             <span className="text-muted-foreground">Дисбаланс</span>
-            <span className="text-red-400">Аски {askPercent.toFixed(1)}%</span>
+            <span className="text-[#F6465D]">Аски {askPercent.toFixed(1)}%</span>
           </div>
           <div className="h-4 bg-muted rounded-full overflow-hidden flex">
             <div 
-              className="bg-green-500 transition-all duration-300"
+              className="bg-[#0ECB81] transition-all duration-300"
               style={{ width: `${bidPercent}%` }}
             />
             <div 
-              className="bg-red-500 transition-all duration-300"
+              className="bg-[#F6465D] transition-all duration-300"
               style={{ width: `${askPercent}%` }}
             />
           </div>
@@ -137,7 +137,7 @@ function OrderbookVisualization({
             <div className="text-muted-foreground">Моментум</div>
             <div className={cn(
               "font-mono font-bold",
-              momentum > 0 ? "text-green-400" : momentum < 0 ? "text-red-400" : ""
+              momentum > 0 ? "text-[#0ECB81]" : momentum < 0 ? "text-[#F6465D]" : ""
             )}>
               {momentum.toFixed(3)}
             </div>
@@ -146,7 +146,7 @@ function OrderbookVisualization({
             <div className="text-muted-foreground">Сигнал</div>
             <div className={cn(
               "font-mono font-bold",
-              Math.abs(imbalance) > 0.3 ? (imbalance > 0 ? "text-green-400" : "text-red-400") : ""
+              Math.abs(imbalance) > 0.3 ? (imbalance > 0 ? "text-[#0ECB81]" : "text-[#F6465D]") : ""
             )}>
               {Math.abs(imbalance) > 0.3 ? (imbalance > 0 ? "LONG" : "SHORT") : "NEUTRAL"}
             </div>
@@ -189,8 +189,8 @@ function SignalFeed({ signals }: { signals: SignalInfo[] }) {
                     variant="outline" 
                     className={cn(
                       "text-xs",
-                      signal.direction === 'LONG' ? "text-green-400 border-green-500" : 
-                      signal.direction === 'SHORT' ? "text-red-400 border-red-500" : 
+                      signal.direction === 'LONG' ? "text-[#0ECB81] border-[#0ECB81]" : 
+                      signal.direction === 'SHORT' ? "text-[#F6465D] border-[#F6465D]" : 
                       "text-gray-400"
                     )}
                   >
@@ -440,7 +440,7 @@ export function HFTBotPanel() {
             <div className="text-center">
               <div className={cn(
                 "text-2xl font-bold font-mono",
-                (stats?.winRate ?? 0) >= 0.5 ? "text-green-400" : "text-red-400"
+                (stats?.winRate ?? 0) >= 0.5 ? "text-[#0ECB81]" : "text-[#F6465D]"
               )}>
                 {((stats?.winRate ?? 0) * 100).toFixed(1)}%
               </div>
@@ -453,7 +453,7 @@ export function HFTBotPanel() {
             <div className="text-center">
               <div className={cn(
                 "text-2xl font-bold font-mono",
-                (stats?.totalPnl ?? 0) >= 0 ? "text-green-400" : "text-red-400"
+                (stats?.totalPnl ?? 0) >= 0 ? "text-[#0ECB81]" : "text-[#F6465D]"
               )}>
                 {(stats?.totalPnl ?? 0) >= 0 ? '+' : ''}{(stats?.totalPnl ?? 0).toFixed(2)}
               </div>
@@ -466,8 +466,8 @@ export function HFTBotPanel() {
             <div className="text-center">
               <div className={cn(
                 "text-2xl font-bold font-mono",
-                (stats?.avgLatency ?? 0) < 10 ? "text-green-400" : 
-                (stats?.avgLatency ?? 0) < 100 ? "text-yellow-400" : "text-red-400"
+                (stats?.avgLatency ?? 0) < 10 ? "text-[#0ECB81]" : 
+                (stats?.avgLatency ?? 0) < 100 ? "text-yellow-400" : "text-[#F6465D]"
               )}>
                 {(stats?.avgLatency ?? 0).toFixed(1)}ms
               </div>
@@ -491,15 +491,15 @@ export function HFTBotPanel() {
           variant="outline" 
           className={cn(
             "text-sm",
-            isRunning ? "border-green-500 text-green-400" : 
-            status === 'error' ? "border-red-500 text-red-400" : 
+            isRunning ? "border-[#0ECB81] text-[#0ECB81]" : 
+            status === 'error' ? "border-[#F6465D] text-[#F6465D]" : 
             "border-gray-500 text-gray-400"
           )}
         >
           <span className={cn(
             "mr-2 h-2 w-2 rounded-full",
-            isRunning ? "bg-green-500 animate-pulse" : 
-            status === 'error' ? "bg-red-500" : 
+            isRunning ? "bg-[#0ECB81] animate-pulse" : 
+            status === 'error' ? "bg-[#F6465D]" : 
             "bg-gray-500"
           )} />
           {status.toUpperCase()}

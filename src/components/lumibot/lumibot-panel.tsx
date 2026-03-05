@@ -225,12 +225,12 @@ export function LumibotPanel() {
             </div>
             <div className="flex items-center gap-2">
               <Badge
-                variant={serviceStatus?.status === 'running' ? 'default' : 'secondary'}
+                variant="outline"
                 className={
                   serviceStatus?.status === 'running'
-                    ? 'bg-green-500'
+                    ? 'text-[#0ECB81] border-[#0ECB81]'
                     : serviceStatus?.status === 'unavailable'
-                    ? 'bg-red-500'
+                    ? 'text-[#F6465D] border-[#F6465D]'
                     : ''
                 }
               >

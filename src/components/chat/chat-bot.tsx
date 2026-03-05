@@ -329,8 +329,8 @@ export function ChatBot() {
 
   const getNotificationIcon = (type?: string) => {
     if (!type) return <Bell className="h-4 w-4" />;
-    if (type.includes("TP")) return <TrendingUp className="h-4 w-4 text-green-500" />;
-    if (type.includes("SL")) return <TrendingDown className="h-4 w-4 text-red-500" />;
+    if (type.includes("TP")) return <TrendingUp className="h-4 w-4 text-[#0ECB81]" />;
+    if (type.includes("SL")) return <TrendingDown className="h-4 w-4 text-[#F6465D]" />;
     if (type.includes("EXTERNAL")) return <ExternalLink className="h-4 w-4 text-blue-500" />;
     if (type.includes("WARNING") || type.includes("ERROR"))
       return <AlertCircle className="h-4 w-4 text-orange-500" />;
@@ -456,7 +456,7 @@ export function ChatBot() {
               <span
                 className={cn(
                   "absolute -bottom-0.5 -right-0.5 w-2 h-2 rounded-full",
-                  isConnected ? "bg-green-500" : "bg-red-500"
+                  isConnected ? "bg-[#0ECB81]" : "bg-[#F6465D]"
                 )}
               />
             </div>
@@ -469,11 +469,12 @@ export function ChatBot() {
               GPT-4
             </Badge>
             <Badge
+              variant="outline"
               className={cn(
                 "text-xs",
                 isConnected
-                  ? "bg-green-500/10 text-green-500 border-green-500/20"
-                  : "bg-red-500/10 text-red-500 border-red-500/20"
+                  ? "bg-[#0ECB81]/10 text-[#0ECB81] border-[#0ECB81]/20"
+                  : "bg-[#F6465D]/10 text-[#F6465D] border-[#F6465D]/20"
               )}
             >
               {isConnected ? (
@@ -504,7 +505,7 @@ export function ChatBot() {
                         message.role === "bot"
                           ? "bg-primary/20 text-primary"
                           : message.role === "error"
-                          ? "bg-red-500/20 text-red-500"
+                          ? "bg-[#F6465D]/20 text-[#F6465D]"
                           : message.role === "notification"
                           ? "bg-blue-500/20 text-blue-500"
                           : "bg-secondary"
@@ -529,7 +530,7 @@ export function ChatBot() {
                         message.role === "user"
                           ? "bg-primary text-primary-foreground rounded-tr-sm"
                           : message.role === "error"
-                          ? "bg-red-500/10 text-red-600 dark:text-red-400 rounded-tl-sm border border-red-500/20"
+                          ? "bg-[#F6465D]/10 text-[#F6465D] dark:text-[#F6465D]/80 rounded-tl-sm border border-[#F6465D]/20"
                           : message.role === "notification"
                           ? "bg-blue-500/10 text-blue-600 dark:text-blue-400 rounded-tl-sm border border-blue-500/20"
                           : "bg-secondary rounded-tl-sm"
@@ -557,7 +558,7 @@ export function ChatBot() {
                               onClick={() => handleCopyTemplate(message.template!, message.id)}
                             >
                               {copiedId === message.id ? (
-                                <Check className="h-3 w-3 mr-1 text-green-500" />
+                                <Check className="h-3 w-3 mr-1 text-[#0ECB81]" />
                               ) : (
                                 <Copy className="h-3 w-3 mr-1" />
                               )}
@@ -566,26 +567,26 @@ export function ChatBot() {
                           </div>
                           <pre className="text-xs whitespace-pre-wrap font-mono">{message.template.template}</pre>
                         </div>
-                        <div className="bg-green-500/5 border border-green-500/20 rounded-md p-2">
+                        <div className="bg-[#0ECB81]/5 border border-[#0ECB81]/20 rounded-md p-2">
                           <div className="flex items-center justify-between mb-1">
-                            <span className="text-xs font-medium text-green-600 dark:text-green-400">
+                            <span className="text-xs font-medium text-[#0ECB81] dark:text-[#0ECB81]/80">
                               Пример:
                             </span>
                             <Button
                               variant="ghost"
                               size="sm"
-                              className="h-6 px-2 text-xs text-green-600 hover:text-green-700"
+                              className="h-6 px-2 text-xs text-[#0ECB81] hover:text-[#0ECB81]/80"
                               onClick={() => handleCopyExample(message.template!, message.id)}
                             >
                               {copiedId === `example-${message.id}` ? (
-                                <Check className="h-3 w-3 mr-1 text-green-500" />
+                                <Check className="h-3 w-3 mr-1 text-[#0ECB81]" />
                               ) : (
                                 <Copy className="h-3 w-3 mr-1" />
                               )}
                               {copiedId === `example-${message.id}` ? "Скопировано" : "Копировать"}
                             </Button>
                           </div>
-                          <pre className="text-xs whitespace-pre-wrap font-mono text-green-700 dark:text-green-300">
+                          <pre className="text-xs whitespace-pre-wrap font-mono text-[#0ECB81]">
                             {message.template.example}
                           </pre>
                         </div>
@@ -627,8 +628,8 @@ export function ChatBot() {
                               className={cn(
                                 "text-xs",
                                 message.signal.direction === "LONG"
-                                  ? "bg-green-500/10 text-green-500 border-green-500/20"
-                                  : "bg-red-500/10 text-red-500 border-red-500/20"
+                                  ? "bg-[#0ECB81]/10 text-[#0ECB81] border-[#0ECB81]/20"
+                                  : "bg-[#F6465D]/10 text-[#F6465D] border-[#F6465D]/20"
                               )}
                             >
                               {message.signal.direction === "LONG" ? (
@@ -669,7 +670,7 @@ export function ChatBot() {
                         {message.signal.stopLoss && (
                           <div className="mt-2 text-xs">
                             <span className="text-muted-foreground">СТ:</span>{" "}
-                            <span className="text-red-500">${formatNumber(message.signal.stopLoss)}</span>
+                            <span className="text-[#F6465D]">${formatNumber(message.signal.stopLoss)}</span>
                           </div>
                         )}
                         <div className="flex gap-2 mt-3">
@@ -710,8 +711,8 @@ export function ChatBot() {
                             className={cn(
                               "text-xs",
                               message.externalPosition.direction === "LONG"
-                                ? "bg-green-500/10 text-green-500 border-green-500/20"
-                                : "bg-red-500/10 text-red-500 border-red-500/20"
+                                ? "bg-[#0ECB81]/10 text-[#0ECB81] border-[#0ECB81]/20"
+                                : "bg-[#F6465D]/10 text-[#F6465D] border-[#F6465D]/20"
                             )}
                           >
                             {message.externalPosition.direction === "LONG" ? (
@@ -732,7 +733,7 @@ export function ChatBot() {
                           <div>Сумма: {message.externalPosition.amount.toFixed(6)} (${formatNumber(message.externalPosition.amountUsd)})</div>
                           {message.externalPosition.unrealizedPnl !== undefined && (
                             <div className={cn(
-                              message.externalPosition.unrealizedPnl >= 0 ? "text-green-500" : "text-red-500"
+                              message.externalPosition.unrealizedPnl >= 0 ? "text-[#0ECB81]" : "text-[#F6465D]"
                             )}>
                               Профит: {message.externalPosition.unrealizedPnl >= 0 ? "+" : ""}${formatNumber(message.externalPosition.unrealizedPnl)}
                             </div>
@@ -741,7 +742,7 @@ export function ChatBot() {
                         <div className="flex gap-2 mt-3">
                           <Button
                             size="sm"
-                            className="flex-1 h-8 bg-green-500 hover:bg-green-600 text-white"
+                            className="flex-1 h-8 bg-[#0ECB81] hover:bg-[#0ECB81]/90 text-white"
                             onClick={() => handleEscortPosition(message.externalPosition!.id, "accept")}
                           >
                             ✅ Сопровождать
@@ -749,7 +750,7 @@ export function ChatBot() {
                           <Button
                             variant="outline"
                             size="sm"
-                            className="flex-1 h-8 text-red-500 border-red-500/30 hover:bg-red-500/10"
+                            className="flex-1 h-8 text-[#F6465D] border-[#F6465D]/30 hover:bg-[#F6465D]/10"
                             onClick={() => handleEscortPosition(message.externalPosition!.id, "ignore")}
                           >
                             🚫 Игнорировать
@@ -811,7 +812,7 @@ export function ChatBot() {
               </SelectContent>
             </Select>
             {isConnected && (
-              <Badge variant="outline" className="text-xs text-green-500">
+              <Badge variant="outline" className="text-xs text-[#0ECB81]">
                 <BellRing className="h-3 w-3 mr-1" />
                 Live
               </Badge>
@@ -873,7 +874,7 @@ export function ChatBot() {
             <Button
               variant="ghost"
               size="sm"
-              className="h-6 text-xs px-2 text-red-500 hover:text-red-600"
+              className="h-6 text-xs px-2 text-[#F6465D] hover:text-[#F6465D]/90"
               onClick={() => setInput("close all")}
             >
               🚫 close all
@@ -889,7 +890,7 @@ export function ChatBot() {
             <Button
               variant="ghost"
               size="sm"
-              className="h-6 text-xs px-2 text-red-600 hover:text-red-700"
+              className="h-6 text-xs px-2 text-[#F6465D] hover:text-[#F6465D]/80"
               onClick={() => setInput("очистить базу")}
             >
               🧹 сброс

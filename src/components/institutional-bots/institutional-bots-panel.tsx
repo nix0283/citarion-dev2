@@ -129,10 +129,11 @@ function SpectrumBotPanel() {
         </div>
         <div className="flex items-center gap-2">
           <Badge
-            variant={status === 'RUNNING' ? 'default' : status === 'ERROR' ? 'destructive' : 'secondary'}
+            variant="outline"
             className={cn(
               "px-3 py-1",
-              status === 'RUNNING' && "bg-green-500/10 text-green-500 border-green-500/30"
+              status === 'RUNNING' && "bg-[#0ECB81]/10 text-[#0ECB81] border-[#0ECB81]/30",
+              status === 'ERROR' && "bg-destructive/10 text-destructive border-destructive/30"
             )}
           >
             {status}
@@ -162,7 +163,7 @@ function SpectrumBotPanel() {
         <Card>
           <CardContent className="p-4">
             <div className="text-sm text-muted-foreground">Win Rate</div>
-            <div className="text-2xl font-bold text-green-500">{stats.winRate}%</div>
+            <div className="text-2xl font-bold text-[#0ECB81]">{stats.winRate}%</div>
           </CardContent>
         </Card>
         <Card>
@@ -174,7 +175,7 @@ function SpectrumBotPanel() {
         <Card>
           <CardContent className="p-4">
             <div className="text-sm text-muted-foreground">Max DD</div>
-            <div className="text-2xl font-bold text-red-500">{stats.maxDrawdown}%</div>
+            <div className="text-2xl font-bold text-[#F6465D]">{stats.maxDrawdown}%</div>
           </CardContent>
         </Card>
         <Card>
@@ -186,7 +187,7 @@ function SpectrumBotPanel() {
         <Card>
           <CardContent className="p-4">
             <div className="text-sm text-muted-foreground">Total PnL</div>
-            <div className="text-2xl font-bold text-green-500">${stats.totalPnL}</div>
+            <div className="text-2xl font-bold text-[#0ECB81]">${stats.totalPnL}</div>
           </CardContent>
         </Card>
       </div>
@@ -211,8 +212,8 @@ function SpectrumBotPanel() {
                   <div key={i} className="flex items-center justify-between p-3 rounded-lg border border-border bg-muted/30">
                     <div className="flex items-center gap-4">
                       <div className="font-mono font-semibold">{p.pair}</div>
-                      <Badge variant={p.status === 'ACTIVE' ? 'default' : 'secondary'}
-                        className={cn(p.status === 'ACTIVE' && "bg-green-500/10 text-green-500")}>
+                      <Badge variant="outline"
+                        className={cn(p.status === 'ACTIVE' && "bg-[#0ECB81]/10 text-[#0ECB81]")}>
                         {p.status}
                       </Badge>
                     </div>
@@ -225,7 +226,7 @@ function SpectrumBotPanel() {
                         <span className="text-muted-foreground">Z-Score: </span>
                         <span className={cn(
                           "font-mono font-bold",
-                          p.zScore > 2 || p.zScore < -2 ? "text-green-500" : "text-foreground"
+                          p.zScore > 2 || p.zScore < -2 ? "text-[#0ECB81]" : "text-foreground"
                         )}>{p.zScore.toFixed(2)}</span>
                       </div>
                     </div>
@@ -377,8 +378,8 @@ function ReedBotPanel() {
         </div>
         <div className="flex items-center gap-2">
           <Badge
-            variant={status === 'RUNNING' ? 'default' : 'secondary'}
-            className={cn(status === 'RUNNING' && "bg-green-500/10 text-green-500")}
+            variant="outline"
+            className={cn(status === 'RUNNING' && "bg-[#0ECB81]/10 text-[#0ECB81]")}
           >
             {status}
           </Badge>
@@ -392,11 +393,11 @@ function ReedBotPanel() {
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
         <Card><CardContent className="p-4"><div className="text-sm text-muted-foreground">Trades</div><div className="text-2xl font-bold">{stats.totalTrades}</div></CardContent></Card>
-        <Card><CardContent className="p-4"><div className="text-sm text-muted-foreground">Win Rate</div><div className="text-2xl font-bold text-green-500">{stats.winRate}%</div></CardContent></Card>
+        <Card><CardContent className="p-4"><div className="text-sm text-muted-foreground">Win Rate</div><div className="text-2xl font-bold text-[#0ECB81]">{stats.winRate}%</div></CardContent></Card>
         <Card><CardContent className="p-4"><div className="text-sm text-muted-foreground">Avg PnL</div><div className="text-2xl font-bold">${stats.avgPnL}</div></CardContent></Card>
-        <Card><CardContent className="p-4"><div className="text-sm text-muted-foreground">Max DD</div><div className="text-2xl font-bold text-red-500">{stats.maxDrawdown}%</div></CardContent></Card>
+        <Card><CardContent className="p-4"><div className="text-sm text-muted-foreground">Max DD</div><div className="text-2xl font-bold text-[#F6465D]">{stats.maxDrawdown}%</div></CardContent></Card>
         <Card><CardContent className="p-4"><div className="text-sm text-muted-foreground">Sharpe</div><div className="text-2xl font-bold">{stats.sharpeRatio}</div></CardContent></Card>
-        <Card><CardContent className="p-4"><div className="text-sm text-muted-foreground">Total PnL</div><div className="text-2xl font-bold text-green-500">${stats.totalPnL}</div></CardContent></Card>
+        <Card><CardContent className="p-4"><div className="text-sm text-muted-foreground">Total PnL</div><div className="text-2xl font-bold text-[#0ECB81]">${stats.totalPnL}</div></CardContent></Card>
       </div>
 
       {/* Factor Model */}
@@ -416,7 +417,7 @@ function ReedBotPanel() {
                 <div className="w-16 text-right font-mono">{(f.weight * 100).toFixed(0)}%</div>
                 <div className={cn(
                   "w-16 text-right font-mono font-bold",
-                  f.value > 0 ? "text-green-500" : "text-red-500"
+                  f.value > 0 ? "text-[#0ECB81]" : "text-[#F6465D]"
                 )}>
                   {f.value > 0 ? '+' : ''}{f.value.toFixed(2)}
                 </div>
@@ -511,8 +512,8 @@ function ArchitectBotPanel() {
         </div>
         <div className="flex items-center gap-2">
           <Badge
-            variant={status === 'RUNNING' ? 'default' : 'secondary'}
-            className={cn(status === 'RUNNING' && "bg-green-500/10 text-green-500")}
+            variant="outline"
+            className={cn(status === 'RUNNING' && "bg-[#0ECB81]/10 text-[#0ECB81]")}
           >
             {status}
           </Badge>
@@ -526,9 +527,9 @@ function ArchitectBotPanel() {
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
         <Card><CardContent className="p-4"><div className="text-sm text-muted-foreground">Volume</div><div className="text-2xl font-bold">${(stats.totalVolume / 1000).toFixed(0)}K</div></CardContent></Card>
-        <Card><CardContent className="p-4"><div className="text-sm text-muted-foreground">Spread Captured</div><div className="text-2xl font-bold text-green-500">${stats.capturedSpread}</div></CardContent></Card>
-        <Card><CardContent className="p-4"><div className="text-sm text-muted-foreground">Inventory PnL</div><div className={cn("text-2xl font-bold", stats.inventoryPnl < 0 ? "text-red-500" : "text-green-500")}>${stats.inventoryPnl}</div></CardContent></Card>
-        <Card><CardContent className="p-4"><div className="text-sm text-muted-foreground">Total PnL</div><div className="text-2xl font-bold text-green-500">${stats.totalPnl}</div></CardContent></Card>
+        <Card><CardContent className="p-4"><div className="text-sm text-muted-foreground">Spread Captured</div><div className="text-2xl font-bold text-[#0ECB81]">${stats.capturedSpread}</div></CardContent></Card>
+        <Card><CardContent className="p-4"><div className="text-sm text-muted-foreground">Inventory PnL</div><div className={cn("text-2xl font-bold", stats.inventoryPnl < 0 ? "text-[#F6465D]" : "text-[#0ECB81]")}>${stats.inventoryPnl}</div></CardContent></Card>
+        <Card><CardContent className="p-4"><div className="text-sm text-muted-foreground">Total PnL</div><div className="text-2xl font-bold text-[#0ECB81]">${stats.totalPnl}</div></CardContent></Card>
         <Card><CardContent className="p-4"><div className="text-sm text-muted-foreground">Fill Rate</div><div className="text-2xl font-bold">{stats.fillRate}%</div></CardContent></Card>
         <Card><CardContent className="p-4"><div className="text-sm text-muted-foreground">Avg Spread</div><div className="text-2xl font-bold">{stats.avgSpread}%</div></CardContent></Card>
       </div>
@@ -544,10 +545,10 @@ function ArchitectBotPanel() {
             {quotes.map((q, i) => (
               <div key={i} className="grid grid-cols-6 gap-4 p-3 rounded-lg border border-border bg-muted/30">
                 <div className="font-mono font-semibold">{q.symbol}</div>
-                <div className="text-green-500 font-mono">{q.bid.toFixed(2)}</div>
-                <div className="text-red-500 font-mono">{q.ask.toFixed(2)}</div>
+                <div className="text-[#0ECB81] font-mono">{q.bid.toFixed(2)}</div>
+                <div className="text-[#F6465D] font-mono">{q.ask.toFixed(2)}</div>
                 <div className="font-mono">{q.spread.toFixed(3)}%</div>
-                <div className={cn("font-mono", q.skew > 0 ? "text-red-500" : "text-green-500")}>
+                <div className={cn("font-mono", q.skew > 0 ? "text-[#F6465D]" : "text-[#0ECB81]")}>
                   Skew: {q.skew > 0 ? '+' : ''}{q.skew.toFixed(2)}
                 </div>
                 <Badge variant="outline" className="justify-self-end">ACTIVE</Badge>
@@ -646,8 +647,8 @@ function EquilibristBotPanel() {
         </div>
         <div className="flex items-center gap-2">
           <Badge
-            variant={status === 'RUNNING' ? 'default' : 'secondary'}
-            className={cn(status === 'RUNNING' && "bg-green-500/10 text-green-500")}
+            variant="outline"
+            className={cn(status === 'RUNNING' && "bg-[#0ECB81]/10 text-[#0ECB81]")}
           >
             {status}
           </Badge>
@@ -661,11 +662,11 @@ function EquilibristBotPanel() {
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
         <Card><CardContent className="p-4"><div className="text-sm text-muted-foreground">Trades</div><div className="text-2xl font-bold">{stats.totalTrades}</div></CardContent></Card>
-        <Card><CardContent className="p-4"><div className="text-sm text-muted-foreground">Win Rate</div><div className="text-2xl font-bold text-green-500">{stats.winRate}%</div></CardContent></Card>
+        <Card><CardContent className="p-4"><div className="text-sm text-muted-foreground">Win Rate</div><div className="text-2xl font-bold text-[#0ECB81]">{stats.winRate}%</div></CardContent></Card>
         <Card><CardContent className="p-4"><div className="text-sm text-muted-foreground">Avg PnL</div><div className="text-2xl font-bold">${stats.avgPnL}</div></CardContent></Card>
-        <Card><CardContent className="p-4"><div className="text-sm text-muted-foreground">Max DD</div><div className="text-2xl font-bold text-red-500">{stats.maxDrawdown}%</div></CardContent></Card>
+        <Card><CardContent className="p-4"><div className="text-sm text-muted-foreground">Max DD</div><div className="text-2xl font-bold text-[#F6465D]">{stats.maxDrawdown}%</div></CardContent></Card>
         <Card><CardContent className="p-4"><div className="text-sm text-muted-foreground">Sharpe</div><div className="text-2xl font-bold">{stats.sharpeRatio}</div></CardContent></Card>
-        <Card><CardContent className="p-4"><div className="text-sm text-muted-foreground">Total PnL</div><div className="text-2xl font-bold text-green-500">${stats.totalPnL}</div></CardContent></Card>
+        <Card><CardContent className="p-4"><div className="text-sm text-muted-foreground">Total PnL</div><div className="text-2xl font-bold text-[#0ECB81]">${stats.totalPnL}</div></CardContent></Card>
       </div>
 
       {/* Signals */}
@@ -680,15 +681,18 @@ function EquilibristBotPanel() {
               <div key={i} className="flex items-center justify-between p-3 rounded-lg border border-border bg-muted/30">
                 <div className="flex items-center gap-4">
                   <div className="font-mono font-semibold">{s.symbol}</div>
-                  <Badge variant={s.direction === 'LONG' ? 'default' : 'destructive'}
-                    className={cn(s.direction === 'LONG' && "bg-green-500/10 text-green-500")}>
+                  <Badge variant="outline"
+                    className={cn(
+                      s.direction === 'LONG' && "bg-[#0ECB81]/10 text-[#0ECB81] border-[#0ECB81]/30",
+                      s.direction === 'SHORT' && "bg-[#F6465D]/10 text-[#F6465D] border-[#F6465D]/30"
+                    )}>
                     {s.direction}
                   </Badge>
                 </div>
                 <div className="flex items-center gap-6 text-sm">
                   <div><span className="text-muted-foreground">Price: </span>${s.price}</div>
                   <div><span className="text-muted-foreground">Fair Value: </span>${s.fairValue}</div>
-                  <div className={cn("font-mono font-bold", Math.abs(s.zScore) > 2 ? "text-green-500" : "")}>
+                  <div className={cn("font-mono font-bold", Math.abs(s.zScore) > 2 ? "text-[#0ECB81]" : "")}>
                     Z: {s.zScore.toFixed(2)}
                   </div>
                   <div className="text-muted-foreground">Conf: {(s.confidence * 100).toFixed(0)}%</div>
@@ -797,8 +801,8 @@ function KronBotPanel() {
         </div>
         <div className="flex items-center gap-2">
           <Badge
-            variant={status === 'RUNNING' ? 'default' : 'secondary'}
-            className={cn(status === 'RUNNING' && "bg-green-500/10 text-green-500")}
+            variant="outline"
+            className={cn(status === 'RUNNING' && "bg-[#0ECB81]/10 text-[#0ECB81]")}
           >
             {status}
           </Badge>
@@ -813,10 +817,10 @@ function KronBotPanel() {
       <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
         <Card><CardContent className="p-4"><div className="text-sm text-muted-foreground">Trades</div><div className="text-2xl font-bold">{stats.totalTrades}</div></CardContent></Card>
         <Card><CardContent className="p-4"><div className="text-sm text-muted-foreground">Win Rate</div><div className="text-2xl font-bold">{stats.winRate}%</div></CardContent></Card>
-        <Card><CardContent className="p-4"><div className="text-sm text-muted-foreground">Avg PnL</div><div className="text-2xl font-bold text-green-500">${stats.avgPnL}</div></CardContent></Card>
-        <Card><CardContent className="p-4"><div className="text-sm text-muted-foreground">Max DD</div><div className="text-2xl font-bold text-red-500">{stats.maxDrawdown}%</div></CardContent></Card>
+        <Card><CardContent className="p-4"><div className="text-sm text-muted-foreground">Avg PnL</div><div className="text-2xl font-bold text-[#0ECB81]">${stats.avgPnL}</div></CardContent></Card>
+        <Card><CardContent className="p-4"><div className="text-sm text-muted-foreground">Max DD</div><div className="text-2xl font-bold text-[#F6465D]">{stats.maxDrawdown}%</div></CardContent></Card>
         <Card><CardContent className="p-4"><div className="text-sm text-muted-foreground">Sharpe</div><div className="text-2xl font-bold">{stats.sharpeRatio}</div></CardContent></Card>
-        <Card><CardContent className="p-4"><div className="text-sm text-muted-foreground">Total PnL</div><div className="text-2xl font-bold text-green-500">${stats.totalPnL}</div></CardContent></Card>
+        <Card><CardContent className="p-4"><div className="text-sm text-muted-foreground">Total PnL</div><div className="text-2xl font-bold text-[#0ECB81]">${stats.totalPnL}</div></CardContent></Card>
       </div>
 
       {/* Trend Status */}
@@ -832,10 +836,10 @@ function KronBotPanel() {
                 <div className="flex items-center gap-4">
                   <div className="font-mono font-semibold">{t.symbol}</div>
                   <Badge
-                    variant={t.direction === 'UPTREND' ? 'default' : t.direction === 'DOWNTREND' ? 'destructive' : 'secondary'}
+                    variant="outline"
                     className={cn(
-                      t.direction === 'UPTREND' && "bg-green-500/10 text-green-500",
-                      t.direction === 'DOWNTREND' && "bg-red-500/10 text-red-500"
+                      t.direction === 'UPTREND' && "bg-[#0ECB81]/10 text-[#0ECB81] border-[#0ECB81]/30",
+                      t.direction === 'DOWNTREND' && "bg-[#F6465D]/10 text-[#F6465D] border-[#F6465D]/30"
                     )}
                   >
                     {t.direction === 'UPTREND' && <TrendingUp className="h-3 w-3 mr-1" />}
@@ -847,11 +851,11 @@ function KronBotPanel() {
                 <div className="flex items-center gap-6 text-sm">
                   <div>
                     <span className="text-muted-foreground">Strength: </span>
-                    <span className={cn("font-bold", t.strength > 50 ? "text-green-500" : "")}>{t.strength}%</span>
+                    <span className={cn("font-bold", t.strength > 50 ? "text-[#0ECB81]" : "")}>{t.strength}%</span>
                   </div>
                   <div>
                     <span className="text-muted-foreground">ADX: </span>
-                    <span className={cn("font-mono", t.adx > 25 ? "text-green-500" : "")}>{t.adx}</span>
+                    <span className={cn("font-mono", t.adx > 25 ? "text-[#0ECB81]" : "")}>{t.adx}</span>
                   </div>
                 </div>
               </div>

@@ -530,7 +530,7 @@ export function BBBotManager() {
   // Get status badge
   const getStatusBadge = (status: string) => {
     const styles: Record<string, string> = {
-      RUNNING: 'bg-green-500/10 text-green-500 border-green-500/20',
+      RUNNING: 'bg-[#0ECB81]/10 text-[#0ECB81] border-[#0ECB81]/30',
       STOPPED: 'bg-gray-500/10 text-gray-500 border-gray-500/20',
       PAUSED: 'bg-yellow-500/10 text-yellow-500 border-yellow-500/20',
     };
@@ -544,8 +544,8 @@ export function BBBotManager() {
   // Get direction badge
   const getDirectionBadge = (direction: string) => {
     const styles: Record<string, string> = {
-      LONG: 'text-green-500',
-      SHORT: 'text-red-500',
+      LONG: 'text-[#0ECB81]',
+      SHORT: 'text-[#F6465D]',
       BOTH: 'text-blue-500',
     };
     const icons: Record<string, typeof TrendingUp> = {
@@ -576,12 +576,12 @@ export function BBBotManager() {
     const styles: Record<string, string> = {
       INNER_TOUCH: 'bg-blue-500/10 text-blue-500',
       OUTER_TOUCH: 'bg-purple-500/10 text-purple-500',
-      BAND_WALK: 'bg-green-500/10 text-green-500',
+      BAND_WALK: 'bg-[#0ECB81]/10 text-[#0ECB81]',
       SQUEEZE: 'bg-yellow-500/10 text-yellow-500',
       REVERSAL: 'bg-orange-500/10 text-orange-500',
     };
     return (
-      <Badge className={styles[signalType] || 'bg-gray-500/10 text-gray-500'}>
+      <Badge variant="outline" className={styles[signalType] || 'bg-gray-500/10 text-gray-500'}>
         {signalType.replace('_', ' ')}
       </Badge>
     );
@@ -1057,9 +1057,9 @@ export function BBBotManager() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     {currentFilterResult.approved ? (
-                      <CheckCircle2 className="h-5 w-5 text-green-500" />
+                      <CheckCircle2 className="h-5 w-5 text-[#0ECB81]" />
                     ) : (
-                      <XCircle className="h-5 w-5 text-red-500" />
+                      <XCircle className="h-5 w-5 text-[#F6465D]" />
                     )}
                     <span className="font-medium">
                       {currentFilterResult.approved ? 'Сигнал одобрен' : 'Сигнал отклонён'}
@@ -1067,12 +1067,12 @@ export function BBBotManager() {
                   </div>
                   <div className="flex gap-2">
                     {currentFilterResult.direction === 'LONG' ? (
-                      <Badge className="bg-green-500/10 text-green-500">
+                      <Badge variant="outline" className="bg-[#0ECB81]/10 text-[#0ECB81]">
                         <TrendingUp className="h-3 w-3 mr-1" />
                         LONG
                       </Badge>
                     ) : currentFilterResult.direction === 'SHORT' ? (
-                      <Badge className="bg-red-500/10 text-red-500">
+                      <Badge variant="outline" className="bg-[#F6465D]/10 text-[#F6465D]">
                         <TrendingDown className="h-3 w-3 mr-1" />
                         SHORT
                       </Badge>
@@ -1199,10 +1199,10 @@ export function BBBotManager() {
                 {filterEnabled && currentFilterResult && bot.status === 'RUNNING' && (
                   <div className={cn(
                     "flex items-center gap-2 p-2 rounded-lg",
-                    currentFilterResult.approved ? "bg-green-500/5" : "bg-yellow-500/5"
+                    currentFilterResult.approved ? "bg-[#0ECB81]/5" : "bg-yellow-500/5"
                   )}>
                     {currentFilterResult.approved ? (
-                      <CheckCircle2 className="h-4 w-4 text-green-500" />
+                      <CheckCircle2 className="h-4 w-4 text-[#0ECB81]" />
                     ) : (
                       <Shield className="h-4 w-4 text-yellow-500" />
                     )}
@@ -1236,11 +1236,11 @@ export function BBBotManager() {
                     <p className="text-xs text-muted-foreground">Сделки</p>
                   </div>
                   <div>
-                    <p className="text-2xl font-bold text-green-500">{bot.winTrades}</p>
+                    <p className="text-2xl font-bold text-[#0ECB81]">{bot.winTrades}</p>
                     <p className="text-xs text-muted-foreground">Прибыльные</p>
                   </div>
                   <div>
-                    <p className="text-2xl font-bold text-red-500">{bot.lossTrades}</p>
+                    <p className="text-2xl font-bold text-[#F6465D]">{bot.lossTrades}</p>
                     <p className="text-xs text-muted-foreground">Убыточные</p>
                   </div>
                 </div>
@@ -1362,7 +1362,7 @@ export function BBBotManager() {
                   <div className="text-sm text-muted-foreground">Прибыль</div>
                   <div className={cn(
                     "text-lg font-bold",
-                    backtestResult.totalProfit >= 0 ? "text-green-500" : "text-red-500"
+                    backtestResult.totalProfit >= 0 ? "text-[#0ECB81]" : "text-[#F6465D]"
                   )}>
                     ${backtestResult.totalProfit.toFixed(2)}
                   </div>
@@ -1375,20 +1375,20 @@ export function BBBotManager() {
                   <div className="text-sm text-muted-foreground">Win Rate</div>
                   <div className={cn(
                     "text-lg font-bold",
-                    backtestResult.winRate >= 50 ? "text-green-500" : ""
+                    backtestResult.winRate >= 50 ? "text-[#0ECB81]" : ""
                   )}>
                     {backtestResult.winRate.toFixed(1)}%
                   </div>
                 </div>
                 <div className="text-center">
                   <div className="text-sm text-muted-foreground">Просадка</div>
-                  <div className="text-lg font-bold text-red-500">
+                  <div className="text-lg font-bold text-[#F6465D]">
                     {backtestResult.maxDrawdown.toFixed(1)}%
                   </div>
                 </div>
                 <div className="text-center">
                   <div className="text-sm text-muted-foreground">BB Hit Rate</div>
-                  <div className="text-lg font-bold text-green-500">
+                  <div className="text-lg font-bold text-[#0ECB81]">
                     {backtestResult.bbHitRate.toFixed(1)}%
                   </div>
                 </div>

@@ -157,10 +157,10 @@ export function ConnectedAccounts() {
 
   const getStatusIcon = (account: ConnectedAccount) => {
     if (account.lastError) {
-      return <AlertTriangle className="h-3.5 w-3.5 text-red-500" />;
+      return <AlertTriangle className="h-3.5 w-3.5 text-[#F6465D]" />;
     }
     if (account.isActive) {
-      return <CheckCircle className="h-3.5 w-3.5 text-green-500" />;
+      return <CheckCircle className="h-3.5 w-3.5 text-[#0ECB81]" />;
     }
     return <Clock className="h-3.5 w-3.5 text-muted-foreground" />;
   };
@@ -269,7 +269,7 @@ export function ConnectedAccounts() {
                           )}
                         </div>
                         {account.lastError && (
-                          <p className="text-xs text-red-500 mt-0.5 line-clamp-1">
+                          <p className="text-xs text-[#F6465D] mt-0.5 line-clamp-1">
                             {account.lastError}
                           </p>
                         )}
@@ -349,9 +349,9 @@ export function ConnectedAccounts() {
                 <div className="flex items-center justify-between p-3 rounded-lg bg-secondary/50">
                   <div className="flex items-center gap-2">
                     {selectedAccount.lastError ? (
-                      <AlertTriangle className="h-5 w-5 text-red-500" />
+                      <AlertTriangle className="h-5 w-5 text-[#F6465D]" />
                     ) : selectedAccount.isActive ? (
-                      <CheckCircle className="h-5 w-5 text-green-500" />
+                      <CheckCircle className="h-5 w-5 text-[#0ECB81]" />
                     ) : (
                       <Clock className="h-5 w-5 text-yellow-500" />
                     )}
@@ -372,9 +372,9 @@ export function ConnectedAccounts() {
                 </div>
 
                 {selectedAccount.lastError && (
-                  <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20">
-                    <p className="text-xs text-red-500 font-medium mb-1">Ошибка:</p>
-                    <p className="text-xs text-red-500">{selectedAccount.lastError}</p>
+                  <div className="p-3 rounded-lg bg-[#F6465D]/10 border border-[#F6465D]/20">
+                    <p className="text-xs text-[#F6465D] font-medium mb-1">Ошибка:</p>
+                    <p className="text-xs text-[#F6465D]">{selectedAccount.lastError}</p>
                   </div>
                 )}
 

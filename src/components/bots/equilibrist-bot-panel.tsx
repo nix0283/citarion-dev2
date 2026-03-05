@@ -189,10 +189,10 @@ export function EquilibristBotPanel() {
 
   const getZScoreColor = (zScore: number) => {
     const abs = Math.abs(zScore);
-    if (abs >= 3) return "text-red-500";
+    if (abs >= 3) return "text-[#F6465D]";
     if (abs >= 2) return "text-yellow-500";
     if (abs >= 1.5) return "text-orange-500";
-    return "text-green-500";
+    return "text-[#0ECB81]";
   };
 
   const formatHoldingTime = (ms: number) => {
@@ -221,7 +221,7 @@ export function EquilibristBotPanel() {
         <div className="flex items-center gap-2">
           <Badge className={cn(
             "text-sm",
-            isRunning ? "bg-green-500/10 text-green-500 border-green-500/20" : "bg-gray-500/10 text-gray-500"
+            isRunning ? "bg-[#0ECB81]/10 text-[#0ECB81] border-[#0ECB81]/20" : "bg-gray-500/10 text-gray-500"
           )}>
             {isRunning ? "РАБОТАЕТ" : "ОСТАНОВЛЕН"}
           </Badge>
@@ -520,7 +520,7 @@ export function EquilibristBotPanel() {
             <div className="text-sm text-muted-foreground">Процент побед</div>
             <div className={cn(
               "text-2xl font-bold",
-              stats.winRate >= 0.5 ? "text-green-500" : "text-red-500"
+              stats.winRate >= 0.5 ? "text-[#0ECB81]" : "text-[#F6465D]"
             )}>
               {(stats.winRate * 100).toFixed(1)}%
             </div>
@@ -531,7 +531,7 @@ export function EquilibristBotPanel() {
             <div className="text-sm text-muted-foreground">Средний PnL</div>
             <div className={cn(
               "text-2xl font-bold",
-              stats.avgPnL >= 0 ? "text-green-500" : "text-red-500"
+              stats.avgPnL >= 0 ? "text-[#0ECB81]" : "text-[#F6465D]"
             )}>
               ${stats.avgPnL.toFixed(2)}
             </div>
@@ -542,7 +542,7 @@ export function EquilibristBotPanel() {
             <div className="text-sm text-muted-foreground">Коэф. Шарпа</div>
             <div className={cn(
               "text-2xl font-bold",
-              stats.sharpeRatio >= 1.5 ? "text-green-500" : ""
+              stats.sharpeRatio >= 1.5 ? "text-[#0ECB81]" : ""
             )}>
               {stats.sharpeRatio.toFixed(2)}
             </div>
@@ -561,7 +561,7 @@ export function EquilibristBotPanel() {
         <Card>
           <CardContent className="p-4">
             <div className="text-sm text-muted-foreground">Макс. просадка</div>
-            <div className="text-xl font-bold text-red-500">{(stats.maxDrawdown * 100).toFixed(1)}%</div>
+            <div className="text-xl font-bold text-[#F6465D]">{(stats.maxDrawdown * 100).toFixed(1)}%</div>
           </CardContent>
         </Card>
         <Card>
@@ -573,7 +573,7 @@ export function EquilibristBotPanel() {
         <Card>
           <CardContent className="p-4">
             <div className="text-sm text-muted-foreground">Ср. Z-Score выхода</div>
-            <div className="text-xl font-bold text-green-500">{stats.avgZScoreExit.toFixed(2)}</div>
+            <div className="text-xl font-bold text-[#0ECB81]">{stats.avgZScoreExit.toFixed(2)}</div>
           </CardContent>
         </Card>
       </div>
@@ -601,8 +601,8 @@ export function EquilibristBotPanel() {
                     <Badge variant="outline" className="font-mono">{signal.symbol}</Badge>
                     <Badge className={cn(
                       signal.direction === "LONG" 
-                        ? "bg-green-500/10 text-green-500" 
-                        : "bg-red-500/10 text-red-500"
+                        ? "bg-[#0ECB81]/10 text-[#0ECB81]" 
+                        : "bg-[#F6465D]/10 text-[#F6465D]"
                     )}>
                       {signal.direction === "LONG" ? (
                         <TrendingUp className="h-3 w-3 mr-1" />
@@ -615,7 +615,7 @@ export function EquilibristBotPanel() {
                   <div className="flex items-center gap-3">
                     <div className="text-sm">
                       Ож. доходность: <span className={cn(
-                        "font-medium text-green-500"
+                        "font-medium text-[#0ECB81]"
                       )}>
                         {(signal.expectedReturn * 100).toFixed(2)}%
                       </span>
@@ -663,7 +663,7 @@ export function EquilibristBotPanel() {
                         transform: "translateX(-50%)"
                       }}
                     />
-                    <div className="absolute left-1/2 top-0 bottom-0 w-px bg-green-500/50" />
+                    <div className="absolute left-1/2 top-0 bottom-0 w-px bg-[#0ECB81]/50" />
                   </div>
                 </div>
               </div>
@@ -694,13 +694,13 @@ export function EquilibristBotPanel() {
                   <div className="flex justify-between items-center">
                     <div className="flex items-center gap-3">
                       <Badge variant="outline">{pos.symbol}</Badge>
-                      <Badge className={pos.side === "LONG" ? "bg-green-500/10 text-green-500" : "bg-red-500/10 text-red-500"}>
+                      <Badge variant="outline" className={pos.side === "LONG" ? "border-[#0ECB81] text-[#0ECB81]" : "border-[#F6465D] text-[#F6465D]"}>
                         {pos.side}
                       </Badge>
                     </div>
                     <div className={cn(
                       "font-medium",
-                      pos.pnl >= 0 ? "text-green-500" : "text-red-500"
+                      pos.pnl >= 0 ? "text-[#0ECB81]" : "text-[#F6465D]"
                     )}>
                       ${pos.pnl.toFixed(2)}
                     </div>

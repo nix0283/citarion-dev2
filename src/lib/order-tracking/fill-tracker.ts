@@ -67,7 +67,7 @@ export class FillTracker extends EventEmitter {
       side: order.side || 'BUY',
       requestedQuantity: order.requestedQuantity || 0,
       filledQuantity: order.filledQuantity || 0,
-      remainingQuantity: order.remainingQuantity ?? order.requestedQuantity || 0,
+      remainingQuantity: (order.remainingQuantity ?? order.requestedQuantity) || 0,
       avgFillPrice: order.avgFillPrice || 0,
       totalFees: order.totalFees || 0,
       feeCurrency: order.feeCurrency || 'USDT',

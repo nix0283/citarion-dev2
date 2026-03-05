@@ -231,15 +231,15 @@ export function GridBotManager() {
   const getStatusColor = (status: string) => {
     switch (status) {
       case "RUNNING":
-        return "bg-green-500/10 text-green-500 border-green-500/20";
+        return "bg-[#0ECB81]/10 text-[#0ECB81] border-[#0ECB81]/30";
       case "STOPPED":
-        return "bg-gray-500/10 text-gray-500 border-gray-500/20";
+        return "bg-muted text-muted-foreground border-muted-foreground/30";
       case "PAUSED":
-        return "bg-yellow-500/10 text-yellow-500 border-yellow-500/20";
+        return "bg-amber-500/10 text-amber-500 border-amber-500/30";
       case "COMPLETED":
-        return "bg-blue-500/10 text-blue-500 border-blue-500/20";
+        return "bg-primary/10 text-primary border-primary/30";
       default:
-        return "bg-gray-500/10 text-gray-500 border-gray-500/20";
+        return "bg-muted text-muted-foreground border-muted-foreground/30";
     }
   };
 
@@ -505,11 +505,11 @@ export function GridBotManager() {
                   <div className="space-y-2">
                     <div className="flex items-center gap-2">
                       <h3 className="font-semibold">{bot.name}</h3>
-                      <Badge className={getStatusColor(bot.status)}>
+                      <Badge variant="outline" className={getStatusColor(bot.status)}>
                         {bot.status}
                       </Badge>
                       {bot.isActive && (
-                        <Badge className="bg-green-500/10 text-green-500">
+                        <Badge variant="outline" className="bg-[#0ECB81]/10 text-[#0ECB81] border-[#0ECB81]/30">
                           Активен
                         </Badge>
                       )}
@@ -542,7 +542,7 @@ export function GridBotManager() {
                         <span className="text-muted-foreground">Сделок: {bot.totalTrades}</span>
                         <span className={cn(
                           "font-medium",
-                          bot.totalProfit >= 0 ? "text-green-500" : "text-red-500"
+                          bot.totalProfit >= 0 ? "text-[#0ECB81]" : "text-[#F6465D]"
                         )}>
                           PnL: ${bot.totalProfit.toFixed(2)}
                         </span>
@@ -656,7 +656,7 @@ export function GridBotManager() {
                   <div className="text-sm text-muted-foreground">Прибыль</div>
                   <div className={cn(
                     "text-lg font-bold",
-                    backtestResult.totalProfit >= 0 ? "text-green-500" : "text-red-500"
+                    backtestResult.totalProfit >= 0 ? "text-[#0ECB81]" : "text-[#F6465D]"
                   )}>
                     ${backtestResult.totalProfit.toFixed(2)}
                   </div>
@@ -669,14 +669,14 @@ export function GridBotManager() {
                   <div className="text-sm text-muted-foreground">Win Rate</div>
                   <div className={cn(
                     "text-lg font-bold",
-                    backtestResult.winRate >= 50 ? "text-green-500" : ""
+                    backtestResult.winRate >= 50 ? "text-[#0ECB81]" : ""
                   )}>
                     {backtestResult.winRate.toFixed(1)}%
                   </div>
                 </div>
                 <div className="text-center">
                   <div className="text-sm text-muted-foreground">Просадка</div>
-                  <div className="text-lg font-bold text-red-500">
+                  <div className="text-lg font-bold text-[#F6465D]">
                     {backtestResult.maxDrawdown.toFixed(1)}%
                   </div>
                 </div>
@@ -684,7 +684,7 @@ export function GridBotManager() {
                   <div className="text-sm text-muted-foreground">Profit Factor</div>
                   <div className={cn(
                     "text-lg font-bold",
-                    backtestResult.profitFactor >= 1.5 ? "text-green-500" : ""
+                    backtestResult.profitFactor >= 1.5 ? "text-[#0ECB81]" : ""
                   )}>
                     {backtestResult.profitFactor.toFixed(2)}
                   </div>

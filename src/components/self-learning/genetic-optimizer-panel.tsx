@@ -822,17 +822,17 @@ export function GeneticOptimizerPanel() {
         label: "Paused",
       },
       COMPLETED: {
-        color: "bg-green-500/20 text-green-400 border-green-500/30",
+        color: "bg-[#0ECB81]/20 text-[#0ECB81] border-[#0ECB81]/30",
         icon: <CheckCircle className="h-3 w-3" />,
         label: "Completed",
       },
       CANCELLED: {
-        color: "bg-red-500/20 text-red-400 border-red-500/30",
+        color: "bg-[#F6465D]/20 text-[#F6465D] border-[#F6465D]/30",
         icon: <XCircle className="h-3 w-3" />,
         label: "Cancelled",
       },
       FAILED: {
-        color: "bg-red-500/20 text-red-400 border-red-500/30",
+        color: "bg-[#F6465D]/20 text-[#F6465D] border-[#F6465D]/30",
         icon: <AlertTriangle className="h-3 w-3" />,
         label: "Failed",
       },
@@ -867,7 +867,7 @@ export function GeneticOptimizerPanel() {
         <div className="flex items-center gap-2">
           {getStatusBadge(state.status)}
           {state.bestChromosome && (
-            <Badge variant="outline" className="bg-green-500/10 text-green-400 border-green-500/30">
+            <Badge variant="outline" className="bg-[#0ECB81]/10 text-[#0ECB81] border-[#0ECB81]/30">
               <Trophy className="h-3 w-3 mr-1" />
               Best: {state.bestChromosome.fitness.toFixed(4)}
             </Badge>
@@ -1275,10 +1275,10 @@ export function GeneticOptimizerPanel() {
                   {state.bestChromosome.genes.map((gene) => (
                     <div
                       key={gene.name}
-                      className="p-2 rounded-lg bg-green-500/10 border border-green-500/20"
+                      className="p-2 rounded-lg bg-[#0ECB81]/10 border border-[#0ECB81]/20"
                     >
                       <p className="text-xs text-muted-foreground truncate">{gene.name}</p>
-                      <p className="font-mono font-semibold text-green-400">
+                      <p className="font-mono font-semibold text-[#0ECB81]">
                         {gene.value.toFixed(4)}
                       </p>
                     </div>
@@ -1461,7 +1461,7 @@ export function GeneticOptimizerPanel() {
                           <TableCell className="text-right font-mono">
                             <span
                               className={cn(
-                                index === 0 ? "text-green-400 font-semibold" : ""
+                                index === 0 ? "text-[#0ECB81] font-semibold" : ""
                               )}
                             >
                               {chromosome.fitness.toFixed(4)}

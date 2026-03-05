@@ -223,7 +223,7 @@ export function MLFilteringPanel() {
                 checked={config?.enabled ?? true}
                 onCheckedChange={(checked) => updateConfig({ enabled: checked })}
               />
-              <Badge variant={config?.enabled ? 'default' : 'secondary'}>
+              <Badge variant="outline" className={config?.enabled ? 'border-[#0ECB81] text-[#0ECB81]' : ''}>
                 {config?.enabled ? 'Активен' : 'Отключён'}
               </Badge>
             </div>
@@ -256,7 +256,7 @@ export function MLFilteringPanel() {
             
             <Card>
               <CardContent className="pt-4">
-                <div className="text-2xl font-bold text-green-500">{stats?.passedSignals || 0}</div>
+                <div className="text-2xl font-bold text-[#0ECB81]">{stats?.passedSignals || 0}</div>
                 <div className="text-sm text-muted-foreground">Прошло</div>
                 <Progress 
                   value={stats?.totalSignals ? (stats.passedSignals / stats.totalSignals) * 100 : 0} 
@@ -267,7 +267,7 @@ export function MLFilteringPanel() {
             
             <Card>
               <CardContent className="pt-4">
-                <div className="text-2xl font-bold text-red-500">{stats?.rejectedSignals || 0}</div>
+                <div className="text-2xl font-bold text-[#F6465D]">{stats?.rejectedSignals || 0}</div>
                 <div className="text-sm text-muted-foreground">Отклонено</div>
                 <Progress 
                   value={stats?.totalSignals ? (stats.rejectedSignals / stats.totalSignals) * 100 : 0} 
@@ -329,14 +329,14 @@ export function MLFilteringPanel() {
                   <div>
                     <Label className="text-xs text-muted-foreground">Long Одобрения</Label>
                     <div className="flex items-center gap-1">
-                      <TrendingUp className="h-4 w-4 text-green-500" />
+                      <TrendingUp className="h-4 w-4 text-[#0ECB81]" />
                       <span className="text-lg font-semibold">{stats?.longApprovals || 0}</span>
                     </div>
                   </div>
                   <div>
                     <Label className="text-xs text-muted-foreground">Short Одобрения</Label>
                     <div className="flex items-center gap-1">
-                      <TrendingDown className="h-4 w-4 text-red-500" />
+                      <TrendingDown className="h-4 w-4 text-[#F6465D]" />
                       <span className="text-lg font-semibold">{stats?.shortApprovals || 0}</span>
                     </div>
                   </div>
@@ -582,7 +582,7 @@ export function MLFilteringPanel() {
                 <div className="mt-4 p-4 rounded-lg border bg-muted/50">
                   <div className="flex items-center justify-between mb-4">
                     <span className="font-semibold">Результат Фильтра</span>
-                    <Badge variant={testResult.passed ? 'default' : 'destructive'}>
+                    <Badge variant="outline" className={testResult.passed ? 'border-[#0ECB81] text-[#0ECB81]' : 'border-[#F6465D] text-[#F6465D]'}>
                       {testResult.passed ? 'ПРОШЁЛ' : 'ОТКЛОНЁН'}
                     </Badge>
                   </div>
@@ -591,8 +591,8 @@ export function MLFilteringPanel() {
                     <div>
                       <span className="text-muted-foreground">Скорректированное Направление:</span>
                       <div className="flex items-center gap-1 mt-1">
-                        {testResult.adjustedDirection === 'LONG' && <TrendingUp className="h-4 w-4 text-green-500" />}
-                        {testResult.adjustedDirection === 'SHORT' && <TrendingDown className="h-4 w-4 text-red-500" />}
+                        {testResult.adjustedDirection === 'LONG' && <TrendingUp className="h-4 w-4 text-[#0ECB81]" />}
+                        {testResult.adjustedDirection === 'SHORT' && <TrendingDown className="h-4 w-4 text-[#F6465D]" />}
                         {testResult.adjustedDirection === 'NEUTRAL' && <Minus className="h-4 w-4 text-yellow-500" />}
                         <span className="font-medium">{testResult.adjustedDirection}</span>
                       </div>
@@ -626,10 +626,10 @@ export function MLFilteringPanel() {
                     <div>
                       <span className="text-muted-foreground">Рекомендация:</span>
                       <div className="mt-1">
-                        <Badge variant={
-                          testResult.recommendation === 'APPROVE' ? 'default' :
-                          testResult.recommendation === 'REJECT' ? 'destructive' :
-                          testResult.recommendation === 'ADJUST' ? 'secondary' : 'outline'
+                        <Badge variant="outline" className={
+                          testResult.recommendation === 'APPROVE' ? 'border-[#0ECB81] text-[#0ECB81]' :
+                          testResult.recommendation === 'REJECT' ? 'border-[#F6465D] text-[#F6465D]' :
+                          testResult.recommendation === 'ADJUST' ? 'border-yellow-500 text-yellow-500' : ''
                         }>
                           {testResult.recommendation}
                         </Badge>
@@ -671,12 +671,12 @@ export function MLFilteringPanel() {
                   <div className="text-2xl font-bold">{classifierStats?.totalSamples || 0}</div>
                   <div className="text-xs text-muted-foreground">Всего Образцов</div>
                 </div>
-                <div className="p-3 rounded-lg bg-green-500/10">
-                  <div className="text-2xl font-bold text-green-500">{classifierStats?.longCount || 0}</div>
+                <div className="p-3 rounded-lg bg-[#0ECB81]/10">
+                  <div className="text-2xl font-bold text-[#0ECB81]">{classifierStats?.longCount || 0}</div>
                   <div className="text-xs text-muted-foreground">Long Образцы</div>
                 </div>
-                <div className="p-3 rounded-lg bg-red-500/10">
-                  <div className="text-2xl font-bold text-red-500">{classifierStats?.shortCount || 0}</div>
+                <div className="p-3 rounded-lg bg-[#F6465D]/10">
+                  <div className="text-2xl font-bold text-[#F6465D]">{classifierStats?.shortCount || 0}</div>
                   <div className="text-xs text-muted-foreground">Short Образцы</div>
                 </div>
                 <div className="p-3 rounded-lg bg-yellow-500/10">

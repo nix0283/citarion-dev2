@@ -192,11 +192,11 @@ function formatTime(timestamp: number): string {
 function getPriorityColor(priority: AlertPriority): string {
   switch (priority) {
     case "critical":
-      return "bg-red-500/10 text-red-500 border-red-500/20";
+      return "bg-[#F6465D]/10 text-[#F6465D] border-[#F6465D]/20";
     case "high":
       return "bg-orange-500/10 text-orange-500 border-orange-500/20";
     case "normal":
-      return "bg-green-500/10 text-green-500 border-green-500/20";
+      return "bg-[#0ECB81]/10 text-[#0ECB81] border-[#0ECB81]/20";
     case "low":
       return "bg-gray-500/10 text-gray-500 border-gray-500/20";
   }
@@ -275,9 +275,9 @@ function AlertHistoryItem({ alert }: AlertHistoryItemProps) {
             {alert.priority}
           </Badge>
           {alert.sent ? (
-            <CheckCircle2 className="h-4 w-4 text-green-500 ml-auto shrink-0" />
+            <CheckCircle2 className="h-4 w-4 text-[#0ECB81] ml-auto shrink-0" />
           ) : (
-            <XCircle className="h-4 w-4 text-red-500 ml-auto shrink-0" />
+            <XCircle className="h-4 w-4 text-[#F6465D] ml-auto shrink-0" />
           )}
         </div>
         <p className="text-xs text-muted-foreground truncate">{alert.message}</p>
@@ -434,7 +434,7 @@ export function AlertSystemPanel() {
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center gap-2">
-              <CheckCircle2 className="h-4 w-4 text-green-500" />
+              <CheckCircle2 className="h-4 w-4 text-[#0ECB81]" />
               <span className="text-sm text-muted-foreground">Sent</span>
             </div>
             <p className="text-2xl font-bold mt-1">{stats.sent}</p>
@@ -443,7 +443,7 @@ export function AlertSystemPanel() {
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center gap-2">
-              <XCircle className="h-4 w-4 text-red-500" />
+              <XCircle className="h-4 w-4 text-[#F6465D]" />
               <span className="text-sm text-muted-foreground">Failed</span>
             </div>
             <p className="text-2xl font-bold mt-1">{stats.failed}</p>
@@ -692,7 +692,7 @@ export function AlertSystemPanel() {
                 <AccordionItem value="price">
                   <AccordionTrigger className="hover:no-underline">
                     <div className="flex items-center gap-2">
-                      <TrendingUp className="h-4 w-4 text-green-500" />
+                      <TrendingUp className="h-4 w-4 text-[#0ECB81]" />
                       <span>Price Alerts</span>
                       <Badge variant="secondary" className="ml-2">
                         {alertRules.filter((r) => r.type === "price").length}
@@ -756,7 +756,7 @@ export function AlertSystemPanel() {
                 <AccordionItem value="risk">
                   <AccordionTrigger className="hover:no-underline">
                     <div className="flex items-center gap-2">
-                      <Shield className="h-4 w-4 text-red-500" />
+                      <Shield className="h-4 w-4 text-[#F6465D]" />
                       <span>Risk Alerts</span>
                       <Badge variant="secondary" className="ml-2">
                         {alertRules.filter((r) => r.type === "risk").length}
@@ -930,7 +930,7 @@ export function AlertSystemPanel() {
                   </div>
                   <div className="flex items-center justify-between p-3 rounded-lg bg-muted/50">
                     <div className="flex items-center gap-3">
-                      <div className="w-3 h-3 rounded-full bg-green-500" />
+                      <div className="w-3 h-3 rounded-full bg-[#0ECB81]" />
                       <div>
                         <p className="font-medium text-sm">Normal</p>
                         <p className="text-xs text-muted-foreground">
@@ -954,7 +954,7 @@ export function AlertSystemPanel() {
                   </div>
                   <div className="flex items-center justify-between p-3 rounded-lg bg-muted/50">
                     <div className="flex items-center gap-3">
-                      <div className="w-3 h-3 rounded-full bg-red-500" />
+                      <div className="w-3 h-3 rounded-full bg-[#F6465D]" />
                       <div>
                         <p className="font-medium text-sm">Critical</p>
                         <p className="text-xs text-muted-foreground">

@@ -282,7 +282,7 @@ export function TradingForm() {
                 className={cn(
                   "h-12 min-h-11 touch-target",
                   direction === "LONG" &&
-                    "bg-green-500 hover:bg-green-600 text-white"
+                    "bg-[#0ECB81] hover:bg-[#0ECB81]/90 text-white"
                 )}
                 onClick={() => setDirection("LONG")}
               >
@@ -294,7 +294,7 @@ export function TradingForm() {
                 variant={direction === "SHORT" ? "default" : "outline"}
                 className={cn(
                   "h-12 min-h-11 touch-target",
-                  direction === "SHORT" && "bg-red-500 hover:bg-red-600 text-white"
+                  direction === "SHORT" && "bg-[#F6465D] hover:bg-[#F6465D]/90 text-white"
                 )}
                 onClick={() => setDirection("SHORT")}
               >
@@ -420,8 +420,8 @@ export function TradingForm() {
           <Button
             className={cn(
               "w-full h-12 text-base font-medium min-h-11 touch-target",
-              direction === "LONG" && "bg-green-500 hover:bg-green-600",
-              direction === "SHORT" && "bg-red-500 hover:bg-red-600"
+              direction === "LONG" && "bg-[#0ECB81] hover:bg-[#0ECB81]/90",
+              direction === "SHORT" && "bg-[#F6465D] hover:bg-[#F6465D]/90"
             )}
             onClick={handleTrade}
             disabled={isSubmitting || positionSize > balance}
@@ -451,9 +451,9 @@ export function TradingForm() {
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               {direction === "LONG" ? (
-                <TrendingUp className="h-5 w-5 text-green-500" />
+                <TrendingUp className="h-5 w-5 text-[#0ECB81]" />
               ) : (
-                <TrendingDown className="h-5 w-5 text-red-500" />
+                <TrendingDown className="h-5 w-5 text-[#F6465D]" />
               )}
               Подтвердите сделку
             </DialogTitle>
@@ -470,7 +470,7 @@ export function TradingForm() {
               <div className="text-muted-foreground">Направление:</div>
               <div className={cn(
                 "font-medium",
-                direction === "LONG" ? "text-green-500" : "text-red-500"
+                direction === "LONG" ? "text-[#0ECB81]" : "text-[#F6465D]"
               )}>
                 {direction}
               </div>
@@ -490,14 +490,14 @@ export function TradingForm() {
               {stopLoss && (
                 <>
                   <div className="text-muted-foreground">Stop Loss:</div>
-                  <div className="font-mono text-red-500">${stopLoss}</div>
+                  <div className="font-mono text-[#F6465D]">${stopLoss}</div>
                 </>
               )}
               
               {takeProfit && (
                 <>
                   <div className="text-muted-foreground">Take Profit:</div>
-                  <div className="font-mono text-green-500">${takeProfit}</div>
+                  <div className="font-mono text-[#0ECB81]">${takeProfit}</div>
                 </>
               )}
               
@@ -518,8 +518,8 @@ export function TradingForm() {
               onClick={confirmTrade}
               className={cn(
                 "w-full sm:w-auto min-h-11 touch-target",
-                direction === "LONG" && "bg-green-500 hover:bg-green-600",
-                direction === "SHORT" && "bg-red-500 hover:bg-red-600"
+                direction === "LONG" && "bg-[#0ECB81] hover:bg-[#0ECB81]/90",
+                direction === "SHORT" && "bg-[#F6465D] hover:bg-[#F6465D]/90"
               )}
             >
               {direction === "LONG" ? (

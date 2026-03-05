@@ -170,9 +170,9 @@ export function WolfBotPanel() {
         </div>
         
         <div className="flex items-center gap-2">
-          <Badge className={cn(
+          <Badge variant="outline" className={cn(
             "text-sm",
-            isRunning ? "bg-green-500/10 text-green-500 border-green-500/20" : "bg-gray-500/10 text-gray-500"
+            isRunning ? "bg-[#0ECB81]/10 text-[#0ECB81] border-[#0ECB81]/20" : "bg-gray-500/10 text-gray-500"
           )}>
             {isRunning ? "РАБОТАЕТ" : "ОСТАНОВЛЕН"}
           </Badge>
@@ -274,7 +274,7 @@ export function WolfBotPanel() {
             <div className="text-sm text-muted-foreground">Процент побед</div>
             <div className={cn(
               "text-2xl font-bold",
-              stats.winRate >= 0.5 ? "text-green-500" : "text-red-500"
+              stats.winRate >= 0.5 ? "text-[#0ECB81]" : "text-[#F6465D]"
             )}>
               {(stats.winRate * 100).toFixed(1)}%
             </div>
@@ -283,7 +283,7 @@ export function WolfBotPanel() {
         <Card>
           <CardContent className="p-4">
             <div className="text-sm text-muted-foreground">Средний возврат</div>
-            <div className="text-2xl font-bold text-green-500">
+            <div className="text-2xl font-bold text-[#0ECB81]">
               +{stats.avgReturn.toFixed(1)}%
             </div>
           </CardContent>
@@ -324,12 +324,12 @@ export function WolfBotPanel() {
                   <div className="flex items-center gap-4">
                     <div className={cn(
                       "p-2 rounded-lg",
-                      signal.direction === "LONG" ? "bg-green-500/10" : "bg-red-500/10"
+                      signal.direction === "LONG" ? "bg-[#0ECB81]/10" : "bg-[#F6465D]/10"
                     )}>
                       {signal.direction === "LONG" ? (
-                        <TrendingUp className="h-4 w-4 text-green-500" />
+                        <TrendingUp className="h-4 w-4 text-[#0ECB81]" />
                       ) : (
-                        <TrendingDown className="h-4 w-4 text-red-500" />
+                        <TrendingDown className="h-4 w-4 text-[#F6465D]" />
                       )}
                     </div>
                     <div>
@@ -342,9 +342,10 @@ export function WolfBotPanel() {
                   <div className="flex items-center gap-4">
                     <div className="text-right">
                       <div className="text-sm">
-                        Уверенность: <span className={cn(
+                        Уверенность:{" "}
+                        <span className={cn(
                           "font-medium",
-                          signal.confidence >= 0.8 ? "text-green-500" : signal.confidence >= 0.6 ? "text-yellow-500" : "text-red-500"
+                          signal.confidence >= 0.8 ? "text-[#0ECB81]" : signal.confidence >= 0.6 ? "text-yellow-500" : "text-[#F6465D]"
                         )}>
                           {(signal.confidence * 100).toFixed(0)}%
                         </span>

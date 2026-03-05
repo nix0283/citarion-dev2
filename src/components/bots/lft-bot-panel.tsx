@@ -114,19 +114,19 @@ function MacroTrendIndicator({ trend, condition }: { trend: 'BULLISH' | 'BEARISH
         <div className="flex items-center justify-between px-4">
           <div className={cn(
             "flex flex-col items-center",
-            trend === 'BEARISH' ? "text-red-400" : "text-gray-600"
+            trend === 'BEARISH' ? "text-[#F6465D]" : "text-gray-600"
           )}>
             <TrendingDown className="h-6 w-6" />
             <span className="text-xs">Медвежий</span>
           </div>
           
           <div className="flex-1 mx-4">
-            <div className="h-3 rounded-full bg-gradient-to-r from-red-500 via-yellow-500 to-green-500 relative">
+            <div className="h-3 rounded-full bg-gradient-to-r from-[#F6465D] via-yellow-500 to-[#0ECB81] relative">
               <div 
                 className={cn(
                   "absolute top-0 bottom-0 w-4 bg-background border-2 rounded-full transform -translate-x-1/2",
-                  trend === 'BULLISH' ? "border-green-500 left-[85%]" : 
-                  trend === 'BEARISH' ? "border-red-500 left-[15%]" : 
+                  trend === 'BULLISH' ? "border-[#0ECB81] left-[85%]" : 
+                  trend === 'BEARISH' ? "border-[#F6465D] left-[15%]" : 
                   "border-yellow-500 left-[50%]"
                 )}
               />
@@ -135,7 +135,7 @@ function MacroTrendIndicator({ trend, condition }: { trend: 'BULLISH' | 'BEARISH
           
           <div className={cn(
             "flex flex-col items-center",
-            trend === 'BULLISH' ? "text-green-400" : "text-gray-600"
+            trend === 'BULLISH' ? "text-[#0ECB81]" : "text-gray-600"
           )}>
             <TrendingUp className="h-6 w-6" />
             <span className="text-xs">Бычий</span>
@@ -180,8 +180,8 @@ function PositionTimeline({ position }: { position: PositionInfo | null }) {
                 <Badge 
                   variant="outline" 
                   className={cn(
-                    position.direction === 'LONG' ? "text-green-400 border-green-500" : 
-                    "text-red-400 border-red-500"
+                    position.direction === 'LONG' ? "text-[#0ECB81] border-[#0ECB81]" : 
+                    "text-[#F6465D] border-[#F6465D]"
                   )}
                 >
                   {position.direction}
@@ -190,7 +190,7 @@ function PositionTimeline({ position }: { position: PositionInfo | null }) {
               </div>
               <div className={cn(
                 "font-mono font-bold",
-                position.pnl >= 0 ? "text-green-400" : "text-red-400"
+                position.pnl >= 0 ? "text-[#0ECB81]" : "text-[#F6465D]"
               )}>
                 {position.pnl >= 0 ? '+' : ''}{position.pnlPercent.toFixed(2)}%
               </div>
@@ -217,13 +217,13 @@ function PositionTimeline({ position }: { position: PositionInfo | null }) {
                 <div className="text-muted-foreground">Вход</div>
                 <div className="font-mono font-bold">${position.entryPrice.toFixed(2)}</div>
               </div>
-              <div className="text-center p-2 rounded bg-red-500/10">
+              <div className="text-center p-2 rounded bg-[#F6465D]/10">
                 <div className="text-muted-foreground">Стоп-лосс</div>
-                <div className="font-mono font-bold text-red-400">${position.stopLoss.toFixed(2)}</div>
+                <div className="font-mono font-bold text-[#F6465D]">${position.stopLoss.toFixed(2)}</div>
               </div>
-              <div className="text-center p-2 rounded bg-green-500/10">
+              <div className="text-center p-2 rounded bg-[#0ECB81]/10">
                 <div className="text-muted-foreground">Тейк-профит</div>
-                <div className="font-mono font-bold text-green-400">${position.takeProfit.toFixed(2)}</div>
+                <div className="font-mono font-bold text-[#0ECB81]">${position.takeProfit.toFixed(2)}</div>
               </div>
             </div>
           </div>
@@ -265,8 +265,8 @@ function SignalFeed({ signals }: { signals: SignalInfo[] }) {
                     <Badge 
                       variant="outline" 
                       className={cn(
-                        signal.direction === 'LONG' ? "text-green-400 border-green-500" : 
-                        signal.direction === 'SHORT' ? "text-red-400 border-red-500" : 
+                        signal.direction === 'LONG' ? "text-[#0ECB81] border-[#0ECB81]" : 
+                        signal.direction === 'SHORT' ? "text-[#F6465D] border-[#F6465D]" : 
                         "text-gray-400"
                       )}
                     >
@@ -521,7 +521,7 @@ export function LFTBotPanel() {
             <div className="text-center">
               <div className={cn(
                 "text-2xl font-bold font-mono",
-                (stats?.winRate ?? 0) >= 0.5 ? "text-green-400" : "text-red-400"
+                (stats?.winRate ?? 0) >= 0.5 ? "text-[#0ECB81]" : "text-[#F6465D]"
               )}>
                 {((stats?.winRate ?? 0) * 100).toFixed(1)}%
               </div>
@@ -534,7 +534,7 @@ export function LFTBotPanel() {
             <div className="text-center">
               <div className={cn(
                 "text-2xl font-bold font-mono",
-                (stats?.totalPnl ?? 0) >= 0 ? "text-green-400" : "text-red-400"
+                (stats?.totalPnl ?? 0) >= 0 ? "text-[#0ECB81]" : "text-[#F6465D]"
               )}>
                 {(stats?.totalPnl ?? 0) >= 0 ? '+' : ''}{(stats?.totalPnl ?? 0).toFixed(2)}
               </div>
@@ -568,15 +568,15 @@ export function LFTBotPanel() {
           variant="outline" 
           className={cn(
             "text-sm",
-            isRunning ? "border-green-500 text-green-400" : 
-            status === 'error' ? "border-red-500 text-red-400" : 
+            isRunning ? "border-[#0ECB81] text-[#0ECB81]" : 
+            status === 'error' ? "border-[#F6465D] text-[#F6465D]" : 
             "border-gray-500 text-gray-400"
           )}
         >
           <span className={cn(
             "mr-2 h-2 w-2 rounded-full",
-            isRunning ? "bg-green-500 animate-pulse" : 
-            status === 'error' ? "bg-red-500" : 
+            isRunning ? "bg-[#0ECB81] animate-pulse" : 
+            status === 'error' ? "bg-[#F6465D]" : 
             "bg-gray-500"
           )} />
           {status.toUpperCase()}
