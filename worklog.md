@@ -932,3 +932,64 @@ Work Log:
 Stage Summary:
 - Documentation updated with all recent changes
 - Ready for GitHub backup
+
+---
+Task ID: FIRST-ENTRY-AS-MARKET
+Agent: Main
+Task: Add First Entry as Market feature (Cornix-inspired)
+
+Work Log:
+- Analyzed Cornix announcement for First Entry as Market feature
+- Added new fields to Prisma schema:
+  - firstEntryMode (IMMEDIATE | WAIT_ENTRY)
+  - firstEntryMaxPriceCap (0.01-5%)
+  - firstEntryAsMarket (boolean)
+- Created UI section in BotConfigForm General settings:
+  - Mode selection: Immediate vs Wait for Entry
+  - Maximum Entry Price Cap slider
+  - Informative note about limit order behavior
+- Pushed database schema changes
+
+Feature Details:
+- **Immediate Mode**: Enter immediately at current market price
+- **Wait for Entry Mode**: Wait until entry price from signal is reached
+- **Price Cap**: Maximum % above entry price to prevent overpaying
+- **Protection**: Prevents purchases above TP on first entry
+- Uses limit orders to mimic market behavior safely
+
+Stage Summary:
+- Schema updated with 3 new fields
+- UI fully implemented with CITARION brand colors
+- Commit: 8bfd26f
+- Pushed to both GitHub repositories
+
+---
+Task ID: TAKE-PROFIT-GRACE
+Agent: Main
+Task: Add Take-Profit Grace feature (Cornix-inspired)
+
+Work Log:
+- Analyzed Cornix announcement for Take-Profit Grace feature
+- Added new fields to Prisma schema:
+  - tpGraceEnabled (boolean)
+  - tpGraceCapPercent (0.01-2%)
+  - tpGraceMaxRetries (1-10)
+- Created UI section in BotConfigForm Strategies section:
+  - Enable/disable toggle
+  - Cap % per retry slider
+  - Max retry attempts input
+  - How it works explanation box
+
+Feature Details:
+- **Purpose**: Retry partially/unfilled TP orders automatically
+- **For LONGs**: Lower price on each retry
+- **For SHORTs**: Higher price on each retry
+- **Cap %**: How much to adjust price per retry
+- **Max Retries**: Maximum attempts per TP target
+- Continues until fully filled or limit reached
+
+Stage Summary:
+- Schema updated with 3 new fields
+- UI fully implemented
+- Commit: 8bfd26f (combined with First Entry as Market)
+- Both features ready for backend implementation
